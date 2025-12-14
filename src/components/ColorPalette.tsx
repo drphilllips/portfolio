@@ -137,7 +137,7 @@ export default function ColorPalette() {
                   top: "50%",
                   pointerEvents: isOpen ? "auto" : "none",
                 }}
-                transformTemplate={(latest, generated) =>
+                transformTemplate={(_, generated) =>
                   `translate(-50%, -50%) ${generated}`
                 }
                 // Drive motion purely via transforms (single element)
