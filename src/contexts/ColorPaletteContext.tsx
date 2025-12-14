@@ -3,6 +3,7 @@ import {
   useState,
 } from "react"
 import type { ColorPalette } from "../types/color"
+import { setThemeColor } from "../utils/setThemeColor"
 
 type ColorPaletteContextType = {
   colorPalette: ColorPalette
@@ -39,7 +40,10 @@ export function ColorPaletteProvider({
   })
 
   function setColorPalette(pageColor: string, textColor: string) {
-    setColorPaletteState({ pageColor, textColor })
+    setColorPaletteState(prev => {
+      setThemeColor(prev.pageColor, pageColor)
+      return { pageColor, textColor }
+    })
   }
 
   return (

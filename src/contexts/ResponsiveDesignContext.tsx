@@ -4,18 +4,26 @@ import {
   useMemo,
   useEffect,
 } from "react"
-import { MOBILE_DEVICE_WIDTH_THRESHOLD } from "../constants/responsiveDesign"
 
 // Extend Navigator to include optional standalone property for iOS PWA detection
 type NavigatorWithStandalone = Navigator & {
   standalone?: boolean
 }
 
+// Minimal User-Agent Client Hints typing (Chromium-based browsers)
+// We only need the `mobile` boolean for our detection logic.
+type NavigatorWithUAData = Navigator & {
+  userAgentData?: {
+    mobile?: boolean
+  }
+}
+
 type ResponsiveDesignContextType = {
   viewportWidth: number | null
   viewportHeight: number | null
-  onMobileUpright: boolean
-  onMobileSideways: boolean
+  onMobile: boolean
+  onMobileUpright: boolean | null
+  onMobileSideways: boolean | null
   isStandaloneApp: boolean
 }
 
@@ -97,31 +105,42 @@ export function ResponsiveDesignProvider({
   }, [])
 
   // --- Derived responsive flags ---
-  // Determine if device is mobile in upright (portrait) orientation
+  // Determine if device is mobile
+  const onMobile = useMemo(() => {
+    // 1) Best signal when available
+    const uaData = (navigator as NavigatorWithUAData).userAgentData
+    if (typeof uaData?.mobile === "boolean") return uaData.mobile
+
+    // 2) Input-capability heuristic
+    const coarsePointer = window.matchMedia?.("(pointer: coarse)")?.matches ?? false
+    const noHover = window.matchMedia?.("(hover: none)")?.matches ?? false
+    const touchPoints = navigator.maxTouchPoints ?? 0
+
+    // Typical "phone-ish" environment
+    if (coarsePointer && noHover) return true
+
+    // Touch-only / mostly-touch devices
+    if (touchPoints > 0 && (coarsePointer || noHover)) return true
+
+    return false
+  }, [])
+
+  // Determine if device is upright (portrait)
   const onMobileUpright = useMemo(() => {
-    if (viewportWidth == null) return false
+    if (viewportWidth == null || viewportHeight == null) return null
+    return onMobile && viewportWidth < viewportHeight
+  }, [onMobile, viewportWidth, viewportHeight])
 
-    if (viewportWidth < MOBILE_DEVICE_WIDTH_THRESHOLD) {
-      return true
-    }
-
-    return false
-  }, [viewportWidth])
-
-  // Determine if device is mobile in sideways (landscape) orientation
+  // Determine if device is sideways (landscape)
   const onMobileSideways = useMemo(() => {
-    if (viewportHeight == null) return false
-
-    if (viewportHeight < MOBILE_DEVICE_WIDTH_THRESHOLD) {
-      return true
-    }
-
-    return false
-  }, [viewportHeight])
+    if (onMobileUpright == null) return null
+    return onMobile && !onMobileUpright
+  }, [onMobile, onMobileUpright])
 
   return (
     <ResponsiveDesignContext.Provider
       value={{
+        onMobile,
         onMobileUpright,
         onMobileSideways,
         isStandaloneApp,

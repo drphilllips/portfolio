@@ -1,2 +1,0 @@
-
-export const MOBILE_DEVICE_WIDTH_THRESHOLD = 656;
