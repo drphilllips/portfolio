@@ -4,7 +4,6 @@ type TextProps = {
   className?: string
   style?: React.CSSProperties
   as?: "p" | "span" | "div" | "h1" | "h2" | "h3"
-  ic?: boolean
 }
 
 /**
@@ -12,11 +11,6 @@ type TextProps = {
  * ----
  * A lightweight, semantic text component that mirrors native HTML text behavior
  * while integrating cleanly with the app’s design system.
- *
- * By default, `Text` applies the `text-primary` color. If `ic` (Inherit Color)
- * is set to `true`, the component will NOT apply any text color and will instead
- * inherit the `color` value from its nearest parent container — matching how
- * native elements like `<p>` and `<span>` behave.
  *
  * Props:
  * - `children` (ReactNode)
@@ -33,23 +27,16 @@ type TextProps = {
  *   The semantic HTML element to render. Defaults to `"p"`.
  *   Use this to control document structure and accessibility
  *   without affecting visual styling.
- *
- * - `ic?` (boolean)
- *   Stands for **Inherit Color**.
- *   When `true`, the component will inherit its text color from a parent container
- *   instead of applying `text-primary`.
- *   Defaults to `false`.
  */
 export default function Text({
   children,
   className="",
   style,
   as: Component="p",
-  ic=false,
 }: TextProps) {
   return (
     <Component
-      className={`${!ic && "text-primary"} ${className}`}
+      className={className}
       style={style}
     >
       {children}
