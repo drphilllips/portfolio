@@ -1,4 +1,5 @@
 import { useColorPalette } from "../../contexts/useColorPalette"
+import { useResponsiveDesign } from "../../contexts/useResponsiveDesign"
 import View from "./View"
 
 type PageProps = {
@@ -51,12 +52,14 @@ export default function Page({
   className="",
   style,
 }: PageProps) {
+  const { onMobileSideways } = useResponsiveDesign()
   const { colorPalette } = useColorPalette()
 
   return (
     <View
       className={`
-        min-h-screen
+        min-h-dvh w-dvw
+        ${onMobileSideways && "px-12"}
         ${colorPalette.pageColor} ${colorPalette.textColor}
         transition-colors duration-300
         flex flex-col items-center justify-center text-center

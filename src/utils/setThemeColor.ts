@@ -234,6 +234,7 @@ export function setThemeColor(
     // Ensure we end on the exact final computed color.
     const finalColor = getComputedStyle(probe).backgroundColor;
     meta.content = finalColor;
+    document.documentElement.style.setProperty("--app-bg", finalColor)
     cleanupActiveAnimation();
   };
 
@@ -244,7 +245,9 @@ export function setThemeColor(
     // Force style resolution before reading.
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     probe.offsetHeight;
-    meta.content = getComputedStyle(probe).backgroundColor;
+    const computedColor = getComputedStyle(probe).backgroundColor;
+    meta.content = computedColor
+    document.documentElement.style.setProperty("--app-bg", computedColor)
     cleanupActiveAnimation();
     return;
   }
@@ -274,13 +277,16 @@ export function setThemeColor(
     probe.className = `${toBgClass}`;
 
     // Sample once immediately after switching classes so meta starts aligned.
-    meta.content = getComputedStyle(probe).backgroundColor;
+    const computedColor = getComputedStyle(probe).backgroundColor;
+    meta.content = computedColor
+    document.documentElement.style.setProperty("--app-bg", computedColor)
 
     const tick = () => {
       if (activeProbe !== probe) return;
 
       const color = getComputedStyle(probe).backgroundColor;
       meta.content = color;
+      document.documentElement.style.setProperty("--app-bg", color)
 
       const elapsed = performance.now() - start;
       if (elapsed >= total) {
