@@ -49,7 +49,7 @@ type PaletteItem = {
  */
 export default function ColorPalette() {
   // Allows the user to change the color palette
-  const { setColorPalette } = useColorPalette()
+  const { requestPaletteChange } = useColorPalette()
 
   // Expand & close the color palette selector
   const [isOpen, setIsOpen] = useState(false)
@@ -152,7 +152,7 @@ export default function ColorPalette() {
                 onClick={(e) => {
                   e.stopPropagation()
                   if (!isOpen) return
-                  setColorPalette(item.bg, item.text)
+                  requestPaletteChange(item.bg, item.text)
                   setIsOpen(false)
                 }}
                 // Hover/tap polish only when open (and not reduced motion)

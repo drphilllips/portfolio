@@ -63,13 +63,14 @@ export default function Page({
         min-h-dvh w-dvw
         ${onMobileSideways && "px-12"}
         ${colorPalette.pageColor} ${colorPalette.textColor}
-        transition-colors duration-300
         flex flex-col items-center justify-center text-center
         ${className}
       `}
       style={style}
     >
-      {children}
+      <View className="relative isolate z-20">
+        {children}
+      </View>
     </View>
   )
 }
