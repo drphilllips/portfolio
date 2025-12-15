@@ -57,12 +57,12 @@ export default function ColorPalette() {
   // Data-driven palette items (stable ids are required for layoutId)
   const items: PaletteItem[] = useMemo(
     () => [
+      { id: "ashbl", bg: "bg-ashbl", text: "text-primary" },
       { id: "roylp", bg: "bg-roylp", text: "text-primary" },
       { id: "chrtr", bg: "bg-chrtr", text: "text-secondary" },
       { id: "orngc", bg: "bg-orngc", text: "text-primary" },
       { id: "palbr", bg: "bg-palbr", text: "text-primary" },
       { id: "ghost", bg: "bg-ghost", text: "text-secondary" },
-      { id: "ashbl", bg: "bg-ashbl", text: "text-primary" },
     ],
     []
   )
@@ -99,7 +99,7 @@ export default function ColorPalette() {
         <View className="absolute inset-0">
           {items.map((item, i) => {
             // Closed ring targets
-            const angle = (2 * Math.PI * i) / items.length - Math.PI / 2
+            const angle = (2 * Math.PI * (i+2)) / items.length - Math.PI / 2
             const xClosed = ringRadius * Math.cos(angle)
             const yClosed = ringRadius * Math.sin(angle)
 
