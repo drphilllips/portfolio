@@ -35,7 +35,9 @@ type PageProps = {
  *   Optional inline styles applied to the root page container.
  *
  * Behavior:
- * - Applies `min-h-screen` to ensure the page fills the viewport.
+ * - Applies `min-h-dvh` and `w-dvw` to ensure the page fills the viewport safely.
+ * - Also using `px-12` when on landscape mode in mobile devices for
+ *   final assurance of safe area insets.
  * - Applies background and text color from `useColorPalette`.
  * - Adds smooth color transitions via `transition-colors`.
  * - Centers content by default using flexbox.
