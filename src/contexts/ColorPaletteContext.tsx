@@ -20,12 +20,12 @@ const ColorPaletteContext = createContext<ColorPaletteContextType | null>(null)
  *
  * Context shape:
  * - `colorPalette`:
- *    Retrieve colors for a site page's background and text;
+ *    Retrieve colors for a site page's background and text.
  *    defaults to `bg-primary` and `text-primary` if no color
  *    is selected from the color palette.
  *
  * - `setColorPalette`:
- *    Set background and text color for all site pages;
+ *    Set background and text color for all site pages.
  *    Allows the user to define the site's color palette.
  */
 export function ColorPaletteProvider({

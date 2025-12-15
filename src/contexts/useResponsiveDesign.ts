@@ -1,10 +1,10 @@
-import { useContext } from "react";
-import ResponsiveDesignContext from "./ResponsiveDesignContext";
+import { useContext } from "react"
+import ResponsiveDesignContext from "./ResponsiveDesignContext"
 
 export function useResponsiveDesign() {
-  const ctx = useContext(ResponsiveDesignContext);
+  const ctx = useContext(ResponsiveDesignContext)
   if (!ctx) {
-    throw new Error("useResponsiveDesign must be used inside <ResponsiveDesignProvider />");
+    throw new Error("useResponsiveDesign must be used inside <ResponsiveDesignProvider />")
   }
-  return ctx;
+  return ctx
 }

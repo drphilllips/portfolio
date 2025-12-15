@@ -1,12 +1,14 @@
-import { useMemo, useState } from "react";
-import { motion, useReducedMotion } from "motion/react";
-import { useColorPalette } from "../contexts/useColorPalette";
+import { useMemo, useState } from "react"
+import { motion, useReducedMotion } from "motion/react"
+import { useColorPalette } from "../contexts/useColorPalette"
+import View from "./ui/View"
+import MotionButton from "./ui/MotionButton"
 
 type PaletteItem = {
-  id: string;
-  bg: string;
-  text: string;
-};
+  id: string
+  bg: string
+  text: string
+}
 
 /**
  * ColorPalette
@@ -47,10 +49,10 @@ type PaletteItem = {
  */
 export default function ColorPalette() {
   // Allows the user to change the color palette
-  const { setColorPalette } = useColorPalette();
+  const { setColorPalette } = useColorPalette()
 
   // Expand & close the color palette selector
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
 
   // Data-driven palette items (stable ids are required for layoutId)
   const items: PaletteItem[] = useMemo(
@@ -63,66 +65,66 @@ export default function ColorPalette() {
       { id: "ashbl", bg: "bg-ashbl", text: "text-primary" },
     ],
     []
-  );
+  )
 
 
   // Ring geometry
-  const ringRadius = 14; // px (tuned for a 48px board)
+  const ringRadius = 14 // px (tuned for a 48px board)
 
-  const shouldReduceMotion = useReducedMotion();
+  const shouldReduceMotion = useReducedMotion()
 
   // Geometry + sizing
-  const dotSizeOpen = 40; // px (matches h-10/w-10)
-  const gap = 12; // px spacing between open dots
-  const speckScale = 0.25; // closed-state size multiplier
+  const dotSizeOpen = 40 // px (matches h-10/w-10)
+  const gap = 12 // px spacing between open dots
+  const speckScale = 0.25 // closed-state size multiplier
 
   // Shared motion settings
-  const baseSpring = { type: "spring", stiffness: 500, damping: 36 } as const;
+  const baseSpring = { type: "spring", stiffness: 500, damping: 36 } as const
 
   return (
-    <div className="fixed bottom-4 right-4 z-50">
+    <View className="fixed bottom-4 right-4 z-50">
       {/* Board (always mounted) */}
-      <motion.button
+      <MotionButton
         type="button"
         aria-label={isOpen ? "Close color palette" : "Open color palette"}
-        className={
-          "relative h-12 w-12 rounded-full border border-secondary/30 " +
-          "bg-secondary/10 shadow-md backdrop-blur-sm " +
-          "flex items-center justify-center"
-        }
+        className={`
+          relative h-12 w-12 rounded-full border border-secondary/30
+          bg-secondary/10 shadow-md backdrop-blur-sm
+          flex items-center justify-center
+        `}
         onClick={() => setIsOpen((v) => !v)}
-        whileTap={{ scale: 0.98 }}
+        disableMotion={isOpen}
       >
         {/* Single dot layer (dots always exist exactly once) */}
-        <div className="absolute inset-0">
+        <View className="absolute inset-0">
           {items.map((item, i) => {
             // Closed ring targets
-            const angle = (2 * Math.PI * i) / items.length - Math.PI / 2;
-            const xClosed = ringRadius * Math.cos(angle);
-            const yClosed = ringRadius * Math.sin(angle);
+            const angle = (2 * Math.PI * i) / items.length - Math.PI / 2
+            const xClosed = ringRadius * Math.cos(angle)
+            const yClosed = ringRadius * Math.sin(angle)
 
             // Open row targets (extend left of the board)
-            const xOpen = -(i + 1) * (dotSizeOpen + gap);
-            const yOpen = 0;
+            const xOpen = -(i + 1) * (dotSizeOpen + gap)
+            const yOpen = 0
 
-            const x = isOpen ? xOpen : xClosed;
-            const y = isOpen ? yOpen : yClosed;
-            const scale = isOpen ? 1 : speckScale;
+            const x = isOpen ? xOpen : xClosed
+            const y = isOpen ? yOpen : yClosed
+            const scale = isOpen ? 1 : speckScale
 
             // Optional stagger (kept subtle). Disabled for reduced motion.
             const delay = shouldReduceMotion
               ? 0
               : isOpen
                 ? i * 0.02
-                : (items.length - 1 - i) * 0.02;
+                : (items.length - 1 - i) * 0.02
 
             // Reduced motion policy: jump instantly (no long travel)
             const transition = shouldReduceMotion
               ? { duration: 0 }
-              : { ...baseSpring, delay };
+              : { ...baseSpring, delay }
 
             return (
-              <motion.button
+              <motion.a
                 key={item.id}
                 type="button"
                 aria-label={`Select ${item.id} palette`}
@@ -131,7 +133,7 @@ export default function ColorPalette() {
                   "h-10 w-10 rounded-full shadow-md border border-secondary/20 " +
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70"
                 }
-                // Anchor at board center; x/y are offsets from there
+                // Anchor at board center x/y are offsets from there
                 style={{
                   left: "50%",
                   top: "50%",
@@ -148,19 +150,19 @@ export default function ColorPalette() {
                 // Prevent Motion/DOM pointer events from bubbling to the board
                 onPointerDownCapture={(e) => e.stopPropagation()}
                 onClick={(e) => {
-                  e.stopPropagation();
-                  if (!isOpen) return;
-                  setColorPalette(item.bg, item.text);
-                  setIsOpen(false);
+                  e.stopPropagation()
+                  if (!isOpen) return
+                  setColorPalette(item.bg, item.text)
+                  setIsOpen(false)
                 }}
                 // Hover/tap polish only when open (and not reduced motion)
                 whileHover={isOpen && !shouldReduceMotion ? { scale: 1.05 } : undefined}
-                whileTap={isOpen && !shouldReduceMotion ? { scale: 0.96 } : undefined}
+                whileTap={isOpen && !shouldReduceMotion ? { scale: 0.95 } : undefined}
               />
-            );
+            )
           })}
-        </div>
-      </motion.button>
-    </div>
-  );
+        </View>
+      </MotionButton>
+    </View>
+  )
 }
