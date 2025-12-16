@@ -5,6 +5,7 @@ import type { PaletteItem } from "./types/colorPalette"
 import { INIT_PALETTE_ITEMS } from "./constants/colorPalette"
 import MotionButton from "../../components/MotionButton"
 import View from "../../components/View"
+import Text from "../../components/Text"
 import { useNavigate } from "react-router-dom"
 
 /**
@@ -214,6 +215,7 @@ export default function ColorPalette() {
                   className={`
                     absolute ${item.bg} h-10 w-10
                     rounded-full shadow-md border border-secondary/20
+                    flex items-center justify-center
                     focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70
                   `}
                   // Anchor at board center x/y are offsets from there
@@ -243,7 +245,33 @@ export default function ColorPalette() {
                   // Hover/tap polish only when open (and not reduced motion)
                   whileHover={isOpen && !shouldReduceMotion ? { scale: 1.05 } : undefined}
                   whileTap={isOpen && !shouldReduceMotion ? { scale: 0.95 } : undefined}
-                />
+                >
+                  <Text
+                    as="span"
+                    className={`
+                      ${isOpen && i !== 0
+                        ? item.text
+                        : item.blendText
+                      }
+                      m-0 leading-none font-semibold font-mono text-[12px]`
+                    }
+                  >
+                    <span className="grid grid-cols-2 grid-rows-2">
+                      {item.abbrev
+                        .slice(0, 4)
+                        .split("")
+                        .map((ch, idx) => (
+                          <span
+                            key={idx}
+                            className="inline-flex w-[1ch] items-center justify-center text-center"
+                            aria-hidden="true"
+                          >
+                            {ch}
+                          </span>
+                        ))}
+                    </span>
+                  </Text>
+                </motion.a>
               )
             })}
           </View>

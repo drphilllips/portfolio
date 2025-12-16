@@ -1,4 +1,4 @@
-import type { SitePage } from "../../../types/pages";
+import type { PageAbbreviation, SitePage } from "../../../types/pages";
 
 export const PALETTE_IDS = [
   "ashbl",
@@ -13,7 +13,9 @@ export type ColorId = (typeof PALETTE_IDS)[number];
 
 export type PaletteItem = {
   page: SitePage
+  abbrev: PageAbbreviation
   color: ColorId
   bg: string
   text: string
+  blendText: string
 }

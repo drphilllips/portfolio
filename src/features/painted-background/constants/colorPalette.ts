@@ -1,17 +1,22 @@
-import { type SitePage } from "../../../types/pages";
+import { type PageAbbreviation, type SitePage } from "../../../types/pages";
 import type { ColorId, PaletteItem } from "../types/colorPalette";
 
 const pi = (
-  page: SitePage, color: ColorId, bg: string, text: string
+  page: SitePage,
+  abbrev: PageAbbreviation,
+  color: ColorId,
+  bg: string,
+  text: string,
+  blendText: string,
 ): PaletteItem => (
-  { page, color, bg, text }
+  { page, abbrev, color, bg, text, blendText }
 )
 
 export const INIT_PALETTE_ITEMS: PaletteItem[] = [
-  pi("", "ashbl", "bg-ashbl", "text-ghost"),
-  pi("about", "roylp", "bg-roylp", "text-ghost"),
-  pi("projects", "chrtr", "bg-chrtr", "text-ashbl"),
-  pi("experience", "orngc", "bg-orngc", "text-ghost"),
-  pi("services", "palbr", "bg-palbr", "text-ghost"),
-  pi("contact", "ghost", "bg-ghost", "text-ashbl"),
+  pi("", "HOME", "ashbl", "bg-ashbl", "text-ghost", "text-ashbl"),
+  pi("about", "ABOU", "roylp", "bg-roylp", "text-ghost", "text-roylp"),
+  pi("projects", "PROJ", "chrtr", "bg-chrtr", "text-ashbl", "text-chrtr"),
+  pi("experience", "EXPE", "orngc", "bg-orngc", "text-ghost", "text-orngc"),
+  pi("services", "SERV", "palbr", "bg-palbr", "text-ghost", "text-palbr"),
+  pi("contact", "CONT", "ghost", "bg-ghost", "text-ashbl", "text-ghost"),
 ]
