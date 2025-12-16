@@ -1,6 +1,6 @@
-import Page from "./components/ui/Page"
-import Text from "./components/ui/Text"
-import View from "./components/ui/View"
+import Page from "./components/Page"
+import View from "./components/View"
+import Text from "./components/Text"
 import { useResponsiveDesign } from "./contexts/useResponsiveDesign"
 
 export default function App() {

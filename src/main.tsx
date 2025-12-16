@@ -4,8 +4,8 @@ import './index.css'
 import App from './App.tsx'
 import { ResponsiveDesignProvider } from './contexts/ResponsiveDesignContext.tsx'
 import { ColorPaletteProvider } from './contexts/ColorPaletteContext.tsx'
-import ColorPalette from './components/ColorPalette.tsx'
-import CanvasBackgroundTransition from './components/CanvasBackgroundTransition.tsx'
+import ColorPalette from './features/painted-background/ColorPalette.tsx'
+import CanvasBackgroundTransition from './features/painted-background/CanvasBackgroundTransition.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

@@ -1,14 +1,10 @@
-import { useMemo, useState } from "react"
+import { useState } from "react"
 import { motion, useReducedMotion } from "motion/react"
-import { useColorPalette } from "../contexts/useColorPalette"
-import View from "./ui/View"
-import MotionButton from "./ui/MotionButton"
-
-type PaletteItem = {
-  id: string
-  bg: string
-  text: string
-}
+import { useColorPalette } from "../../contexts/useColorPalette"
+import type { PaletteItem } from "./types/colorPalette"
+import { INIT_PALETTE_ITEMS } from "./constants/colorPalette"
+import MotionButton from "../../components/MotionButton"
+import View from "../../components/View"
 
 /**
  * ColorPalette
@@ -55,18 +51,14 @@ export default function ColorPalette() {
   const [isOpen, setIsOpen] = useState(false)
 
   // Data-driven palette items (stable ids are required for layoutId)
-  const items: PaletteItem[] = useMemo(
-    () => [
-      { id: "ashbl", bg: "bg-ashbl", text: "text-primary" },
-      { id: "roylp", bg: "bg-roylp", text: "text-primary" },
-      { id: "chrtr", bg: "bg-chrtr", text: "text-secondary" },
-      { id: "orngc", bg: "bg-orngc", text: "text-primary" },
-      { id: "palbr", bg: "bg-palbr", text: "text-primary" },
-      { id: "ghost", bg: "bg-ghost", text: "text-secondary" },
-    ],
-    []
-  )
+  const [items, setItems] = useState<PaletteItem[]>(INIT_PALETTE_ITEMS)
 
+  function reorderPalette(firstItem: PaletteItem) {
+    setItems(prev => {
+      const restOfItems = prev.filter(item => item.id !== firstItem.id)
+      return [firstItem, ...restOfItems]
+    })
+  }
 
   // Ring geometry
   const ringRadius = 14 // px (tuned for a 48px board)
@@ -152,6 +144,7 @@ export default function ColorPalette() {
                 onClick={(e) => {
                   e.stopPropagation()
                   if (!isOpen) return
+                  reorderPalette(item)
                   requestPaletteChange(item.bg, item.text)
                   setIsOpen(false)
                 }}

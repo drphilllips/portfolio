@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react"
-import { useColorPalette } from "../contexts/useColorPalette"
+import { useColorPalette } from "../../contexts/useColorPalette"
 
 type Size = {
   wCss: number

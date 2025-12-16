@@ -1,5 +1,5 @@
-import { useColorPalette } from "../../contexts/useColorPalette"
-import { useResponsiveDesign } from "../../contexts/useResponsiveDesign"
+import { useColorPalette } from "../contexts/useColorPalette"
+import { useResponsiveDesign } from "../contexts/useResponsiveDesign"
 import View from "./View"
 
 type PageProps = {
