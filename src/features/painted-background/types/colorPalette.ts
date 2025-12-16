@@ -1,3 +1,4 @@
+import type { SitePage } from "../../../types/pages";
 
 export const PALETTE_IDS = [
   "ashbl",
@@ -8,10 +9,11 @@ export const PALETTE_IDS = [
   "ghost",
 ] as const
 
-export type PaletteId = (typeof PALETTE_IDS)[number];
+export type ColorId = (typeof PALETTE_IDS)[number];
 
 export type PaletteItem = {
-  id: PaletteId
+  page: SitePage
+  color: ColorId
   bg: string
   text: string
 }

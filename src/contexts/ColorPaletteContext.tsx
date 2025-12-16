@@ -1,5 +1,5 @@
 import { createContext, useCallback, useMemo, useRef, useState } from "react"
-import type { ColorPalette } from "../types/color"
+import type { ColorPalette } from "../types/colorPalette"
 import { setThemeColor } from "../utils/setThemeColor"
 
 type PalettePair = {

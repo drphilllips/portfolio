@@ -5,6 +5,7 @@ import type { PaletteItem } from "./types/colorPalette"
 import { INIT_PALETTE_ITEMS } from "./constants/colorPalette"
 import MotionButton from "../../components/MotionButton"
 import View from "../../components/View"
+import { useNavigate } from "react-router-dom"
 
 /**
  * ColorPalette
@@ -44,18 +45,14 @@ import View from "../../components/View"
  * - This component is intended to be mounted once at the application level.
  */
 export default function ColorPalette() {
-  // Allows the user to change the color palette
   const { requestPaletteChange } = useColorPalette()
-
-  // Expand & close the color palette selector
+  const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
-
-  // Data-driven palette items (stable ids are required for layoutId)
   const [items, setItems] = useState<PaletteItem[]>(INIT_PALETTE_ITEMS)
 
   function reorderPalette(firstItem: PaletteItem) {
     setItems(prev => {
-      const restOfItems = prev.filter(item => item.id !== firstItem.id)
+      const restOfItems = prev.filter(item => item.color !== firstItem.color)
       return [firstItem, ...restOfItems]
     })
   }
@@ -211,9 +208,9 @@ export default function ColorPalette() {
 
               return (
                 <motion.a
-                  key={item.id}
+                  key={item.color}
                   type="button"
-                  aria-label={`Select ${item.id} palette`}
+                  aria-label={`Select ${item.color} palette`}
                   className={`
                     absolute ${item.bg} h-10 w-10
                     rounded-full shadow-md border border-secondary/20
@@ -241,6 +238,7 @@ export default function ColorPalette() {
                     reorderPalette(item)
                     requestPaletteChange(item.bg, item.text)
                     setIsOpen(false)
+                    navigate(`/${item.page}`)
                   }}
                   // Hover/tap polish only when open (and not reduced motion)
                   whileHover={isOpen && !shouldReduceMotion ? { scale: 1.05 } : undefined}

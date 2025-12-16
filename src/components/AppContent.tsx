@@ -49,7 +49,7 @@ type PageProps = {
  * - Any global page-level concerns (theming, safe-area handling, etc.)
  *   are appropriate to introduce here.
  */
-export default function Page({
+export default function AppShell({
   children,
   className="",
   style,

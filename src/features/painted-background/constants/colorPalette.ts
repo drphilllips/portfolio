@@ -1,10 +1,17 @@
-import type { PaletteItem } from "../types/colorPalette";
+import { type SitePage } from "../../../types/pages";
+import type { ColorId, PaletteItem } from "../types/colorPalette";
+
+const pi = (
+  page: SitePage, color: ColorId, bg: string, text: string
+): PaletteItem => (
+  { page, color, bg, text }
+)
 
 export const INIT_PALETTE_ITEMS: PaletteItem[] = [
-  { id: "ashbl", bg: "bg-ashbl", text: "text-primary" },
-  { id: "roylp", bg: "bg-roylp", text: "text-primary" },
-  { id: "chrtr", bg: "bg-chrtr", text: "text-secondary" },
-  { id: "orngc", bg: "bg-orngc", text: "text-primary" },
-  { id: "palbr", bg: "bg-palbr", text: "text-primary" },
-  { id: "ghost", bg: "bg-ghost", text: "text-secondary" },
+  pi("", "ashbl", "bg-ashbl", "text-ghost"),
+  pi("about", "roylp", "bg-roylp", "text-ghost"),
+  pi("projects", "chrtr", "bg-chrtr", "text-ashbl"),
+  pi("experience", "orngc", "bg-orngc", "text-ghost"),
+  pi("services", "palbr", "bg-palbr", "text-ghost"),
+  pi("contact", "ghost", "bg-ghost", "text-ashbl"),
 ]
