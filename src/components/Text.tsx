@@ -36,10 +36,7 @@ export default function Text({
 }: TextProps) {
   return (
     <Component
-      className={`
-        transition-colors duration-300
-        ${className}
-      `}
+      className={className}
       style={style}
     >
       {children}

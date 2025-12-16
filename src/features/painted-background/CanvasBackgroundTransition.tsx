@@ -1,15 +1,13 @@
 import { useEffect, useRef, useState } from "react"
 import { useColorPalette } from "../../contexts/useColorPalette"
+import { setThemeColor } from "../../utils/setThemeColor"
+import { DPR_CAP, DURATION_MS, NUM_BANDS, PAUSE_WHEN_DONE_MS } from "./constants/canvasBackgroundTransition"
 
 type Size = {
   wCss: number
   hCss: number
   dpr: number
 }
-
-const DURATION_MS = 1300
-const DPR_CAP = 2
-const NUM_BANDS = 8
 
 function prefersReducedMotion(): boolean {
   if (typeof window === "undefined" || typeof window.matchMedia !== "function") return false
@@ -73,6 +71,7 @@ function cubicBezier(p1x: number, p1y: number, p2x: number, p2y: number) {
 }
 
 const easeTailwind = cubicBezier(0.4, 0, 0.2, 1)
+const TAILWIND_EASING = "cubic-bezier(0.4, 0, 0.2, 1)"
 
 function paintBandMask(
   maskCtx: CanvasRenderingContext2D,
@@ -167,7 +166,8 @@ function clearCanvas(ctx: CanvasRenderingContext2D, wCss: number, hCss: number) 
 }
 
 export default function CanvasBackgroundTransition() {
-  const { pendingPaletteChange, commitPendingPaletteChange } = useColorPalette()
+  const { colorPalette, pendingPaletteChange, commitPendingPaletteChange } = useColorPalette()
+  const fromBgClass = colorPalette.pageColor
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const displayCtxRef = useRef<CanvasRenderingContext2D | null>(null)
@@ -287,13 +287,16 @@ export default function CanvasBackgroundTransition() {
     const maskCtx = maskCtxRef.current
     const maskCanvas = maskCanvasRef.current
     if (!canvas || !displayCtx || !maskCtx || !maskCanvas) {
-      // Canvas not available: snap commit.
+      // Canvas not available: update theme color instantly, then snap commit.
+      setThemeColor(fromBgClass, req.pageColor, 0, TAILWIND_EASING, 0, "background-color")
       commitPendingPaletteChange(req.requestId)
       return
     }
 
     // Reduced motion: skip animation entirely.
     if (prefersReducedMotion()) {
+      // Reduced motion: update theme color instantly, skip canvas.
+      setThemeColor(fromBgClass, req.pageColor, 0, TAILWIND_EASING, 0, "background-color")
       commitPendingPaletteChange(req.requestId)
       return
     }
@@ -303,10 +306,14 @@ export default function CanvasBackgroundTransition() {
 
     const nextCss = resolveTailwindBgToCssColor(req.pageColor)
     if (!nextCss) {
-      // If we can't resolve a color, fall back to committing.
+      // If we can't resolve a color, still update theme-color instantly via Tailwind classes.
+      setThemeColor(fromBgClass, req.pageColor, 0, TAILWIND_EASING, 0, "background-color")
       commitPendingPaletteChange(req.requestId)
       return
     }
+
+    // Start theme-color + --app-bg transition in sync with the first paint frame.
+    setThemeColor(fromBgClass, req.pageColor, DURATION_MS, TAILWIND_EASING, 0, "background-color")
 
     // Cancel previous animation and mark this request active.
     cancelRaf()
@@ -359,23 +366,26 @@ export default function CanvasBackgroundTransition() {
       renderOverlay(nextCss)
 
       if (totalT >= 1) {
-        // Ensure fully revealed.
-        maskCtx.clearRect(0, 0, wCss, hCss)
-        for (let i = 0; i < NUM_BANDS; i++) {
-          paintBandMask(maskCtx, i, 1, wCss, hCss)
-        }
-        renderOverlay(nextCss)
-
         // Commit DOM palette.
         commitPendingPaletteChange(req.requestId)
 
-        // Hide overlay after commit.
-        displayCtx.clearRect(0, 0, wCss, hCss)
-        canvas.style.opacity = "0"
+        setTimeout(() => {
+          // Ensure fully revealed.
+          maskCtx.clearRect(0, 0, wCss, hCss)
+          for (let i = 0; i < NUM_BANDS; i++) {
+            paintBandMask(maskCtx, i, 1, wCss, hCss)
+          }
+          renderOverlay(nextCss)
 
-        cancelRaf()
-        activeRequestIdRef.current = null
-        return
+
+          // Hide overlay after commit.
+          displayCtx.clearRect(0, 0, wCss, hCss)
+          canvas.style.opacity = "0"
+
+          cancelRaf()
+          activeRequestIdRef.current = null
+          return
+        }, PAUSE_WHEN_DONE_MS)
       }
 
       rafRef.current = requestAnimationFrame(step)
@@ -386,7 +396,7 @@ export default function CanvasBackgroundTransition() {
     return () => {
       cancelRaf()
     }
-  }, [pendingPaletteChange, commitPendingPaletteChange, resizeNonce])
+  }, [pendingPaletteChange, commitPendingPaletteChange, resizeNonce, fromBgClass])
 
   // Clear the display when unmounting.
   useEffect(() => {
@@ -402,8 +412,8 @@ export default function CanvasBackgroundTransition() {
     <canvas
       ref={canvasRef}
       aria-hidden="true"
-      className="fixed inset-0 pointer-events-none z-0"
-      style={{ opacity: 0, transition: "opacity 120ms linear" }}
+      className="fixed inset-0 pointer-events-none z-40"
+      style={{ opacity: 0, transition: "opacity 800ms linear" }}
     />
   )
 }

@@ -253,8 +253,9 @@ export default function ColorPalette() {
                         ? item.text
                         : item.blendText
                       }
-                      m-0 leading-none font-semibold font-mono text-[12px]`
-                    }
+                      m-0 leading-none font-semibold font-mono text-[12px]
+                      transition-colors duration-300
+                    `}
                   >
                     <span className="grid grid-cols-2 grid-rows-2">
                       {item.abbrev

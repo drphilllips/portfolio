@@ -1,6 +1,5 @@
 import { createContext, useCallback, useMemo, useRef, useState } from "react"
 import type { ColorPalette } from "../types/colorPalette"
-import { setThemeColor } from "../utils/setThemeColor"
 
 type PalettePair = {
   pageColor: string
@@ -72,9 +71,6 @@ export function ColorPaletteProvider({ children }: { children: React.ReactNode }
   const requestPaletteChange = useCallback((pageColor: string, textColor: string) => {
     const nextId = ++requestIdRef.current
 
-    // Recommended: make text readable immediately.
-    setColorPaletteState(prev => ({ ...prev, textColor }))
-
     setIsTransitioning(true)
     setPendingPaletteChange({ requestId: nextId, pageColor, textColor })
   }, [])
@@ -86,11 +82,7 @@ export function ColorPaletteProvider({ children }: { children: React.ReactNode }
         if (!prev || prev.requestId !== requestId) return prev
 
         // Commit the DOM palette.
-        setColorPaletteState(committedPrev => {
-          // Keep theme-color in sync with the committed background.
-          setThemeColor(committedPrev.pageColor, prev.pageColor)
-          return { pageColor: prev.pageColor, textColor: prev.textColor }
-        })
+        setColorPaletteState(() => ({ pageColor: prev.pageColor, textColor: prev.textColor }))
 
         setIsTransitioning(false)
         return null
