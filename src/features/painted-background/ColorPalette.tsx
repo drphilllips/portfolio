@@ -237,10 +237,12 @@ export default function ColorPalette() {
                   onClick={(e) => {
                     e.stopPropagation()
                     if (!isOpen) return
-                    reorderPalette(item)
-                    requestPaletteChange(item.bg, item.text)
+                    if (i !== 0) {
+                      reorderPalette(item)
+                      requestPaletteChange(item.bg, item.text)
+                      navigate(`/${item.page}`)
+                    }
                     setIsOpen(false)
-                    navigate(`/${item.page}`)
                   }}
                   // Hover/tap polish only when open (and not reduced motion)
                   whileHover={isOpen && !shouldReduceMotion ? { scale: 1.05 } : undefined}

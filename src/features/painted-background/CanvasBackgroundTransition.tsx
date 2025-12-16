@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { useColorPalette } from "../../contexts/useColorPalette"
 import { setThemeColor } from "../../utils/setThemeColor"
-import { DPR_CAP, DURATION_MS, NUM_BANDS, PAUSE_WHEN_DONE_MS } from "./constants/canvasBackgroundTransition"
+import { DPR_CAP, PAINT_BG_DURATION_MS, NUM_BANDS, PAUSE_AFTER_PAINT_BG_MS } from "./constants/canvasBackgroundTransition"
 
 type Size = {
   wCss: number
@@ -313,7 +313,7 @@ export default function CanvasBackgroundTransition() {
     }
 
     // Start theme-color + --app-bg transition in sync with the first paint frame.
-    setThemeColor(fromBgClass, req.pageColor, DURATION_MS, TAILWIND_EASING, 0, "background-color")
+    setThemeColor(fromBgClass, req.pageColor, PAINT_BG_DURATION_MS, TAILWIND_EASING, 0, "background-color")
 
     // Cancel previous animation and mark this request active.
     cancelRaf()
@@ -360,7 +360,7 @@ export default function CanvasBackgroundTransition() {
       if (activeRequestIdRef.current !== req.requestId) return
 
       if (startTs == null) startTs = ts
-      const totalT = clamp((ts - startTs) / DURATION_MS, 0, 1)
+      const totalT = clamp((ts - startTs) / PAINT_BG_DURATION_MS, 0, 1)
 
       drawMaskForProgress(totalT)
       renderOverlay(nextCss)
@@ -385,7 +385,7 @@ export default function CanvasBackgroundTransition() {
           cancelRaf()
           activeRequestIdRef.current = null
           return
-        }, PAUSE_WHEN_DONE_MS)
+        }, PAUSE_AFTER_PAINT_BG_MS)
       }
 
       rafRef.current = requestAnimationFrame(step)
