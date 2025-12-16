@@ -67,95 +67,190 @@ export default function ColorPalette() {
 
   // Geometry + sizing
   const dotSizeOpen = 40 // px (matches h-10/w-10)
-  const gap = 12 // px spacing between open dots
+  const gapBetweenArcs = 8 // px spacing between open dots
   const speckScale = 0.25 // closed-state size multiplier
+
+  // Open layout geometry (nested arcs)
+  const arcInnerRadius = ringRadius + 40
+  const arcOuterRadius = arcInnerRadius + dotSizeOpen + gapBetweenArcs
+  const outerArcStartAngle = -Math.PI * 0.92
+  const outerArcEndAngle = -Math.PI * 0.58
+  const innerArcStartAngle = -Math.PI * 0.9
+  const innerArcEndAngle = -Math.PI * 0.6
+
+  // Board sizing (outline should surround all open dots)
+  const boardClosedSize = 48 // px (h-12/w-12)
+  const boardOpenPadding = 12 // px extra breathing room around dots
+  const boardOpenSize = Math.ceil((arcOuterRadius + dotSizeOpen / 2 + boardOpenPadding) * 2)
+  const boardCenterShift = (boardOpenSize - boardClosedSize) / 2
 
   // Shared motion settings
   const baseSpring = { type: "spring", stiffness: 500, damping: 36 } as const
 
+  const boardDelay = shouldReduceMotion
+  ? 0
+  : isOpen
+    ? 0
+    : 0.04
+  const boardTransition = shouldReduceMotion ? { duration: 0 } : {...baseSpring, delay: boardDelay }
+
   return (
     <View className="fixed bottom-4 right-4 z-50">
       {/* Board (always mounted) */}
-      <MotionButton
-        type="button"
-        aria-label={isOpen ? "Close color palette" : "Open color palette"}
-        className={`
-          relative h-12 w-12 rounded-full border border-secondary/30
-          bg-secondary/10 shadow-md backdrop-blur-sm
-          flex items-center justify-center
-        `}
-        onClick={() => setIsOpen((v) => !v)}
-        disableMotion={isOpen}
+      <motion.div
+        className={
+          "relative rounded-full border border-secondary/30 " +
+          "bg-secondary/10 shadow-md backdrop-blur-sm " +
+          "flex items-center justify-center origin-bottom-right"
+        }
+        animate={{
+          width: isOpen ? boardOpenSize : boardClosedSize,
+          height: isOpen ? boardOpenSize : boardClosedSize,
+          x: isOpen ? boardCenterShift : 0,
+          y: isOpen ? boardCenterShift : 0,
+        }}
+        transition={boardTransition}
       >
-        {/* Single dot layer (dots always exist exactly once) */}
-        <View className="absolute inset-0">
-          {items.map((item, i) => {
-            // Closed ring targets
-            const angle = (2 * Math.PI * (i+2)) / items.length - Math.PI / 2
-            const xClosed = ringRadius * Math.cos(angle)
-            const yClosed = ringRadius * Math.sin(angle)
+        <MotionButton
+          type="button"
+          aria-label={isOpen ? "Close color palette" : "Open color palette"}
+          className="relative h-full w-full rounded-full flex items-center justify-center"
+          onClick={() => setIsOpen((v) => !v)}
+          disableMotion={isOpen}
+        >
+          {/* Single dot layer (dots always exist exactly once) */}
+          <View className="absolute inset-0">
+            {items.map((item, i) => {
+              // Closed ring targets
+              const angle = (2 * Math.PI * i) / items.length + Math.PI / 6
+              const xClosed = ringRadius * Math.cos(angle)
+              const yClosed = ringRadius * Math.sin(angle)
 
-            // Open row targets (extend left of the board)
-            const xOpen = -(i + 1) * (dotSizeOpen + gap)
-            const yOpen = 0
-
-            const x = isOpen ? xOpen : xClosed
-            const y = isOpen ? yOpen : yClosed
-            const scale = isOpen ? 1 : speckScale
-
-            // Optional stagger (kept subtle). Disabled for reduced motion.
-            const delay = shouldReduceMotion
-              ? 0
-              : isOpen
-                ? i * 0.02
-                : (items.length - 1 - i) * 0.02
-
-            // Reduced motion policy: jump instantly (no long travel)
-            const transition = shouldReduceMotion
-              ? { duration: 0 }
-              : { ...baseSpring, delay }
-
-            return (
-              <motion.a
-                key={item.id}
-                type="button"
-                aria-label={`Select ${item.id} palette`}
-                className={
-                  `absolute ${item.bg} ` +
-                  "h-10 w-10 rounded-full shadow-md border border-secondary/20 " +
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70"
+              // Open targets (nested arcs)
+              const getArcTarget = (
+                j: number,
+                groupSize: number,
+                radius: number,
+                startAngle: number,
+                endAngle: number,
+                angleOffset = 0,
+              ) => {
+                const t = groupSize <= 1 ? 0.5 : j / (groupSize - 1)
+                const theta = startAngle + t * (endAngle - startAngle) + angleOffset
+                return {
+                  xOpen: radius * Math.cos(theta),
+                  yOpen: radius * Math.sin(theta),
                 }
-                // Anchor at board center x/y are offsets from there
-                style={{
-                  left: "50%",
-                  top: "50%",
-                  pointerEvents: isOpen ? "auto" : "none",
-                }}
-                transformTemplate={(_, generated) =>
-                  `translate(-50%, -50%) ${generated}`
+              }
+
+              let xOpen = 0
+              let yOpen = 0
+              let arcIndex = 0
+
+              // Open grouping/order (closed-ring order remains the same)
+              const innerArcIndices = [1, 5]
+              const outerArcIndicesBase = [2, 3, 4]
+
+              // If the palette grows beyond these indices, continue placing extras on the outer arc
+              const extraOuterIndices = items
+                .map((_, idx) => idx)
+                .filter((idx) => idx !== 0 && !innerArcIndices.includes(idx) && !outerArcIndicesBase.includes(idx))
+              const outerArcIndices = [...outerArcIndicesBase, ...extraOuterIndices]
+
+              if (i === 0) {
+                // Main dot centered on the board
+                xOpen = 0
+                yOpen = 0
+              } else {
+                const innerPos = innerArcIndices.indexOf(i)
+                if (innerPos !== -1) {
+                  // Inner arc: indices 1 and 5
+                  const { xOpen: xA, yOpen: yA } = getArcTarget(
+                    innerPos,
+                    innerArcIndices.length,
+                    arcInnerRadius,
+                    innerArcStartAngle,
+                    innerArcEndAngle,
+                  )
+                  xOpen = xA
+                  yOpen = yA
+                  arcIndex = 0
+                } else {
+                  // Outer arc: indices 2, 3, 4 (and any extras)
+                  const outerPos = outerArcIndices.indexOf(i)
+                  const j = outerPos === -1 ? 0 : outerPos
+                  const groupSize = Math.max(outerArcIndices.length, 1)
+                  const { xOpen: xA, yOpen: yA } = getArcTarget(
+                    j,
+                    groupSize,
+                    arcOuterRadius,
+                    outerArcStartAngle,
+                    outerArcEndAngle,
+                  )
+                  xOpen = xA
+                  yOpen = yA
+                  arcIndex = 1
                 }
-                // Drive motion purely via transforms (single element)
-                animate={{ x, y, scale, opacity: 1 }}
-                transition={transition}
-                // Dots should not be focusable specks when closed
-                tabIndex={isOpen ? 0 : -1}
-                // Prevent Motion/DOM pointer events from bubbling to the board
-                onPointerDownCapture={(e) => e.stopPropagation()}
-                onClick={(e) => {
-                  e.stopPropagation()
-                  if (!isOpen) return
-                  reorderPalette(item)
-                  requestPaletteChange(item.bg, item.text)
-                  setIsOpen(false)
-                }}
-                // Hover/tap polish only when open (and not reduced motion)
-                whileHover={isOpen && !shouldReduceMotion ? { scale: 1.05 } : undefined}
-                whileTap={isOpen && !shouldReduceMotion ? { scale: 0.95 } : undefined}
-              />
-            )
-          })}
-        </View>
-      </MotionButton>
+              }
+
+              const x = isOpen ? xOpen : xClosed
+              const y = isOpen ? yOpen : yClosed
+              const scale = isOpen ? 1 : speckScale
+
+              // Optional stagger (kept subtle). Disabled for reduced motion.
+              const delay = shouldReduceMotion || i === 0
+                ? 0
+                : isOpen
+                  ? arcIndex*0.04
+                  : arcIndex*0.01
+
+              // Reduced motion policy: jump instantly (no long travel)
+              const transition = shouldReduceMotion
+                ? { duration: 0 }
+                : { ...baseSpring, delay }
+
+              return (
+                <motion.a
+                  key={item.id}
+                  type="button"
+                  aria-label={`Select ${item.id} palette`}
+                  className={`
+                    absolute ${item.bg} h-10 w-10
+                    rounded-full shadow-md border border-secondary/20
+                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70
+                  `}
+                  // Anchor at board center x/y are offsets from there
+                  style={{
+                    left: "50%",
+                    top: "50%",
+                    pointerEvents: isOpen ? "auto" : "none",
+                  }}
+                  transformTemplate={(_, generated) =>
+                    `translate(-50%, -50%) ${generated}`
+                  }
+                  // Drive motion purely via transforms (single element)
+                  animate={{ x, y, scale, opacity: 1 }}
+                  transition={transition}
+                  // Dots should not be focusable specks when closed
+                  tabIndex={isOpen ? 0 : -1}
+                  // Prevent Motion/DOM pointer events from bubbling to the board
+                  onPointerDownCapture={(e) => e.stopPropagation()}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    if (!isOpen) return
+                    reorderPalette(item)
+                    requestPaletteChange(item.bg, item.text)
+                    setIsOpen(false)
+                  }}
+                  // Hover/tap polish only when open (and not reduced motion)
+                  whileHover={isOpen && !shouldReduceMotion ? { scale: 1.05 } : undefined}
+                  whileTap={isOpen && !shouldReduceMotion ? { scale: 0.95 } : undefined}
+                />
+              )
+            })}
+          </View>
+        </MotionButton>
+      </motion.div>
     </View>
   )
 }
