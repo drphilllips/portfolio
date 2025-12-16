@@ -97,33 +97,38 @@ function paintBandMask(
   const t = clamp(p, 0, 1)
   const even = bandIndex % 2 === 0
 
-  const x0 = even ? 0 : (1 - t) * wCss
-  const x1 = even ? t * wCss : wCss
-
-  const w = Math.max(0, x1 - x0)
-  if (w <= 0) return
-
   maskCtx.globalCompositeOperation = "source-over"
-  maskCtx.fillStyle = "rgba(255,255,255,1)"
+  maskCtx.strokeStyle = "rgba(255,255,255,1)"
 
   // Slight diagonal tilt to make the stroke feel more natural.
   // Even bands tilt down in the sweep direction (L→R), odd bands tilt down in the sweep direction (R→L).
   const tiltPx = clamp(bandH * 0.12, 3, 20)
   const slope = even ? tiltPx : -tiltPx
 
-  // Slanted band top/bottom edges as a linear function of x.
-  const yTop0 = y0 + (x0 / wCss) * slope
-  const yTop1 = y0 + (x1 / wCss) * slope
-  const yBot0 = yTop0 + bandH
-  const yBot1 = yTop1 + bandH
+  // Draw as a thick stroke with round caps, so the band has fully-rounded ends.
+  // We extend the sweep distance by the cap radius on both sides so the rounded ends
+  // start and finish fully off-screen.
+  const capR = bandH / 2
+  const sweepW = wCss + capR * 2
+
+  const xStart = even ? -capR : wCss + capR
+  const xEnd = even ? xStart + t * sweepW : xStart - t * sweepW
+
+  // Centerline y positions (allow extrapolation beyond [0, wCss] so off-screen caps stay aligned).
+  const yCenterStart = y0 + (xStart / wCss) * slope + bandH / 2
+  const yCenterEnd = y0 + (xEnd / wCss) * slope + bandH / 2
+
+  // If no progress, draw nothing (avoids a visible dot at the edge).
+  if (t <= 0) return
+
+  maskCtx.lineWidth = bandH
+  maskCtx.lineCap = "round"
+  maskCtx.lineJoin = "round"
 
   maskCtx.beginPath()
-  maskCtx.moveTo(x0, yTop0)
-  maskCtx.lineTo(x1, yTop1)
-  maskCtx.lineTo(x1, yBot1)
-  maskCtx.lineTo(x0, yBot0)
-  maskCtx.closePath()
-  maskCtx.fill()
+  maskCtx.moveTo(xStart, yCenterStart)
+  maskCtx.lineTo(xEnd, yCenterEnd)
+  maskCtx.stroke()
 }
 
 function resolveTailwindBgToCssColor(bgClass: string): string | null {
