@@ -8,7 +8,10 @@ export default function HomePage() {
   return (
     <>
       <Text className="text-4xl font-bold">
-        Color-inheritance is working 🚀
+        Dylan Phillips
+      </Text>
+      <Text className="text-4xl font-bold">
+        Porfolio 🚀
       </Text>
 
       <View>

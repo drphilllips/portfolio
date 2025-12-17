@@ -1,8 +1,8 @@
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { motion, useReducedMotion } from "motion/react"
 import { useColorPalette } from "../../contexts/useColorPalette"
 import type { PaletteItem } from "./types/colorPalette"
-import { INIT_PALETTE_ITEMS } from "./constants/colorPalette"
+import { INIT_PALETTE_ITEMS, NAVIGATE_PRESS_COOL_DOWN_MS } from "./constants/colorPalette"
 import MotionButton from "../../components/MotionButton"
 import View from "../../components/View"
 import Text from "../../components/Text"
@@ -50,6 +50,28 @@ export default function ColorPalette() {
   const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
   const [items, setItems] = useState<PaletteItem[]>(INIT_PALETTE_ITEMS)
+
+  const [isCooldown, setIsCooldown] = useState(false)
+  const cooldownTimerRef = useRef<number | null>(null)
+
+  const startCooldown = (ms: number) => {
+    setIsCooldown(true)
+    if (cooldownTimerRef.current !== null) {
+      window.clearTimeout(cooldownTimerRef.current)
+    }
+    cooldownTimerRef.current = window.setTimeout(() => {
+      cooldownTimerRef.current = null
+      setIsCooldown(false)
+    }, ms)
+  }
+
+  useEffect(() => {
+    return () => {
+      if (cooldownTimerRef.current !== null) {
+        window.clearTimeout(cooldownTimerRef.current)
+      }
+    }
+  }, [])
 
   function reorderPalette(firstItem: PaletteItem) {
     setItems(prev => {
@@ -113,8 +135,11 @@ export default function ColorPalette() {
           type="button"
           aria-label={isOpen ? "Close color palette" : "Open color palette"}
           className="relative h-full w-full rounded-full flex items-center justify-center"
-          onClick={() => setIsOpen((v) => !v)}
-          disableMotion={isOpen}
+          onClick={() => {
+            if (isCooldown && !isOpen) return
+            setIsOpen((v) => !v)
+          }}
+          disableMotion={isOpen || isCooldown}
         >
           {/* Single dot layer (dots always exist exactly once) */}
           <View className="absolute inset-0">
@@ -237,9 +262,11 @@ export default function ColorPalette() {
                   onClick={(e) => {
                     e.stopPropagation()
                     if (!isOpen) return
+                    if (isCooldown) return
                     if (i !== 0) {
                       reorderPalette(item)
                       requestPaletteChange(item.bg, item.text)
+                      startCooldown(NAVIGATE_PRESS_COOL_DOWN_MS)
                       navigate(`/${item.page}`)
                     }
                     setIsOpen(false)

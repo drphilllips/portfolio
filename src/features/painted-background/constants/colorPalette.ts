@@ -1,6 +1,8 @@
 import { type PageAbbreviation, type SitePage } from "../../../types/pages";
 import type { ColorId, PaletteItem } from "../types/colorPalette";
 
+export const NAVIGATE_PRESS_COOL_DOWN_MS = 2400
+
 const pi = (
   page: SitePage,
   abbrev: PageAbbreviation,
