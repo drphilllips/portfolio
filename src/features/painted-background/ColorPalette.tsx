@@ -8,8 +8,8 @@ import View from "../../components/View"
 import Text from "../../components/Text"
 import { useNavigate } from "react-router-dom"
 
-const OPEN_VISIBLE_FRACTION = 0.6
-const OPEN_VISIBLE_MAX_PX = 260
+const OPEN_VISIBLE_FRACTION = 0.7
+const OPEN_VISIBLE_MAX_PX = 280
 
 /**
  * ColorPalette
@@ -109,7 +109,7 @@ export default function ColorPalette() {
   const shouldReduceMotion = useReducedMotion()
 
   // Geometry + sizing (UNSCALED reference geometry)
-  const dotSizeOpen = 40 // px (matches h-16/w-16)
+  const dotSizeOpen = 40 // px (matches h-10/w-10)
   const gapBetweenArcs = 8 // px spacing between open dots
   const desiredSpeckSize = 12
 
@@ -123,7 +123,7 @@ export default function ColorPalette() {
   const innerArcEndAngle = -Math.PI * 0.6
 
   // Board sizing (outline should surround all open dots)
-  const boardClosedSize = 64 // px (h-12/w-12)
+  const boardClosedSize = 68 // px (h-17/w-17)
   const boardOpenPadding = 12 // px extra breathing room around dots
 
   // Target sizing: visible quadrant width ~= radius
@@ -333,20 +333,7 @@ export default function ColorPalette() {
                       transition-colors duration-300
                     `}
                   >
-                    <span className="grid grid-cols-2 grid-rows-2">
-                      {item.abbrev
-                        .slice(0, 4)
-                        .split("")
-                        .map((ch, idx) => (
-                          <span
-                            key={idx}
-                            className="inline-flex w-[1ch] items-center justify-center text-center"
-                            aria-hidden="true"
-                          >
-                            {ch}
-                          </span>
-                        ))}
-                    </span>
+                    {item.name}
                   </Text>
                 </motion.a>
               )
