@@ -8,6 +8,9 @@ import View from "../../components/View"
 import Text from "../../components/Text"
 import { useNavigate } from "react-router-dom"
 
+const OPEN_VISIBLE_FRACTION = 0.6
+const OPEN_VISIBLE_MAX_PX = 260
+
 /**
  * ColorPalette
  * ----
@@ -51,6 +54,8 @@ export default function ColorPalette() {
   const [isOpen, setIsOpen] = useState(false)
   const [items, setItems] = useState<PaletteItem[]>(INIT_PALETTE_ITEMS)
 
+  const [viewportWidth, setViewportWidth] = useState<number>(() => window.innerWidth)
+
   const [isCooldown, setIsCooldown] = useState(false)
   const cooldownTimerRef = useRef<number | null>(null)
 
@@ -73,6 +78,24 @@ export default function ColorPalette() {
     }
   }, [])
 
+  useEffect(() => {
+    let rafId: number | null = null
+
+    const onResize = () => {
+      if (rafId !== null) window.cancelAnimationFrame(rafId)
+      rafId = window.requestAnimationFrame(() => {
+        rafId = null
+        setViewportWidth(window.innerWidth)
+      })
+    }
+
+    window.addEventListener("resize", onResize)
+    return () => {
+      window.removeEventListener("resize", onResize)
+      if (rafId !== null) window.cancelAnimationFrame(rafId)
+    }
+  }, [])
+
   function reorderPalette(firstItem: PaletteItem) {
     setItems(prev => {
       const restOfItems = prev.filter(item => item.color !== firstItem.color)
@@ -81,16 +104,17 @@ export default function ColorPalette() {
   }
 
   // Ring geometry
-  const ringRadius = 14 // px (tuned for a 48px board)
+  const ringRadius = 16 // px (tuned for a 48px board)
 
   const shouldReduceMotion = useReducedMotion()
 
-  // Geometry + sizing
-  const dotSizeOpen = 40 // px (matches h-10/w-10)
+  // Geometry + sizing (UNSCALED reference geometry)
+  const dotSizeOpen = 40 // px (matches h-16/w-16)
   const gapBetweenArcs = 8 // px spacing between open dots
-  const speckScale = 0.25 // closed-state size multiplier
+  const desiredSpeckSize = 12
 
-  // Open layout geometry (nested arcs)
+
+  // Open layout geometry (nested arcs) - unscaled reference
   const arcInnerRadius = ringRadius + 40
   const arcOuterRadius = arcInnerRadius + dotSizeOpen + gapBetweenArcs
   const outerArcStartAngle = -Math.PI * 0.92
@@ -99,10 +123,28 @@ export default function ColorPalette() {
   const innerArcEndAngle = -Math.PI * 0.6
 
   // Board sizing (outline should surround all open dots)
-  const boardClosedSize = 48 // px (h-12/w-12)
+  const boardClosedSize = 64 // px (h-12/w-12)
   const boardOpenPadding = 12 // px extra breathing room around dots
-  const boardOpenSize = Math.ceil((arcOuterRadius + dotSizeOpen / 2 + boardOpenPadding) * 2)
-  const boardCenterShift = (boardOpenSize - boardClosedSize) / 2
+
+  // Target sizing: visible quadrant width ~= radius
+  const visibleWidthTarget = Math.min(viewportWidth * OPEN_VISIBLE_FRACTION, OPEN_VISIBLE_MAX_PX)
+  const boardOpenDiameterTarget = 2 * visibleWidthTarget
+
+  // Current (unscaled) open diameter as reference
+  const boardOpenSizeUnscaled = Math.ceil((arcOuterRadius + dotSizeOpen / 2 + boardOpenPadding) * 2)
+
+  // Uniform scale applied to ALL open geometry
+  const openScale = boardOpenDiameterTarget / boardOpenSizeUnscaled
+
+  // Scaled open geometry
+  const dotSizeOpenScaled = dotSizeOpen * openScale
+  const arcInnerRadiusScaled = arcInnerRadius * openScale
+  const arcOuterRadiusScaled = arcOuterRadius * openScale
+  const boardOpenPaddingScaled = boardOpenPadding * openScale
+  const speckScale = desiredSpeckSize / dotSizeOpenScaled // closed-state size multiplier
+
+  const boardOpenSizeScaled = Math.ceil((arcOuterRadiusScaled + dotSizeOpenScaled / 2 + boardOpenPaddingScaled) * 2)
+  const boardCenterShift = (boardOpenSizeScaled - boardClosedSize) / 2
 
   // Shared motion settings
   const baseSpring = { type: "spring", stiffness: 500, damping: 36 } as const
@@ -124,8 +166,8 @@ export default function ColorPalette() {
           "flex items-center justify-center origin-bottom-right"
         }
         animate={{
-          width: isOpen ? boardOpenSize : boardClosedSize,
-          height: isOpen ? boardOpenSize : boardClosedSize,
+          width: isOpen ? boardOpenSizeScaled : boardClosedSize,
+          height: isOpen ? boardOpenSizeScaled : boardClosedSize,
           x: isOpen ? boardCenterShift : 0,
           y: isOpen ? boardCenterShift : 0,
         }}
@@ -193,7 +235,7 @@ export default function ColorPalette() {
                   const { xOpen: xA, yOpen: yA } = getArcTarget(
                     innerPos,
                     innerArcIndices.length,
-                    arcInnerRadius,
+                    arcInnerRadiusScaled,
                     innerArcStartAngle,
                     innerArcEndAngle,
                   )
@@ -208,7 +250,7 @@ export default function ColorPalette() {
                   const { xOpen: xA, yOpen: yA } = getArcTarget(
                     j,
                     groupSize,
-                    arcOuterRadius,
+                    arcOuterRadiusScaled,
                     outerArcStartAngle,
                     outerArcEndAngle,
                   )
@@ -240,7 +282,7 @@ export default function ColorPalette() {
                   type="button"
                   aria-label={`Select ${item.color} palette`}
                   className={`
-                    absolute ${item.bg} h-10 w-10
+                    absolute ${item.bg}
                     rounded-full shadow-md border border-secondary/20
                     flex items-center justify-center
                     focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70
@@ -250,6 +292,8 @@ export default function ColorPalette() {
                   style={{
                     left: "50%",
                     top: "50%",
+                    width: dotSizeOpenScaled,
+                    height: dotSizeOpenScaled,
                     pointerEvents: isOpen ? "auto" : "none",
                   }}
                   transformTemplate={(_, generated) =>
