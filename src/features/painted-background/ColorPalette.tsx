@@ -8,6 +8,7 @@ import View from "../../components/View"
 import Text from "../../components/Text"
 import { useLocation, useNavigate } from "react-router-dom"
 import type { SitePage } from "../../types/pages"
+import { useResponsiveDesign } from "../../contexts/useResponsiveDesign"
 
 const OPEN_VISIBLE_FRACTION = 0.7
 const OPEN_VISIBLE_MAX_PX = 280
@@ -50,13 +51,12 @@ const OPEN_VISIBLE_MAX_PX = 280
  * - This component is intended to be mounted once at the application level.
  */
 export default function ColorPalette() {
+  const { viewport } = useResponsiveDesign()
   const { requestPaletteChange } = useColorPalette()
   const navigate = useNavigate()
   const { pathname } = useLocation()
   const [isOpen, setIsOpen] = useState(false)
   const [items, setItems] = useState<PaletteItem[]>(INIT_PALETTE_ITEMS)
-
-  const [viewportWidth, setViewportWidth] = useState<number>(() => window.innerWidth)
 
   const [isCooldown, setIsCooldown] = useState(false)
   const cooldownTimerRef = useRef<number | null>(null)
@@ -77,24 +77,6 @@ export default function ColorPalette() {
       if (cooldownTimerRef.current !== null) {
         window.clearTimeout(cooldownTimerRef.current)
       }
-    }
-  }, [])
-
-  useEffect(() => {
-    let rafId: number | null = null
-
-    const onResize = () => {
-      if (rafId !== null) window.cancelAnimationFrame(rafId)
-      rafId = window.requestAnimationFrame(() => {
-        rafId = null
-        setViewportWidth(window.innerWidth)
-      })
-    }
-
-    window.addEventListener("resize", onResize)
-    return () => {
-      window.removeEventListener("resize", onResize)
-      if (rafId !== null) window.cancelAnimationFrame(rafId)
     }
   }, [])
 
@@ -134,11 +116,14 @@ export default function ColorPalette() {
   const innerArcEndAngle = -Math.PI * 0.6
 
   // Board sizing (outline should surround all open dots)
-  const boardClosedSize = 68 // px (h-17/w-17)
+  const boardClosedSize = 72 // px (h-19/w-19)
   const boardOpenPadding = 12 // px extra breathing room around dots
 
   // Target sizing: visible quadrant width ~= radius
-  const visibleWidthTarget = Math.min(viewportWidth * OPEN_VISIBLE_FRACTION, OPEN_VISIBLE_MAX_PX)
+  const visibleWidthTarget = Math.min(
+    Math.min(viewport?.width || 0, viewport?.height || 0) * OPEN_VISIBLE_FRACTION,
+    OPEN_VISIBLE_MAX_PX
+  )
   const boardOpenDiameterTarget = 2 * visibleWidthTarget
 
   // Current (unscaled) open diameter as reference
