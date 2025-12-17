@@ -18,4 +18,5 @@ export type PaletteItem = {
   bg: string
   text: string
   blendText: string
+  border: string
 }

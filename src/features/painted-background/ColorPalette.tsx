@@ -106,7 +106,6 @@ export default function ColorPalette() {
   const gapBetweenArcs = 8 // px spacing between open dots
   const desiredSpeckSize = 13
 
-
   // Open layout geometry (nested arcs) - unscaled reference
   const arcInnerRadius = gapBetweenArcs + dotSizeOpen
   const arcOuterRadius = arcInnerRadius + dotSizeOpen + gapBetweenArcs
@@ -156,11 +155,11 @@ export default function ColorPalette() {
     <View className="fixed bottom-4 right-4 z-50">
       {/* Board (always mounted) */}
       <motion.div
-        className={
-          "relative rounded-full border border-secondary/30 " +
-          "bg-secondary/10 shadow-md backdrop-blur-sm " +
-          "flex items-center justify-center origin-bottom-right"
-        }
+        className={`
+          relative rounded-full border border-secondary/30
+          bg-secondary/10 shadow-md backdrop-blur-sm
+          flex items-center justify-center origin-bottom-right
+        `}
         animate={{
           width: isOpen ? boardOpenSizeScaled : boardClosedSize,
           height: isOpen ? boardOpenSizeScaled : boardClosedSize,
@@ -308,7 +307,7 @@ export default function ColorPalette() {
                     if (isCooldown) return
                     if (i !== 0) {
                       reorderPalette(item)
-                      requestPaletteChange(item.bg, item.text)
+                      requestPaletteChange(item.bg, item.text, item.border)
                       startCooldown(NAVIGATE_PRESS_COOL_DOWN_MS)
                       navigate(`/${item.page}`)
                     }

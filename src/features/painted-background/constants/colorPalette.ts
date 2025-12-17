@@ -11,22 +11,23 @@ const pi = (
   bg: string,
   text: string,
   blendText: string,
+  border: string,
 ): PaletteItem => (
-  { page, name, color, bg, text, blendText }
+  { page, name, color, bg, text, blendText, border }
 )
 
 export const INIT_PALETTE_ITEMS: PaletteItem[] = [
-  pi("", "Home", "ashbl", "bg-ashbl", "text-ghost", "text-ashbl"),
-  pi("about", "About", "roylp", "bg-roylp", "text-ghost", "text-roylp"),
-  pi("projects", "Projects", "chrtr", "bg-chrtr", "text-ashbl", "text-chrtr"),
-  pi("experience", "Experience", "orngc", "bg-orngc", "text-ghost", "text-orngc"),
-  pi("services", "Services", "palbr", "bg-palbr", "text-ghost", "text-palbr"),
-  pi("contact", "Contact", "ghost", "bg-ghost", "text-ashbl", "text-ghost"),
+  pi("", "Home", "ashbl", "bg-ashbl", "text-ghost", "text-ashbl", "border-ghost"),
+  pi("about", "About", "roylp", "bg-roylp", "text-ghost", "text-roylp", "border-ghost"),
+  pi("projects", "Projects", "chrtr", "bg-chrtr", "text-ashbl", "text-chrtr", "border-ashbl"),
+  pi("experience", "Experience", "orngc", "bg-orngc", "text-ghost", "text-orngc", "border-ghost"),
+  pi("services", "Services", "palbr", "bg-palbr", "text-ghost", "text-palbr", "border-ghost"),
+  pi("contact", "Contact", "ghost", "bg-ghost", "text-ashbl", "text-ghost", "border-ashbl"),
 ]
 
 export const PAGE_COLORS: Record<SitePage, ColorPalette> = (
   INIT_PALETTE_ITEMS.reduce((acc, item) => {
-    acc[item.page] = { pageColor: item.bg, textColor: item.text}
+    acc[item.page] = { pageColor: item.bg, textColor: item.text, borderColor: item.border}
     return acc
   }, {} as Record<SitePage, ColorPalette>)
 )
