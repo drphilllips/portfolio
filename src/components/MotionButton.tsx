@@ -28,7 +28,7 @@ const MotionButton = React.forwardRef<HTMLButtonElement, MotionButtonProps>(
     return (
       <motion.button
         ref={ref}
-        className={`cursor-pointer ${className}`}
+        className={`${!disableMotion && "cursor-pointer"} ${className}`}
         whileHover={!disableMotion && !shouldReduceMotion ? { scale: 1.05 } : undefined}
         whileTap={!disableMotion && !shouldReduceMotion ? { scale: 0.95 } : undefined}
         {...rest}

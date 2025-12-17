@@ -134,7 +134,9 @@ export default function ColorPalette() {
         <MotionButton
           type="button"
           aria-label={isOpen ? "Close color palette" : "Open color palette"}
-          className="relative h-full w-full rounded-full flex items-center justify-center"
+          className={`
+            relative h-full w-full rounded-full flex items-center justify-center
+          `}
           onClick={() => {
             if (isCooldown && !isOpen) return
             setIsOpen((v) => !v)
@@ -242,6 +244,7 @@ export default function ColorPalette() {
                     rounded-full shadow-md border border-secondary/20
                     flex items-center justify-center
                     focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70
+                    ${isOpen && "cursor-pointer"}
                   `}
                   // Anchor at board center x/y are offsets from there
                   style={{
