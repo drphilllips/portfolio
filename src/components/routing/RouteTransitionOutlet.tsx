@@ -26,12 +26,14 @@ export default function RouteTransitionOutlet() {
   // Tailwind-ish timing function
   const ease = [0.4, 0, 0.2, 1] as const
 
-  type Phase = "idle" | "pausing" | "fadingIn"
+  type Phase = "idle" | "appearing" | "pausing" | "fadingIn"
 
   // What is currently on screen (decoupled from router location)
   const [renderKey, setRenderKey] = useState(location.key)
   const [renderedOutlet, setRenderedOutlet] = useState<React.ReactNode>(outlet)
-  const [phase, setPhase] = useState<Phase>("idle")
+  const [phase, setPhase] = useState<Phase>(
+    prefersReducedMotion ? "idle" : "appearing"
+  )
 
   // Pending navigation target
   const pendingRef = useRef<{ key: string; outlet: React.ReactNode }>({
@@ -43,6 +45,7 @@ export default function RouteTransitionOutlet() {
   const transitionIdRef = useRef(0)
   const pauseTimerRef = useRef<number | null>(null)
   const fadeDoneTimerRef = useRef<number | null>(null)
+  const appearIdRef = useRef<number | null>(null)
 
   const clearTimers = () => {
     if (pauseTimerRef.current != null) {
@@ -71,13 +74,28 @@ export default function RouteTransitionOutlet() {
       pendingRef.current = { key: location.key, outlet }
       setRenderKey(location.key)
       setRenderedOutlet(outlet)
-      setPhase("idle")
+
+      if (prefersReducedMotion || (PAUSE_MS === 0 && FADE_IN_MS === 0)) {
+        // Reduced-motion: show immediately, no delays.
+        appearIdRef.current = null
+        setPhase("idle")
+      } else {
+        // First-mount appear animation: first paint is hidden (opacity 0) and
+        // the pause is implemented via transition.delay.
+        transitionIdRef.current += 1
+        appearIdRef.current = transitionIdRef.current
+        setPhase("appearing")
+      }
+
       return
     }
 
     // Navigation detected
     transitionIdRef.current += 1
     const id = transitionIdRef.current
+
+    // We are no longer in the initial appear path once a real navigation happens.
+    appearIdRef.current = null
 
     // Update what we're navigating to, but do not render it yet.
     pendingRef.current = { key: location.key, outlet }
@@ -113,6 +131,36 @@ export default function RouteTransitionOutlet() {
   // Render exactly one screen at a time.
   // During pause: old screen stays visible, unchanged.
   // During fade-in: new screen mounts and fades in.
+
+  // Initial mount: hide immediately on first paint, then delay + fade in.
+  if (phase === "appearing") {
+    const appearId = appearIdRef.current
+
+    return (
+      <motion.div
+        key={renderKey}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{
+          delay: PAUSE_MS / 1000,
+          duration: FADE_IN_MS / 1000,
+          ease,
+        }}
+        className="w-full"
+        style={{ willChange: "opacity" }}
+        onAnimationComplete={() => {
+          // If a navigation happens mid-appear, the effect will bump transitionIdRef
+          // which invalidates this completion handler.
+          if (appearId == null) return
+          if (transitionIdRef.current !== appearId) return
+          setPhase("idle")
+        }}
+      >
+        {renderedOutlet}
+      </motion.div>
+    )
+  }
+
   if (phase === "fadingIn") {
     return (
       <motion.div
