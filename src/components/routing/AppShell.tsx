@@ -1,24 +1,24 @@
 import { useColorPalette } from "../../contexts/useColorPalette"
 import { useResponsiveDesign } from "../../contexts/useResponsiveDesign"
-import View from "./View"
+import View from "../View"
 
-type PageProps = {
+type AppShellProps = {
   children?: React.ReactNode
   className?: string
   style?: React.CSSProperties
 }
 
 /**
- * Page
+ * AppShell
  * ----
  * A high-level layout wrapper that represents a full application page or screen.
  *
- * `Page` is responsible for applying global, page-scoped styling such as
+ * `AppShell` is responsible for applying global, page-scoped styling such as
  * background color, text color, and base layout behavior. It integrates with
  * the app’s color system via `useColorPalette` to ensure consistent theming
  * and smooth transitions between color states.
  *
- * Internally, `Page` is built on top of the `View` primitive and intentionally
+ * Internally, `AppShell` is built on top of the `View` primitive and intentionally
  * keeps its API small, delegating most layout and styling control to props.
  *
  * Props:
@@ -43,17 +43,17 @@ type PageProps = {
  * - Centers content by default using flexbox.
  *
  * Design notes:
- * - `Page` sets inherited properties such as text color intentionally,
+ * - `AppShell` sets inherited properties such as text color intentionally,
  *   allowing child components (e.g., `Text`) to inherit color naturally.
  * - This component should generally be used once per route or screen.
  * - Any global page-level concerns (theming, safe-area handling, etc.)
  *   are appropriate to introduce here.
  */
-export default function Page({
+export default function AppShell({
   children,
   className="",
   style,
-}: PageProps) {
+}: AppShellProps) {
   const { onMobileSideways } = useResponsiveDesign()
   const { colorPalette } = useColorPalette()
 
@@ -63,13 +63,14 @@ export default function Page({
         min-h-dvh w-dvw
         ${onMobileSideways && "px-12"}
         ${colorPalette.pageColor} ${colorPalette.textColor}
-        transition-colors duration-300
         flex flex-col items-center justify-center text-center
         ${className}
       `}
       style={style}
     >
-      {children}
+      <View className="relative isolate z-0">
+        {children}
+      </View>
     </View>
   )
 }

@@ -4,23 +4,10 @@ import {
   useMemo,
   useEffect,
 } from "react"
-
-// Extend Navigator to include optional standalone property for iOS PWA detection
-type NavigatorWithStandalone = Navigator & {
-  standalone?: boolean
-}
-
-// Minimal User-Agent Client Hints typing (Chromium-based browsers)
-// We only need the `mobile` boolean for our detection logic.
-type NavigatorWithUAData = Navigator & {
-  userAgentData?: {
-    mobile?: boolean
-  }
-}
+import type { NavigatorWithStandalone, NavigatorWithUAData, ViewportDimensions } from "../types/responsiveDesign"
 
 type ResponsiveDesignContextType = {
-  viewportWidth: number | null
-  viewportHeight: number | null
+  viewport: ViewportDimensions | null
   onMobile: boolean
   onMobileUpright: boolean | null
   onMobileSideways: boolean | null
@@ -47,13 +34,9 @@ export function ResponsiveDesignProvider({
   children: React.ReactNode
 }) {
   // Initialize viewport width and height state with SSR safety checks
-  const [viewportWidth, setViewportWidth] = useState<number | null>(() => {
+  const [viewport, setViewport] = useState<ViewportDimensions | null>(() => {
     if (typeof window === "undefined") return null
-    return window.innerWidth
-  })
-  const [viewportHeight, setViewportHeight] = useState<number | null>(() => {
-    if (typeof window === "undefined") return null
-    return window.innerHeight
+    return { width: window.innerWidth, height: window.innerHeight }
   })
 
   // Detect if running as a standalone app (PWA), with SSR safety
@@ -92,8 +75,10 @@ export function ResponsiveDesignProvider({
     const w = window.innerWidth
     const h = window.innerHeight
 
-    setViewportWidth((prev) => (prev === w ? prev : w))
-    setViewportHeight((prev) => (prev === h ? prev : h))
+    setViewport((prev) => (
+      prev?.width === w && prev?.height === h
+      ? prev : { width: w, height: h }
+    ))
   }
   useEffect(() => {
     if (typeof window === "undefined") return
@@ -127,9 +112,9 @@ export function ResponsiveDesignProvider({
 
   // Determine if device is upright (portrait)
   const onMobileUpright = useMemo(() => {
-    if (viewportWidth == null || viewportHeight == null) return null
-    return onMobile && viewportWidth < viewportHeight
-  }, [onMobile, viewportWidth, viewportHeight])
+    if (viewport == null) return null
+    return onMobile && viewport.width < viewport.height
+  }, [onMobile, viewport])
 
   // Determine if device is sideways (landscape)
   const onMobileSideways = useMemo(() => {
@@ -144,8 +129,7 @@ export function ResponsiveDesignProvider({
         onMobileUpright,
         onMobileSideways,
         isStandaloneApp,
-        viewportWidth,
-        viewportHeight,
+        viewport,
       }}
     >
       {children}

@@ -1,20 +1,19 @@
-import Page from "./components/ui/Page"
-import Text from "./components/ui/Text"
-import View from "./components/ui/View"
-import { useResponsiveDesign } from "./contexts/useResponsiveDesign"
+import AppShell from "./components/routing/AppShell"
+import ColorPalette from "./features/painted-background/ColorPalette"
+import CanvasBackgroundTransition from "./features/painted-background/CanvasBackgroundTransition"
+import RouteTransitionOutlet from "./components/routing/RouteTransitionOutlet"
 
 export default function App() {
-  const { onMobile, onMobileSideways } = useResponsiveDesign()
-
   return (
-    <Page className="gap-6">
-      <Text className="text-4xl font-bold">
-        Color-inheritance is working 🚀
-      </Text>
-      <View>
-        {onMobile && <Text>On Mobile</Text>}
-        {onMobileSideways && <Text>sideways</Text>}
-      </View>
-    </Page>
+    <>
+      {/* Always-on visuals */}
+      <ColorPalette />
+      <CanvasBackgroundTransition />
+
+      <AppShell className="gap-6">
+        {/* Pages content renders here */}
+        <RouteTransitionOutlet />
+      </AppShell>
+    </>
   )
 }
