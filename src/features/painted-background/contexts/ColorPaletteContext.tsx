@@ -1,8 +1,8 @@
 import { createContext, useCallback, useEffect, useMemo, useRef, useState } from "react"
-import type { ColorPalette } from "../types/colorPalette"
 import { useLocation } from "react-router-dom"
-import type { SitePage } from "../types/pages"
-import { PAGE_COLORS } from "../features/painted-background/constants/colorPalette"
+import type { ColorPalette } from "../../../types/colorPalette"
+import type { SitePage } from "../../../types/pages"
+import { PAGE_COLORS } from "../constants/colorPalette"
 
 type PalettePair = {
   pageColor: string

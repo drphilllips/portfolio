@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { motion, useReducedMotion } from "motion/react"
-import { useColorPalette } from "../../contexts/useColorPalette"
+import { useColorPalette } from "./contexts/useColorPalette"
 import type { PaletteItem } from "./types/colorPalette"
 import { INIT_PALETTE_ITEMS, NAVIGATE_PRESS_COOL_DOWN_MS } from "./constants/colorPalette"
 import MotionButton from "../../components/MotionButton"
