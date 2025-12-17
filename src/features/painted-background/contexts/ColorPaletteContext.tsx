@@ -1,5 +1,8 @@
-import { createContext, useCallback, useMemo, useRef, useState } from "react"
-import type { ColorPalette } from "../types/colorPalette"
+import { createContext, useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { useLocation } from "react-router-dom"
+import type { ColorPalette } from "../../../types/colorPalette"
+import type { SitePage } from "../../../types/pages"
+import { PAGE_COLORS } from "../constants/colorPalette"
 
 type PalettePair = {
   pageColor: string
@@ -52,9 +55,12 @@ const ColorPaletteContext = createContext<ColorPaletteContextType | null>(null)
  * - `commitPendingPaletteChange` (called by the canvas overlay)
  */
 export function ColorPaletteProvider({ children }: { children: React.ReactNode }) {
+  // Find out what page we are on
+  const { pathname } = useLocation()
+
   // Committed palette (what the DOM uses)
   const [colorPalette, setColorPaletteState] = useState<ColorPalette>({
-    pageColor: "bg-primary",
+    pageColor: "bg-secondary",
     textColor: "text-primary",
   })
 
@@ -101,6 +107,12 @@ export function ColorPaletteProvider({ children }: { children: React.ReactNode }
     }),
     [colorPalette, requestPaletteChange, isTransitioning, pendingPaletteChange, commitPendingPaletteChange]
   )
+
+  useEffect(() => {
+    const sitePage = pathname.split("/")[1] as SitePage
+    const palette = PAGE_COLORS[sitePage]
+    setTimeout(() => requestPaletteChange(palette.pageColor, palette.textColor),0)
+  }, [pathname, requestPaletteChange])
 
   return <ColorPaletteContext.Provider value={value}>{children}</ColorPaletteContext.Provider>
 }

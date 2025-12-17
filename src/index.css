@@ -3,7 +3,7 @@
 
 /* Base app background (used behind everything) */
 :root {
-  --app-bg: #1D1E1D; /* fallback / initial color */
+  --app-bg: #ffffff; /* fallback / initial color */
 }
 
 /* The browser canvas */
