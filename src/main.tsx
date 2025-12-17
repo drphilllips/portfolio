@@ -15,7 +15,13 @@ import NotFoundPage from './pages/NotFoundPage.tsx'
 
 const router = createBrowserRouter([
   {
-    element: <App />,
+    element: (
+      <ResponsiveDesignProvider>
+        <ColorPaletteProvider>
+          <App />
+        </ColorPaletteProvider>
+      </ResponsiveDesignProvider>
+    ),
     children: [
       { path: "/", element: <HomePage /> },
       { path: "/about", element: <AboutPage /> },
@@ -30,10 +36,6 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <ResponsiveDesignProvider>
-      <ColorPaletteProvider>
-        <RouterProvider router={router} />
-      </ColorPaletteProvider>
-    </ResponsiveDesignProvider>
+    <RouterProvider router={router} />
   </StrictMode>,
 )
