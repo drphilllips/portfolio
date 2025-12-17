@@ -126,7 +126,7 @@ export default function RouteTransitionOutlet() {
         setPhase("idle")
       }, FADE_IN_MS)
     }, PAUSE_MS)
-  }, [location.key, outlet, PAUSE_MS, FADE_IN_MS])
+  }, [prefersReducedMotion, location.key, outlet, PAUSE_MS, FADE_IN_MS])
 
   // Render exactly one screen at a time.
   // During pause: old screen stays visible, unchanged.
