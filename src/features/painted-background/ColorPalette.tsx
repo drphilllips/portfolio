@@ -6,7 +6,8 @@ import { INIT_PALETTE_ITEMS, NAVIGATE_PRESS_COOL_DOWN_MS } from "./constants/col
 import MotionButton from "../../components/MotionButton"
 import View from "../../components/View"
 import Text from "../../components/Text"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
+import type { SitePage } from "../../types/pages"
 
 const OPEN_VISIBLE_FRACTION = 0.7
 const OPEN_VISIBLE_MAX_PX = 280
@@ -51,6 +52,7 @@ const OPEN_VISIBLE_MAX_PX = 280
 export default function ColorPalette() {
   const { requestPaletteChange } = useColorPalette()
   const navigate = useNavigate()
+  const { pathname } = useLocation()
   const [isOpen, setIsOpen] = useState(false)
   const [items, setItems] = useState<PaletteItem[]>(INIT_PALETTE_ITEMS)
 
@@ -103,19 +105,28 @@ export default function ColorPalette() {
     })
   }
 
+  useEffect(() => {
+    const sitePage = pathname.split("/")[1] as SitePage
+    const pathItem = items.find(item => item.page === sitePage)
+    const pathItemIndex = pathItem ? items.indexOf(pathItem) : null
+    if (pathItem && pathItemIndex !== 0) {
+      setTimeout(() => reorderPalette(pathItem),0)
+    }
+  }, [pathname, items])
+
   // Ring geometry
-  const ringRadius = 16 // px (tuned for a 48px board)
+  const ringRadius = 18 // px (tuned for a 48px board)
 
   const shouldReduceMotion = useReducedMotion()
 
   // Geometry + sizing (UNSCALED reference geometry)
   const dotSizeOpen = 40 // px (matches h-10/w-10)
   const gapBetweenArcs = 8 // px spacing between open dots
-  const desiredSpeckSize = 12
+  const desiredSpeckSize = 13
 
 
   // Open layout geometry (nested arcs) - unscaled reference
-  const arcInnerRadius = ringRadius + 40
+  const arcInnerRadius = gapBetweenArcs + dotSizeOpen
   const arcOuterRadius = arcInnerRadius + dotSizeOpen + gapBetweenArcs
   const outerArcStartAngle = -Math.PI * 0.92
   const outerArcEndAngle = -Math.PI * 0.58
