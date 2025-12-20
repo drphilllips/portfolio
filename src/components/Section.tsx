@@ -10,7 +10,7 @@ export default function Section({
   content,
 }: SectionContent) {
   return (
-    <section id={id} className="flex flex-col w-full items-center">
+    <section id={id} className="flex flex-col w-full items-center gap-6">
       {title && <Text className="text-3xl">{title}</Text>}
       <View className="w-full flex flex-col items-center gap-4">
         {content.map(({ title, shortText, longText, cards }: ContentType) => (

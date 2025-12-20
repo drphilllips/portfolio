@@ -20,8 +20,8 @@ export default function Content({
       {title && <Text className="lg:max-w-prose max-w-xs text-xl font-bold">{title}</Text>}
       {image && <Image label={image.label} src={image.src} /> }
       {link && <Button label={link.label} href={link.href} />}
-      {shortText && <Text className="max-w-xs">{shortText}</Text>}
-      {(shortText && longText) && <Separator level="content" />}
+      {shortText && <Text className="max-w-xs italic">{shortText}</Text>}
+      {(shortText && longText || title && longText) && <Separator level="content" />}
       {longText && <Text className="lg:max-w-prose max-w-xs">{longText}</Text>}
       <View className="grid lg:grid-cols-3 grid-cols-1 justify-center gap-4">
         {cards && cards.map(

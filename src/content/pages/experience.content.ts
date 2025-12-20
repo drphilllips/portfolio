@@ -11,7 +11,6 @@ export const ExperiencePageContent: PageContent = PageSchema.parse({
       content: [
         {
           title: "Building full-stack products from UI to API",
-          shortText: "Mobile + web + backend engineering across product teams",
           longText:
             "This page highlights three recent roles where I shipped product features end-to-end.\n\nUse the quick links below to jump into each experience section.\nEach section includes an overview, highlights, tech stack, and media placeholders for screenshots/diagrams to collect.",
           image: {

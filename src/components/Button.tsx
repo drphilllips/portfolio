@@ -42,7 +42,7 @@ export default function Button({ href, label }: LinkType) {
       el.getBoundingClientRect().top +
       window.scrollY
 
-    smoothScrollTo(y, 800) // 👈 slower & more relaxed
+    smoothScrollTo(y-96, 800) // 👈 slower & more relaxed
 
     // Update URL hash without causing a remount (your RouteTransitionOutlet ignores hash)
     navigate({ hash }, { replace: true })

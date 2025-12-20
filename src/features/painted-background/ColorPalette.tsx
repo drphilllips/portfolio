@@ -307,7 +307,7 @@ export default function ColorPalette() {
                     if (isCooldown) return
                     if (i !== 0) {
                       reorderPalette(item)
-                      requestPaletteChange(item.bg, item.text, item.border)
+                      requestPaletteChange(item.bg, item.text, item.primary, item.secondaryText, item.cardBg, item.cardBorder)
                       startCooldown(NAVIGATE_PRESS_COOL_DOWN_MS)
                       navigate(`/${item.page}`)
                     }
