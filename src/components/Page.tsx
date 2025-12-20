@@ -13,7 +13,7 @@ export default function Page({
   const { colorPalette } = useColorPalette()
 
   return (
-    <View className="relative flex flex-col items-center w-full pt-28 lg:px-12 lg:pb-6 px-4 pb-4 gap-8">
+    <View className="relative flex flex-col items-center w-full lg:px-12 px-4 pt-28 lg:pb-28 pb-20 gap-8">
       {title && (
         <View
           className={`
