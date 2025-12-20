@@ -1,5 +1,14 @@
-import Text from "../components/Text"
+import Page from "../components/Page"
+import { ExperiencePageContent } from "../content/pages/experience.content"
+import type { PageContent } from "../content/schemas/page.schema"
 
 export default function ExperiencePage() {
-  return <Text className="text-2xl font-semibold">Experience</Text>
+  const { title, sections }: PageContent = ExperiencePageContent
+
+  return (
+    <Page
+      title={title}
+      sections={sections}
+    />
+  )
 }

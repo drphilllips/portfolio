@@ -24,7 +24,7 @@ type ColorPaletteContextType = {
    * The background is committed only when the canvas transition reports
    * completion.
    */
-  requestPaletteChange: (pageColor: string, textColor: string, borderColor: string) => void
+  requestPaletteChange: (pageColor: string, textColor: string, primaryColor: string, secondaryTextColor: string, borderColor: string) => void
 
   /** True while a canvas transition is running. */
   isTransitioning: boolean
@@ -57,9 +57,11 @@ export function ColorPaletteProvider({ children }: { children: React.ReactNode }
 
   // Committed palette (what the DOM uses)
   const [colorPalette, setColorPaletteState] = useState<ColorPalette>({
-    pageColor: "bg-secondary",
-    textColor: "text-primary",
-    borderColor: "border-ghost",
+    pageColor: "bg-ghost",
+    textColor: "text-ashbl",
+    primaryColor: "bg-ashbl",
+    secondaryTextColor: "text-ghost",
+    borderColor: "border-ashbl/30",
   })
 
   // Pending change requested by the user (used by the canvas overlay)
@@ -73,11 +75,11 @@ export function ColorPaletteProvider({ children }: { children: React.ReactNode }
   const requestIdRef = useRef(0)
 
   const requestPaletteChange = useCallback(
-    (pageColor: string, textColor: string, borderColor: string) => {
+    (pageColor: string, textColor: string, primaryColor: string, secondaryTextColor: string, borderColor: string) => {
     const nextId = ++requestIdRef.current
 
     setIsTransitioning(true)
-    setPendingPaletteChange({ requestId: nextId, pageColor, textColor, borderColor })
+    setPendingPaletteChange({ requestId: nextId, pageColor, textColor, primaryColor, secondaryTextColor, borderColor })
   }, [])
 
   const commitPendingPaletteChange = useCallback(
@@ -90,6 +92,8 @@ export function ColorPaletteProvider({ children }: { children: React.ReactNode }
         setColorPaletteState(() => ({
           pageColor: prev.pageColor,
           textColor: prev.textColor,
+          primaryColor: prev.primaryColor,
+          secondaryTextColor: prev.secondaryTextColor,
           borderColor: prev.borderColor,
         }))
 
@@ -114,7 +118,15 @@ export function ColorPaletteProvider({ children }: { children: React.ReactNode }
   useEffect(() => {
     const sitePage = pathname.split("/")[1] as SitePage
     const palette = PAGE_COLORS[sitePage]
-    setTimeout(() => requestPaletteChange(palette.pageColor, palette.textColor, palette.borderColor),0)
+    setTimeout(() => (
+      requestPaletteChange(
+        palette.pageColor,
+        palette.textColor,
+        palette.primaryColor,
+        palette.secondaryTextColor,
+        palette.borderColor
+      )
+    ),0)
   }, [pathname, requestPaletteChange])
 
   return <ColorPaletteContext.Provider value={value}>{children}</ColorPaletteContext.Provider>
