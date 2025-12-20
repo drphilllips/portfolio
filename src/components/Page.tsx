@@ -11,7 +11,7 @@ export default function Page({
 }: PageContent) {
   return (
     <View className="flex flex-col items-center w-full p-4 gap-8">
-      {title && <Text className="text-4xl font-semibold">{title}</Text>}
+      {title && <Text className="text-start text-4xl font-semibold">{title}</Text>}
       {sections.map(({ id, title, content }: SectionContent, i) => (
         <>
           {i > 0 && <Separator />}

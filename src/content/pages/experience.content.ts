@@ -1,7 +1,6 @@
 import { PageSchema, type PageContent } from "../schemas/page.schema";
 
 export const ExperiencePageContent: PageContent = PageSchema.parse({
-  id: "experience",
   title: "Experience",
   sections: [
     // ---------------------------------------------
@@ -11,7 +10,6 @@ export const ExperiencePageContent: PageContent = PageSchema.parse({
       id: "hero",
       content: [
         {
-          id: "hero-intro",
           title: "Building full-stack products from UI to API",
           shortText: "Mobile + web + backend engineering across product teams",
           longText:
@@ -52,31 +50,25 @@ export const ExperiencePageContent: PageContent = PageSchema.parse({
       title: "5280 Auto Hail Repair",
       content: [
         {
-          id: "5280-intro",
           title: "Mobile App Developer (Contract)",
           shortText: "Jun 2025 – Present",
           longText:
             "Building a full-stack internal + customer-facing application to streamline repair operations.\n\nI’ve focused on mobile UX, reliable backend APIs, and the data model needed to support quoting, scheduling, and repair task tracking across departments.",
-          images: [
-            {
-              label: "5280 experience cover placeholder",
-              src: "/images/experience/5280-cover-placeholder.jpg",
-            },
-          ],
+          image: {
+            label: "5280 experience cover placeholder",
+            src: "/images/experience/5280-cover-placeholder.jpg",
+          },
           cards: [
             {
-              id: "5280-highlights",
               title: "Highlights",
               text:
                 "- Designed a full-stack app connecting employees and customers\n- Built REST APIs and database models\n- Built CI/CD pipelines for repair scheduling and quoting",
             },
             {
-              id: "5280-tech",
               title: "Tech",
               text: "React Native, Django, REST APIs, CI/CD",
             },
             {
-              id: "5280-media",
               title: "Screenshots to collect",
               image: {
                 label: "5280 app screenshot placeholder",
@@ -98,7 +90,6 @@ export const ExperiencePageContent: PageContent = PageSchema.parse({
       title: "Socotec",
       content: [
         {
-          id: "socotec-intro",
           title: "Full-Stack Chatbot Engineer",
           shortText: "Oct 2024 – Jun 2025",
           longText:
@@ -109,18 +100,15 @@ export const ExperiencePageContent: PageContent = PageSchema.parse({
           },
           cards: [
             {
-              id: "socotec-highlights",
               title: "Highlights",
               text:
                 "- Developed AI-powered assistants using Django, React, LangGraph, and NodeJS\n- Automated workflows for 10,000+ employees\n- Improved efficiency across business operations",
             },
             {
-              id: "socotec-tech",
               title: "Tech",
               text: "Django, React, LangGraph, NodeJS",
             },
             {
-              id: "socotec-media",
               title: "Diagrams to collect",
               image: {
                 label: "Socotec architecture diagram placeholder",
@@ -142,31 +130,25 @@ export const ExperiencePageContent: PageContent = PageSchema.parse({
       title: "TAARCOM, Inc.",
       content: [
         {
-          id: "taarcom-intro",
           title: "Sales Ops Intern & Python App Developer",
           shortText: "2022 – 2024",
           longText:
             "Built internal tools to streamline sales operations and reduce manual Excel-heavy workflows.\n\nThis included designing Python desktop apps and analytics-driven utilities that made reporting faster and more consistent for day-to-day pipeline work.",
-          images: [
-            {
-              label: "TAARCOM experience cover placeholder",
-              src: "/images/experience/taarcom-cover-placeholder.jpg",
-            },
-          ],
+          image: {
+            label: "TAARCOM experience cover placeholder",
+            src: "/images/experience/taarcom-cover-placeholder.jpg",
+          },
           cards: [
             {
-              id: "taarcom-highlights",
               title: "Highlights",
               text:
                 "- Created 3 integrated Python automation apps streamlining Excel workflows\n- Built internal tooling with PyQt and Pandas\n- Redesigned company website\n- Improved sales pipeline with analytics-driven tools",
             },
             {
-              id: "taarcom-tech",
               title: "Tech",
               text: "Python, PyQt, Pandas, Excel automation",
             },
             {
-              id: "taarcom-media",
               title: "Screenshots to collect",
               image: {
                 label: "TAARCOM tool screenshot placeholder",

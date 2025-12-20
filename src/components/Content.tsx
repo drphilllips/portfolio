@@ -16,14 +16,14 @@ export default function Content({
   cards,
 }: ContentType) {
   return (
-    <View className="flex flex-col items-center w-full gap-4">
-      {title && <Text className="text-xl font-bold">{title}</Text>}
+    <View className="flex flex-col items-center w-full gap-6">
+      {title && <Text className="lg:max-w-prose max-w-xs text-xl font-bold">{title}</Text>}
       {image && <Image label={image.label} src={image.src} /> }
       {link && <Button label={link.label} href={link.href} />}
-      {shortText && <Text>{shortText}</Text>}
+      {shortText && <Text className="max-w-xs">{shortText}</Text>}
       {(shortText && longText) && <Separator level="content" />}
-      {longText && <Text>{longText}</Text>}
-      <View className="flex flex-row justify-center gap-4">
+      {longText && <Text className="lg:max-w-prose max-w-xs">{longText}</Text>}
+      <View className="grid lg:grid-cols-3 grid-cols-1 justify-center gap-4">
         {cards && cards.map(
           ({title, text, image, link}: CardType, i) => (
             <Card key={i} title={title} text={text} image={image} link={link} />
