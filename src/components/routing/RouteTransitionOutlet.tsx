@@ -19,6 +19,10 @@ export default function RouteTransitionOutlet() {
   const outlet = useOutlet()
   const prefersReducedMotion = useReducedMotion()
 
+  // Treat only pathname + search as a "route change".
+  // Hash-only changes (e.g. /experience#taarcom) should NOT trigger remount/transition.
+  const routeKey = `${location.pathname}${location.search}`
+
   // Explicit timing knobs (ms)
   const PAUSE_MS = prefersReducedMotion ? 0 : HOLD_OLD_PAGE_MS
   const FADE_IN_MS = prefersReducedMotion ? 0 : FADE_IN_NEW_PAGE_MS
@@ -29,7 +33,7 @@ export default function RouteTransitionOutlet() {
   type Phase = "idle" | "appearing" | "pausing" | "fadingIn"
 
   // What is currently on screen (decoupled from router location)
-  const [renderKey, setRenderKey] = useState(location.key)
+  const [renderKey, setRenderKey] = useState(routeKey)
   const [renderedOutlet, setRenderedOutlet] = useState<React.ReactNode>(outlet)
   const [phase, setPhase] = useState<Phase>(
     prefersReducedMotion ? "idle" : "appearing"
@@ -37,7 +41,7 @@ export default function RouteTransitionOutlet() {
 
   // Pending navigation target
   const pendingRef = useRef<{ key: string; outlet: React.ReactNode }>({
-    key: location.key,
+    key: routeKey,
     outlet,
   })
 
@@ -46,6 +50,9 @@ export default function RouteTransitionOutlet() {
   const pauseTimerRef = useRef<number | null>(null)
   const fadeDoneTimerRef = useRef<number | null>(null)
   const appearIdRef = useRef<number | null>(null)
+
+  const lastRouteKeyRef = useRef(routeKey)
+  const lastHashRef = useRef(location.hash)
 
   const clearTimers = () => {
     if (pauseTimerRef.current != null) {
@@ -71,9 +78,11 @@ export default function RouteTransitionOutlet() {
   useEffect(() => {
     if (!hasMountedRef.current) {
       hasMountedRef.current = true
-      pendingRef.current = { key: location.key, outlet }
-      setRenderKey(location.key)
+      pendingRef.current = { key: routeKey, outlet }
+      setRenderKey(routeKey)
       setRenderedOutlet(outlet)
+      lastRouteKeyRef.current = routeKey
+      lastHashRef.current = location.hash
 
       if (prefersReducedMotion || (PAUSE_MS === 0 && FADE_IN_MS === 0)) {
         // Reduced-motion: show immediately, no delays.
@@ -90,7 +99,31 @@ export default function RouteTransitionOutlet() {
       return
     }
 
-    // Navigation detected
+    // Navigation detected (or location update)
+    const prevRouteKey = lastRouteKeyRef.current
+    // const prevHash = lastHashRef.current
+
+    // Update trackers for next run
+    lastRouteKeyRef.current = routeKey
+    lastHashRef.current = location.hash
+
+    // If pathname + search is unchanged, NEVER run an outlet transition.
+    // This covers:
+    // - /experience -> /experience#taarcom
+    // - /experience#taarcom -> /experience#socotec
+    // - /experience#taarcom -> /experience#taarcom (clicking the same hash again)
+    // React Router may still generate a new location.key for these navigations,
+    // but visually we want zero remount/transition because the routed screen is the same.
+    if (routeKey === prevRouteKey) {
+      // Keep the current screen mounted and visible.
+      // (Do not change renderKey / do not swap outlets.)
+      pendingRef.current = { key: routeKey, outlet }
+      clearTimers()
+      setPhase("idle")
+      return
+    }
+
+    // Route change: run the normal transition
     transitionIdRef.current += 1
     const id = transitionIdRef.current
 
@@ -98,7 +131,7 @@ export default function RouteTransitionOutlet() {
     appearIdRef.current = null
 
     // Update what we're navigating to, but do not render it yet.
-    pendingRef.current = { key: location.key, outlet }
+    pendingRef.current = { key: routeKey, outlet }
 
     clearTimers()
 
@@ -126,7 +159,7 @@ export default function RouteTransitionOutlet() {
         setPhase("idle")
       }, FADE_IN_MS)
     }, PAUSE_MS)
-  }, [prefersReducedMotion, location.key, outlet, PAUSE_MS, FADE_IN_MS])
+  }, [prefersReducedMotion, routeKey, location.hash, outlet, PAUSE_MS, FADE_IN_MS])
 
   // Render exactly one screen at a time.
   // During pause: old screen stays visible, unchanged.
