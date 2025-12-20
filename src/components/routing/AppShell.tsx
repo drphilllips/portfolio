@@ -60,7 +60,7 @@ export default function AppShell({
   return (
     <View
       className={`
-        min-h-dvh w-dvw overflow-y-auto
+        min-h-dvh w-dvw overflow-y-auto scroll-smooth
         ${onMobileSideways && "px-12"}
         ${colorPalette.pageColor} ${colorPalette.textColor}
         flex flex-col items-center justify-center text-center
