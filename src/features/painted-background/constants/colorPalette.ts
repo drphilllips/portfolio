@@ -20,12 +20,12 @@ const pi = (
 )
 
 export const INIT_PALETTE_ITEMS: PaletteItem[] = [
-  pi("", "Home", "ashbl", "bg-ashbl", "text-ghost", "text-ashbl", "bg-ghost", "text-ashbl", "bg-ghost/60", "border-ghost/30"),
-  pi("about", "About", "roylp", "bg-roylp", "text-ghost", "text-roylp", "bg-ghost", "text-ashbl", "bg-ghost/60", "border-ghost/30"),
-  pi("projects", "Projects", "chrtr", "bg-chrtr", "text-ashbl", "text-chrtr", "bg-ashbl", "text-ghost", "bg-ashbl/60", "border-ashbl/30"),
-  pi("experience", "Experience", "orngc", "bg-orngc", "text-ghost", "text-orngc", "bg-ghost", "text-ashbl", "bg-ghost/60", "border-ghost/30"),
-  pi("services", "Services", "palbr", "bg-palbr", "text-ghost", "text-palbr", "bg-ghost", "text-ashbl", "bg-ghost/60", "border-ghost/30"),
-  pi("contact", "Contact", "ghost", "bg-ghost", "text-ashbl", "text-ghost", "bg-ashbl", "text-ghost", "bg-ashbl/60", "border-ashbl/30"),
+  pi("", "Home", "ashbl", "bg-ashbl", "text-ghost", "text-ashbl", "bg-ghost", "text-ashbl", "bg-ghost/60", "border-2 border-ashbl/30"),
+  pi("about", "About", "roylp", "bg-roylp", "text-ghost", "text-roylp", "bg-ghost", "text-ashbl", "bg-ghost/60", "border-2 border-roylp/30"),
+  pi("projects", "Projects", "chrtr", "bg-chrtr", "text-ashbl", "text-chrtr", "bg-ashbl", "text-ghost", "bg-ashbl/60", "border-2 border-chrtr/30"),
+  pi("experience", "Experience", "orngc", "bg-orngc", "text-ghost", "text-orngc", "bg-ghost", "text-ashbl", "bg-ghost/60", "border-2 border-orngc/30"),
+  pi("services", "Services", "palbr", "bg-palbr", "text-ghost", "text-palbr", "bg-ghost", "text-ashbl", "bg-ghost/60", "border-2 border-palbr/30"),
+  pi("contact", "Contact", "ghost", "bg-ghost", "text-ashbl", "text-ghost", "bg-ashbl", "text-ghost", "bg-ashbl/60", "border-2 border-ghost/30"),
 ]
 
 export const PAGE_COLORS: Record<SitePage, ColorPalette> = (
