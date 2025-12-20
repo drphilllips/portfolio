@@ -20,5 +20,6 @@ export type PaletteItem = {
   blendText: string
   primary: string
   secondaryText: string
-  border: string
+  cardBg: string
+  cardBorder: string
 }

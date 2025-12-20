@@ -16,20 +16,29 @@ export const ExperiencePageContent: PageContent = PageSchema.parse({
           shortText: "Mobile + web + backend engineering across product teams",
           longText:
             "This page highlights three recent roles where I shipped product features end-to-end.\n\nUse the quick links below to jump into each experience section.\nEach section includes an overview, highlights, tech stack, and media placeholders for screenshots/diagrams to collect.",
-          images: [
+          image: {
+            label: "Experience hero banner placeholder",
+            src: "/images/experience/hero-banner-placeholder.jpg",
+          },
+          cards: [
             {
-              label: "Experience hero banner placeholder",
-              src: "/images/experience/hero-banner-placeholder.jpg",
+              link: {
+                label: "5280 Auto Hail Repair",
+                href: "#5280",
+              },
             },
-          ],
-        },
-        {
-          id: "hero-ctas",
-          title: "Jump to",
-          links: [
-            { label: "5280 Auto Hail Repair", href: "#5280" },
-            { label: "Socotec", href: "#socotec" },
-            { label: "TAARCOM", href: "#taarcom" },
+            {
+              link: {
+                label: "Socotec",
+                href: "#socotec",
+              },
+            },
+            {
+              link: {
+                label: "TAARCOM, Inc.",
+                href: "#taarcom",
+              },
+            },
           ],
         },
       ],
@@ -54,29 +63,29 @@ export const ExperiencePageContent: PageContent = PageSchema.parse({
               src: "/images/experience/5280-cover-placeholder.jpg",
             },
           ],
-        },
-        {
-          id: "5280-highlights",
-          title: "Highlights",
-          longText:
-            "- Designed a full-stack app connecting employees and customers\n- Built REST APIs and database models\n- Built CI/CD pipelines for repair scheduling and quoting",
-        },
-        {
-          id: "5280-tech",
-          title: "Tech",
-          longText: "React Native, Django, REST APIs, CI/CD",
-        },
-        {
-          id: "5280-media",
-          title: "Screenshots to collect",
-          images: [
+          cards: [
             {
-              label: "5280 app screenshot placeholder",
-              src: "/images/experience/5280-app-screenshot-placeholder.jpg",
+              id: "5280-highlights",
+              title: "Highlights",
+              text:
+                "- Designed a full-stack app connecting employees and customers\n- Built REST APIs and database models\n- Built CI/CD pipelines for repair scheduling and quoting",
+            },
+            {
+              id: "5280-tech",
+              title: "Tech",
+              text: "React Native, Django, REST APIs, CI/CD",
+            },
+            {
+              id: "5280-media",
+              title: "Screenshots to collect",
+              image: {
+                label: "5280 app screenshot placeholder",
+                src: "/images/experience/5280-app-screenshot-placeholder.jpg",
+              },
+              text:
+                "- Quote flow (create/edit, line items, approvals)\n- Scheduling view (calendar / timeline / assignments)\n- Customer-facing status view (repair progress + milestones)\n- Admin/employee dashboards (task groups, departments, workload)",
             },
           ],
-          longText:
-            "- Quote flow (create/edit, line items, approvals)\n- Scheduling view (calendar / timeline / assignments)\n- Customer-facing status view (repair progress + milestones)\n- Admin/employee dashboards (task groups, departments, workload)",
         },
       ],
     },
@@ -94,35 +103,33 @@ export const ExperiencePageContent: PageContent = PageSchema.parse({
           shortText: "Oct 2024 – Jun 2025",
           longText:
             "Developed AI-powered assistant experiences and supporting web/backend tooling.\n\nThe work emphasized reliable integrations, maintainable workflows, and productizing agent behavior so it could scale to enterprise usage.",
-          images: [
+          image: {
+            label: "Socotec experience cover placeholder",
+            src: "/images/experience/socotec-cover-placeholder.jpg",
+          },
+          cards: [
             {
-              label: "Socotec experience cover placeholder",
-              src: "/images/experience/socotec-cover-placeholder.jpg",
+              id: "socotec-highlights",
+              title: "Highlights",
+              text:
+                "- Developed AI-powered assistants using Django, React, LangGraph, and NodeJS\n- Automated workflows for 10,000+ employees\n- Improved efficiency across business operations",
+            },
+            {
+              id: "socotec-tech",
+              title: "Tech",
+              text: "Django, React, LangGraph, NodeJS",
+            },
+            {
+              id: "socotec-media",
+              title: "Diagrams to collect",
+              image: {
+                label: "Socotec architecture diagram placeholder",
+                src: "/images/experience/socotec-architecture-placeholder.jpg",
+              },
+              text:
+                "- Agent graph (nodes, tools, memory, routing)\n- Integration diagram (services + auth boundaries)\n- Workflow automation flowchart (trigger → agent → actions → logging/observability)",
             },
           ],
-        },
-        {
-          id: "socotec-highlights",
-          title: "Highlights",
-          longText:
-            "- Developed AI-powered assistants using Django, React, LangGraph, and NodeJS\n- Automated workflows for 10,000+ employees\n- Improved efficiency across business operations",
-        },
-        {
-          id: "socotec-tech",
-          title: "Tech",
-          longText: "Django, React, LangGraph, NodeJS",
-        },
-        {
-          id: "socotec-media",
-          title: "Diagrams to collect",
-          images: [
-            {
-              label: "Socotec architecture diagram placeholder",
-              src: "/images/experience/socotec-architecture-placeholder.jpg",
-            },
-          ],
-          longText:
-            "- Agent graph (nodes, tools, memory, routing)\n- Integration diagram (services + auth boundaries)\n- Workflow automation flowchart (trigger → agent → actions → logging/observability)",
         },
       ],
     },
@@ -146,29 +153,29 @@ export const ExperiencePageContent: PageContent = PageSchema.parse({
               src: "/images/experience/taarcom-cover-placeholder.jpg",
             },
           ],
-        },
-        {
-          id: "taarcom-highlights",
-          title: "Highlights",
-          longText:
-            "- Created 3 integrated Python automation apps streamlining Excel workflows\n- Built internal tooling with PyQt and Pandas\n- Redesigned company website\n- Improved sales pipeline with analytics-driven tools",
-        },
-        {
-          id: "taarcom-tech",
-          title: "Tech",
-          longText: "Python, PyQt, Pandas, Excel automation",
-        },
-        {
-          id: "taarcom-media",
-          title: "Screenshots to collect",
-          images: [
+          cards: [
             {
-              label: "TAARCOM tool screenshot placeholder",
-              src: "/images/experience/taarcom-tool-screenshot-placeholder.jpg",
+              id: "taarcom-highlights",
+              title: "Highlights",
+              text:
+                "- Created 3 integrated Python automation apps streamlining Excel workflows\n- Built internal tooling with PyQt and Pandas\n- Redesigned company website\n- Improved sales pipeline with analytics-driven tools",
+            },
+            {
+              id: "taarcom-tech",
+              title: "Tech",
+              text: "Python, PyQt, Pandas, Excel automation",
+            },
+            {
+              id: "taarcom-media",
+              title: "Screenshots to collect",
+              image: {
+                label: "TAARCOM tool screenshot placeholder",
+                src: "/images/experience/taarcom-tool-screenshot-placeholder.jpg",
+              },
+              text:
+                "- GUI screenshots (main flows + edge cases)\n- Report export view (inputs → generated outputs)\n- Before/after workflow comparison (manual steps eliminated)\n- Example dashboards / analytics outputs (if applicable)",
             },
           ],
-          longText:
-            "- GUI screenshots (main flows + edge cases)\n- Report export view (inputs → generated outputs)\n- Before/after workflow comparison (manual steps eliminated)\n- Example dashboards / analytics outputs (if applicable)",
         },
       ],
     },

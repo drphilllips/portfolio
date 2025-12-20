@@ -11,8 +11,8 @@ export default function Button({ href, label }: LinkType) {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const bg = colorPalette.primaryColor
-  const border = colorPalette.borderColor
+  const bg = colorPalette.buttonColor
+  const border = colorPalette.cardBorderColor
   const text = colorPalette.secondaryTextColor
 
   const onClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {

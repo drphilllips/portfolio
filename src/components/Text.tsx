@@ -36,7 +36,7 @@ export default function Text({
 }: TextProps) {
   return (
     <Component
-      className={className}
+      className={`w-full wrap-break-word whitespace-normal ${className}`}
       style={style}
     >
       {children}

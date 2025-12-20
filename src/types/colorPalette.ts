@@ -2,7 +2,8 @@
 export type ColorPalette = {
   pageColor: string
   textColor: string
-  primaryColor: string
+  buttonColor: string
   secondaryTextColor: string
-  borderColor: string
+  cardBackgroundColor: string
+  cardBorderColor: string
 }

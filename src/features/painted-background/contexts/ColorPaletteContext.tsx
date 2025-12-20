@@ -24,7 +24,7 @@ type ColorPaletteContextType = {
    * The background is committed only when the canvas transition reports
    * completion.
    */
-  requestPaletteChange: (pageColor: string, textColor: string, primaryColor: string, secondaryTextColor: string, borderColor: string) => void
+  requestPaletteChange: (pageColor: string, textColor: string, primaryColor: string, secondaryTextColor: string, cardBackgroundColor: string, cardBorderColor: string) => void
 
   /** True while a canvas transition is running. */
   isTransitioning: boolean
@@ -59,9 +59,10 @@ export function ColorPaletteProvider({ children }: { children: React.ReactNode }
   const [colorPalette, setColorPaletteState] = useState<ColorPalette>({
     pageColor: "bg-ghost",
     textColor: "text-ashbl",
-    primaryColor: "bg-ashbl",
+    buttonColor: "bg-ashbl",
     secondaryTextColor: "text-ghost",
-    borderColor: "border-ashbl/30",
+    cardBackgroundColor: "bg-ashbl/60",
+    cardBorderColor: "border-ashbl/30",
   })
 
   // Pending change requested by the user (used by the canvas overlay)
@@ -75,11 +76,11 @@ export function ColorPaletteProvider({ children }: { children: React.ReactNode }
   const requestIdRef = useRef(0)
 
   const requestPaletteChange = useCallback(
-    (pageColor: string, textColor: string, primaryColor: string, secondaryTextColor: string, borderColor: string) => {
+    (pageColor: string, textColor: string, primaryColor: string, secondaryTextColor: string, cardBackgroundColor: string, cardBorderColor: string) => {
     const nextId = ++requestIdRef.current
 
     setIsTransitioning(true)
-    setPendingPaletteChange({ requestId: nextId, pageColor, textColor, primaryColor, secondaryTextColor, borderColor })
+    setPendingPaletteChange({ requestId: nextId, pageColor, textColor, buttonColor: primaryColor, secondaryTextColor, cardBackgroundColor, cardBorderColor })
   }, [])
 
   const commitPendingPaletteChange = useCallback(
@@ -92,9 +93,10 @@ export function ColorPaletteProvider({ children }: { children: React.ReactNode }
         setColorPaletteState(() => ({
           pageColor: prev.pageColor,
           textColor: prev.textColor,
-          primaryColor: prev.primaryColor,
+          buttonColor: prev.buttonColor,
           secondaryTextColor: prev.secondaryTextColor,
-          borderColor: prev.borderColor,
+          cardBackgroundColor: prev.cardBackgroundColor,
+          cardBorderColor: prev.cardBorderColor,
         }))
 
         setIsTransitioning(false)
@@ -122,9 +124,10 @@ export function ColorPaletteProvider({ children }: { children: React.ReactNode }
       requestPaletteChange(
         palette.pageColor,
         palette.textColor,
-        palette.primaryColor,
+        palette.buttonColor,
         palette.secondaryTextColor,
-        palette.borderColor
+        palette.cardBackgroundColor,
+        palette.cardBorderColor
       )
     ),0)
   }, [pathname, requestPaletteChange])
