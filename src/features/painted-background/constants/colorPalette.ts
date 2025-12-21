@@ -19,18 +19,9 @@ const COLOR_PRIMARIES: Record<ColorId, ColorPrimary> = {
   ashbl: "ghost",
   roylp: "ghost",
   chrtr: "ashbl",
-  orngc: "ghost",
+  orngc: "ashbl",
   palbr: "ghost",
   ghost: "ashbl",
-}
-
-const COLOR_CARD_BGS: Record<ColorId, string> = {
-  ashbl: "bg-ashbl-300",
-  roylp: "bg-roylp-300",
-  chrtr: "bg-chrtr-300",
-  orngc: "bg-orngc-300",
-  palbr: "bg-palbr-300",
-  ghost: "bg-ghost-300",
 }
 
 const COLOR_CARD_BORDERS: Record<ColorId, string> = {
@@ -58,8 +49,8 @@ const pageColors = (pageColorId: ColorId): PageColors => {
       ? "text-ghost"
       : "text-ashbl",
     sub: primary === "ghost"
-      ? "text-ghost/70"
-      : "text-ashbl/70",
+      ? "text-ghost/40"
+      : "text-ashbl/40",
     sep: primary === "ghost"
       ? "bg-ghost"
       : "bg-ashbl",
@@ -71,8 +62,8 @@ const sectionColors = (pageColorId: ColorId): SectionColors => {
   return {
     // bg: COLOR_BGS[pageColorId],
     h1: primary === "ghost"
-      ? "text-ghost"
-      : "text-ashbl",
+      ? "text-ghost/40"
+      : "text-ashbl/40",
   }
 }
 
@@ -81,8 +72,8 @@ const contentColors = (pageColorId: ColorId): ContentColors => {
   return {
     // bg: COLOR_BGS[pageColorId],
     h2: primary === "ghost"
-      ? "text-ghost-300"
-      : "text-ashbl-300",
+      ? "text-ghost"
+      : "text-ashbl",
     h3: primary === "ghost"
       ? "text-ghost"
       : "text-ashbl",
@@ -98,20 +89,22 @@ const contentColors = (pageColorId: ColorId): ContentColors => {
 const cardColors = (pageColorId: ColorId): CardColors => {
   const primary = COLOR_PRIMARIES[pageColorId]
   return {
-    bg: COLOR_CARD_BGS[pageColorId],
+    bg: primary === "ghost"
+      ? "bg-ashbl/20"
+      : "bg-ghost/20",
     border: COLOR_CARD_BORDERS[pageColorId],
     h3: primary === "ghost"
-      ? "text-ashbl-400"
-      : "text-ghost-400",
+      ? "text-ghost-400"
+      : "text-ashbl-400",
     p: primary === "ghost"
-      ? "text-ashbl-500"
-      : "text-ghost-500",
+      ? "text-ghost-500"
+      : "text-ashbl-500",
     bulletPt: primary === "ghost"
-      ? "text-ashbl-100"
-      : "text-ghost-100",
+      ? "text-ghost-400"
+      : "text-ashbl-400",
     sep: primary === "ghost"
-      ? "bg-ashbl/10"
-      : "bg-ghost/10",
+      ? "bg-ghost/10"
+      : "bg-ashbl/10",
   }
 }
 
