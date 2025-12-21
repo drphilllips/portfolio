@@ -91,11 +91,11 @@ const cardColors = (pageColorId: ColorId): CardColors => {
       : "bg-ashbl/60",
     border: COLOR_CARD_BORDERS[pageColorId],
     h3: primary === "ghost"
-      ? "text-ashbl"
-      : "text-ghost",
+      ? "text-ashbl-400"
+      : "text-ghost-400",
     p: primary === "ghost"
-      ? "text-ashbl"
-      : "text-ghost",
+      ? "text-ashbl-300"
+      : "text-ghost-300",
   }
 }
 
@@ -103,8 +103,8 @@ const buttonColors = (pageColorId: ColorId): ButtonColors => {
   const primary = COLOR_PRIMARIES[pageColorId]
   return {
     bg: primary === "ghost"
-      ? "bg-ghost/60"
-      : "bg-ashbl/60",
+      ? "bg-ghost"
+      : "bg-ashbl",
     border: COLOR_CARD_BORDERS[pageColorId],
     label: primary === "ghost"
       ? "text-ashbl"

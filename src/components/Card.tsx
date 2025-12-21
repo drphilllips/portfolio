@@ -18,7 +18,7 @@ export default function Card({
       {(title || text || image) && (
         <View
           className={`
-            ${cardColors.bg} ${cardColors.border}
+            ${cardColors.bg} ${cardColors.border} border-2
             p-4 rounded-3xl flex flex-1 flex-col items-center gap-4
           `}
         >
