@@ -1,21 +1,19 @@
-import { useColorPalette } from "../features/painted-background/contexts/useColorPalette"
 import View from "./View"
 
 
 export default function Separator({
   level = "section",
+  color,
 }: {
   level?: "section" | "content"
+  color: string
 }) {
-  const { colorPalette } = useColorPalette()
-
-  const sepColor = colorPalette.buttonColor
 
   return (
     <View className="w-full flex justify-center">
       {level === "section" ? (
         <View
-          className={`h-px w-full opacity-40 ${sepColor}`}
+          className={`h-px w-full opacity-40 ${color}`}
           aria-hidden="true"
         />
       ) : (
@@ -23,9 +21,9 @@ export default function Separator({
           className="flex items-center justify-center gap-3"
           aria-hidden="true"
         >
-          <View className={`w-1.5 h-1.5 rounded-full opacity-50 ${sepColor}`} />
-          <View className={`w-1.5 h-1.5 rounded-full opacity-50 ${sepColor}`} />
-          <View className={`w-1.5 h-1.5 rounded-full opacity-50 ${sepColor}`} />
+          <View className={`w-1.5 h-1.5 rounded-full opacity-50 ${color}`} />
+          <View className={`w-1.5 h-1.5 rounded-full opacity-50 ${color}`} />
+          <View className={`w-1.5 h-1.5 rounded-full opacity-50 ${color}`} />
         </View>
       )}
     </View>

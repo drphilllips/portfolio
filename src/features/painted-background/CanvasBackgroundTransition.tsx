@@ -166,8 +166,8 @@ function clearCanvas(ctx: CanvasRenderingContext2D, wCss: number, hCss: number) 
 }
 
 export default function CanvasBackgroundTransition() {
-  const { colorPalette, pendingPaletteChange, commitPendingPaletteChange } = useColorPalette()
-  const fromBgClass = colorPalette.pageColor
+  const { pageColors, pendingPaletteChange, commitPendingPaletteChange } = useColorPalette()
+  const fromBgClass = pageColors.bg
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const displayCtxRef = useRef<CanvasRenderingContext2D | null>(null)
@@ -282,13 +282,15 @@ export default function CanvasBackgroundTransition() {
     const req = pendingPaletteChange
     if (!req) return
 
+    const toBgClass = req.componentColors.pageColors.bg
+
     const canvas = canvasRef.current
     const displayCtx = displayCtxRef.current
     const maskCtx = maskCtxRef.current
     const maskCanvas = maskCanvasRef.current
     if (!canvas || !displayCtx || !maskCtx || !maskCanvas) {
       // Canvas not available: update theme color instantly, then snap commit.
-      setThemeColor(fromBgClass, req.pageColor, 0, TAILWIND_EASING, 0, "background-color")
+      setThemeColor(fromBgClass, toBgClass, 0, TAILWIND_EASING, 0, "background-color")
       commitPendingPaletteChange(req.requestId)
       return
     }
@@ -296,7 +298,7 @@ export default function CanvasBackgroundTransition() {
     // Reduced motion: skip animation entirely.
     if (prefersReducedMotion()) {
       // Reduced motion: update theme color instantly, skip canvas.
-      setThemeColor(fromBgClass, req.pageColor, 0, TAILWIND_EASING, 0, "background-color")
+      setThemeColor(fromBgClass, toBgClass, 0, TAILWIND_EASING, 0, "background-color")
       commitPendingPaletteChange(req.requestId)
       return
     }
@@ -304,16 +306,16 @@ export default function CanvasBackgroundTransition() {
     const size = sizeRef.current
     const { wCss, hCss } = size
 
-    const nextCss = resolveTailwindBgToCssColor(req.pageColor)
+    const nextCss = resolveTailwindBgToCssColor(toBgClass)
     if (!nextCss) {
       // If we can't resolve a color, still update theme-color instantly via Tailwind classes.
-      setThemeColor(fromBgClass, req.pageColor, 0, TAILWIND_EASING, 0, "background-color")
+      setThemeColor(fromBgClass, toBgClass, 0, TAILWIND_EASING, 0, "background-color")
       commitPendingPaletteChange(req.requestId)
       return
     }
 
     // Start theme-color + --app-bg transition in sync with the first paint frame.
-    setThemeColor(fromBgClass, req.pageColor, PAINT_BG_DURATION_MS, TAILWIND_EASING, 0, "background-color")
+    setThemeColor(fromBgClass, toBgClass, PAINT_BG_DURATION_MS, TAILWIND_EASING, 0, "background-color")
 
     // Cancel previous animation and mark this request active.
     cancelRaf()

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { motion, useReducedMotion } from "motion/react"
 import { useColorPalette } from "./contexts/useColorPalette"
 import type { PaletteItem } from "./types/colorPalette"
-import { INIT_PALETTE_ITEMS, NAVIGATE_PRESS_COOL_DOWN_MS } from "./constants/colorPalette"
+import { PALETTE_ITEMS, NAVIGATE_PRESS_COOL_DOWN_MS } from "./constants/colorPalette"
 import MotionButton from "../../components/MotionButton"
 import View from "../../components/View"
 import Text from "../../components/Text"
@@ -56,7 +56,7 @@ export default function ColorPalette() {
   const navigate = useNavigate()
   const { pathname } = useLocation()
   const [isOpen, setIsOpen] = useState(false)
-  const [items, setItems] = useState<PaletteItem[]>(INIT_PALETTE_ITEMS)
+  const [items, setItems] = useState<PaletteItem[]>(PALETTE_ITEMS)
 
   const [isCooldown, setIsCooldown] = useState(false)
   const cooldownTimerRef = useRef<number | null>(null)
@@ -307,7 +307,7 @@ export default function ColorPalette() {
                     if (isCooldown) return
                     if (i !== 0) {
                       reorderPalette(item)
-                      requestPaletteChange(item.bg, item.text, item.primary, item.secondaryText, item.cardBg, item.cardBorder)
+                      requestPaletteChange(item.componentColors)
                       startCooldown(NAVIGATE_PRESS_COOL_DOWN_MS)
                       navigate(`/${item.page}`)
                     }

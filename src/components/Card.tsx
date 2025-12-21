@@ -11,24 +11,37 @@ export default function Card({
   image,
   link,
 }: CardType) {
-  const { colorPalette } = useColorPalette()
-
-  const bgColor = colorPalette.cardBackgroundColor
-  const borderColor = colorPalette.cardBorderColor
-  const textColor = colorPalette.secondaryTextColor
+  const { cardColors } = useColorPalette()
 
   return (
     <>
       {(title || text || image) && (
         <View
           className={`
-            ${bgColor} ${borderColor} ${textColor}
+            ${cardColors.bg} ${cardColors.border}
             p-4 rounded-3xl flex flex-1 flex-col items-center gap-4
           `}
         >
-          {title && <Text className="text-xl font-bold">{title}</Text>}
+          {title && (
+            <Text
+              className={`
+                ${cardColors.h3}
+                text-xl font-bold
+              `}
+            >
+              {title}
+            </Text>
+          )}
           {image && <Image label={image.label} src={image.src} /> }
-          {text && <Text>{text}</Text>}
+          {text && (
+            <Text
+              className={`
+                ${cardColors.p}
+              `}
+            >
+              {text}
+            </Text>
+          )}
           {link && <Button label={link.label} href={link.href} />}
         </View>
       )}

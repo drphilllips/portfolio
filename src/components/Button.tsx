@@ -6,14 +6,10 @@ import Text from "./Text"
 import { useSmoothScroll } from "../hooks/useSmoothScroll"
 
 export default function Button({ href, label }: LinkType) {
-  const { colorPalette } = useColorPalette()
+  const { buttonColors } = useColorPalette()
   const { smoothScrollTo } = useSmoothScroll()
   const navigate = useNavigate()
   const location = useLocation()
-
-  const bg = colorPalette.buttonColor
-  const border = colorPalette.cardBorderColor
-  const text = colorPalette.secondaryTextColor
 
   const onClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
     // Only handle hash navigation
@@ -53,7 +49,12 @@ export default function Button({ href, label }: LinkType) {
       href={href}
       aria-label={label}
       onClick={onClick}
-      className={`inline-flex items-center justify-center px-4 py-2 border ${bg} ${border} ${text} rounded-md`}
+      className={`
+        ${buttonColors.bg} ${buttonColors.label}
+        border ${buttonColors.border}
+        inline-flex items-center justify-center
+        px-4 py-2 rounded-md
+      `}
     >
       <Text>{label}</Text>
     </a>

@@ -10,7 +10,7 @@ export default function Page({
   title,
   sections,
 }: PageContent) {
-  const { colorPalette } = useColorPalette()
+  const { pageColors } = useColorPalette()
 
   return (
     <View className="relative flex flex-col items-center w-full lg:px-12 px-4 pt-28 lg:pb-28 pb-20 gap-8">
@@ -20,17 +20,22 @@ export default function Page({
             lg:px-12 px-4 h-20
             fixed top-0 z-30
             flex flex-row w-full items-center
-            ${colorPalette.pageColor} shadow-sm
+            ${pageColors.bg} shadow-sm
           `}
         >
-          <Text className="text-start text-4xl font-semibold">
+          <Text
+            className={`
+              ${pageColors.title}
+              text-start text-4xl font-semibold
+            `}
+          >
             {title}
           </Text>
         </View>
       )}
       {sections.map(({ id, title, content }: SectionContent, i) => (
         <>
-          {i > 0 && <Separator />}
+          {i > 0 && <Separator color={pageColors.sep} />}
           <Section key={id} id={id} title={title} content={content}  />
         </>
       ))}

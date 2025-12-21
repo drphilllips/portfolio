@@ -1,13 +1,12 @@
 import { createContext, useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useLocation } from "react-router-dom"
-import type { ColorPalette } from "../../../types/colorPalette"
 import type { SitePage } from "../../../types/pages"
-import { PAGE_COLORS } from "../constants/colorPalette"
+import { INIT_COMPONENT_COLORS, PAGE_COMPONENT_COLORS } from "../constants/colorPalette"
+import type { ButtonColors, CardColors, ComponentColors, ContentColors, PageColors, SectionColors } from "../types/colorPalette"
 
-type PalettePair = ColorPalette
-
-type PendingPaletteChange = PalettePair & {
+type PendingPaletteChange = {
   requestId: number
+  componentColors: ComponentColors
 }
 
 type ColorPaletteContextType = {
@@ -15,7 +14,11 @@ type ColorPaletteContextType = {
    * The committed palette that the DOM should currently be using.
    * `Page` consumes this value.
    */
-  colorPalette: ColorPalette
+  pageColors: PageColors
+  sectionColors: SectionColors
+  contentColors: ContentColors
+  cardColors: CardColors
+  buttonColors: ButtonColors
 
   /**
    * Request a palette change. This does NOT immediately change the committed
@@ -24,7 +27,7 @@ type ColorPaletteContextType = {
    * The background is committed only when the canvas transition reports
    * completion.
    */
-  requestPaletteChange: (pageColor: string, textColor: string, primaryColor: string, secondaryTextColor: string, cardBackgroundColor: string, cardBorderColor: string) => void
+  requestPaletteChange: (componentColors: ComponentColors) => void
 
   /** True while a canvas transition is running. */
   isTransitioning: boolean
@@ -56,14 +59,7 @@ export function ColorPaletteProvider({ children }: { children: React.ReactNode }
   const { pathname } = useLocation()
 
   // Committed palette (what the DOM uses)
-  const [colorPalette, setColorPaletteState] = useState<ColorPalette>({
-    pageColor: "bg-ghost",
-    textColor: "text-ashbl",
-    buttonColor: "bg-ashbl",
-    secondaryTextColor: "text-ghost",
-    cardBackgroundColor: "bg-ashbl/60",
-    cardBorderColor: "border-ashbl/30",
-  })
+  const [colorPalette, setColorPaletteState] = useState<ComponentColors>(INIT_COMPONENT_COLORS)
 
   // Pending change requested by the user (used by the canvas overlay)
   const [pendingPaletteChange, setPendingPaletteChange] = useState<PendingPaletteChange | null>(
@@ -76,12 +72,13 @@ export function ColorPaletteProvider({ children }: { children: React.ReactNode }
   const requestIdRef = useRef(0)
 
   const requestPaletteChange = useCallback(
-    (pageColor: string, textColor: string, primaryColor: string, secondaryTextColor: string, cardBackgroundColor: string, cardBorderColor: string) => {
-    const nextId = ++requestIdRef.current
+    (componentColors: ComponentColors) => {
+      const nextId = ++requestIdRef.current
 
-    setIsTransitioning(true)
-    setPendingPaletteChange({ requestId: nextId, pageColor, textColor, buttonColor: primaryColor, secondaryTextColor, cardBackgroundColor, cardBorderColor })
-  }, [])
+      setIsTransitioning(true)
+      setPendingPaletteChange({ requestId: nextId, componentColors })
+    }, []
+  )
 
   const commitPendingPaletteChange = useCallback(
     (requestId: number) => {
@@ -90,14 +87,7 @@ export function ColorPaletteProvider({ children }: { children: React.ReactNode }
         if (!prev || prev.requestId !== requestId) return prev
 
         // Commit the DOM palette.
-        setColorPaletteState(() => ({
-          pageColor: prev.pageColor,
-          textColor: prev.textColor,
-          buttonColor: prev.buttonColor,
-          secondaryTextColor: prev.secondaryTextColor,
-          cardBackgroundColor: prev.cardBackgroundColor,
-          cardBorderColor: prev.cardBorderColor,
-        }))
+        setColorPaletteState(() => prev.componentColors)
 
         setIsTransitioning(false)
         return null
@@ -108,7 +98,11 @@ export function ColorPaletteProvider({ children }: { children: React.ReactNode }
 
   const value = useMemo(
     () => ({
-      colorPalette,
+      pageColors: colorPalette.pageColors,
+      sectionColors: colorPalette.sectionColors,
+      contentColors: colorPalette.contentColors,
+      cardColors: colorPalette.cardColors,
+      buttonColors: colorPalette.buttonColors,
       requestPaletteChange,
       isTransitioning,
       pendingPaletteChange,
@@ -119,16 +113,9 @@ export function ColorPaletteProvider({ children }: { children: React.ReactNode }
 
   useEffect(() => {
     const sitePage = pathname.split("/")[1] as SitePage
-    const palette = PAGE_COLORS[sitePage]
+    const palette = PAGE_COMPONENT_COLORS[sitePage]
     setTimeout(() => (
-      requestPaletteChange(
-        palette.pageColor,
-        palette.textColor,
-        palette.buttonColor,
-        palette.secondaryTextColor,
-        palette.cardBackgroundColor,
-        palette.cardBorderColor
-      )
+      requestPaletteChange(palette)
     ),0)
   }, [pathname, requestPaletteChange])
 

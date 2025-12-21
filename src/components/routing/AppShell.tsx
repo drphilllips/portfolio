@@ -55,14 +55,14 @@ export default function AppShell({
   style,
 }: AppShellProps) {
   const { onMobileSideways } = useResponsiveDesign()
-  const { colorPalette } = useColorPalette()
+  const { pageColors } = useColorPalette()
 
   return (
     <View
       className={`
         min-h-dvh w-dvw overflow-y-auto scroll-smooth
         ${onMobileSideways && "px-12"}
-        ${colorPalette.pageColor} ${colorPalette.textColor}
+        ${pageColors.bg} ${pageColors.title}
         flex flex-col items-center justify-center text-center
         ${className}
       `}
