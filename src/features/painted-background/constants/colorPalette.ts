@@ -1,5 +1,5 @@
 import { type SitePage } from "../../../types/pages";
-import { COLOR_IDS, type ButtonColors, type CardColors, type ColorId, type ColorPrimary, type ComponentColors, type ContentColors, type PageColors, type PaletteItem, type SectionColors, type TagColors } from "../types/colorPalette";
+import { type ButtonColors, type CardColors, type ColorId, type ColorPrimary, type ComponentColors, type ContentColors, type PageColors, type PaletteItem, type SectionColors, type TagColors } from "../types/colorPalette";
 
 export const NAVIGATE_PRESS_COOL_DOWN_MS = 2400
 
@@ -15,9 +15,14 @@ const COLOR_BGS: Record<ColorId, string> = {
   ghost: "bg-ghost",
 }
 
-const COLOR_TEXTS: Record<ColorId, string> = Object.fromEntries(
-  COLOR_IDS.map(colorId => [colorId, `text-${colorId}`])
-) as Record<ColorId, string>
+const COLOR_TEXTS: Record<ColorId, string> = {
+  ashbl: "text-ashbl",
+  roylp: "text-roylp",
+  chrtr: "text-chrtr",
+  orngc: "text-orngc",
+  palbr: "text-palbr",
+  ghost: "text-ghost",
+}
 
 const COLOR_PRIMARIES: Record<ColorId, ColorPrimary> = {
   ashbl: "ghost",
@@ -29,10 +34,14 @@ const COLOR_PRIMARIES: Record<ColorId, ColorPrimary> = {
 }
 
 // Procedurally map each page color -> its primary text class (e.g. "text-ghost")
-const COLOR_PRIMARY_TEXTS: Record<ColorId, string> = Object.fromEntries(
-  (Object.entries(COLOR_PRIMARIES) as [ColorId, ColorPrimary][])
-    .map(([colorId, primary]) => [colorId, `text-${primary}`])
-) as Record<ColorId, string>
+const COLOR_PRIMARY_TEXTS: Record<ColorId, string> = {
+  ashbl: "text-ghost",
+  roylp: "text-ghost",
+  chrtr: "text-ashbl",
+  orngc: "text-ashbl",
+  palbr: "text-ghost",
+  ghost: "text-ashbl",
+}
 
 const COLOR_TAG_BGS: Record<ColorId, string> = {
   ashbl: "bg-ashbl-400",
@@ -138,7 +147,7 @@ const tagColors = (pageColorId: ColorId): TagColors => {
     bg: COLOR_TAG_BGS[pageColorId],
     border: "border-ghost/30",
     shadow: "shadow-ashbl/10",
-    label: "text-ghost/90",
+    label: "text-ghost/90 text-shadow-ashbl/10",
   }
 }
 
@@ -176,10 +185,10 @@ export const PAGE_COMPONENT_COLORS: Record<SitePage, ComponentColors> = (
 // Init values
 // --------
 export const INIT_COMPONENT_COLORS: ComponentColors = {
-  pageColors: pageColors("ashbl"),
-  sectionColors: sectionColors("ashbl"),
-  contentColors: contentColors("ashbl"),
-  cardColors: cardColors("ashbl"),
-  buttonColors: buttonColors("ashbl"),
-  tagColors: tagColors("ashbl"),
+  pageColors: pageColors("ghost"),
+  sectionColors: sectionColors("ghost"),
+  contentColors: contentColors("ghost"),
+  cardColors: cardColors("ghost"),
+  buttonColors: buttonColors("ghost"),
+  tagColors: tagColors("ghost"),
 }
