@@ -5,22 +5,25 @@ import Section from "./Section"
 import type { SectionContent } from "../content/schemas/section.schema"
 import Separator from "./SectionSeparator"
 import { useColorPalette } from "../features/painted-background/contexts/useColorPalette"
+import { useSmoothScroll } from "../hooks/useSmoothScroll"
 
 export default function Page({
   title,
   sections,
 }: PageContent) {
   const { pageColors } = useColorPalette()
+  const { hasScrolled } = useSmoothScroll()
 
   return (
     <View className="relative flex flex-col items-center w-full lg:px-12 px-4 pt-28 lg:pb-28 pb-20 gap-8">
       {title && (
         <View
           className={`
+            ${pageColors.bg}
             lg:px-12 px-4 h-20
             fixed top-0 z-30
             flex flex-row w-full items-center
-            ${pageColors.bg} shadow-sm
+            ${hasScrolled && "shadow-sm"}
           `}
         >
           <Text

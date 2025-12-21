@@ -1,8 +1,20 @@
-import { useCallback } from "react"
+import { useCallback, useEffect, useState } from "react"
 
 type EasingFn = (t: number) => number
 
 export function useSmoothScroll() {
+  const [hasScrolled, setHasScrolled] = useState(false)
+
+  useEffect(() => {
+    const onScroll = () => {
+      setHasScrolled(window.scrollY >= 10)
+    }
+
+    onScroll() // initialize on mount
+    window.addEventListener("scroll", onScroll)
+
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [])
   const smoothScrollTo = useCallback(
     (
       targetY: number,
@@ -30,7 +42,7 @@ export function useSmoothScroll() {
     []
   )
 
-  return { smoothScrollTo }
+  return { smoothScrollTo, hasScrolled }
 }
 
 function easeInOutCubic(t: number) {
