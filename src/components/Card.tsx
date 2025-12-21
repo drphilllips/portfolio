@@ -4,6 +4,7 @@ import Image from "./Image"
 import View from "./View"
 import Button from "./Button"
 import { useColorPalette } from "../features/painted-background/contexts/useColorPalette"
+import { Component } from "lucide-react"
 
 export default function Card({
   title,
@@ -19,8 +20,8 @@ export default function Card({
       {(title || text || image || bullets) && (
         <View
           className={`
-            ${cardColors.bg} ${cardColors.border} border-2
-            px-4 pt-4 pb-6 rounded-3xl flex flex-1 flex-col items-center gap-3
+            ${cardColors.bg} ${cardColors.border} border-3
+            px-4 pt-4 pb-6 rounded-3xl flex flex-1 flex-col items-center gap-2
           `}
         >
           {title && (
@@ -35,10 +36,11 @@ export default function Card({
             </Text>
           )}
           {bullets && (
-            <View className={`flex flex-row gap-px mx-2 rounded-xl overflow-hidden ${cardColors.sep}`}>
+            <View className={`flex flex-col gap-px mx-2 rounded-xl overflow-hidden ${cardColors.sep}`}>
               {bullets.map((bulletPt: string, i) =>(
-                <View key={i} className={`flex flex-1 flex-row items-start ${cardColors.bg} px-3 py-2`}>
-                  <Text className={`${cardColors.bulletPt} text-center text-sm`}>
+                <View key={i} className={`flex flex-row items-start ${cardColors.bg} px-4 py-[10px] gap-3`}>
+                  <Component className={`${cardColors.h3} shrink-0 mt-1`} size={12} strokeWidth={2.5} />
+                  <Text className={`${cardColors.bulletPt} text-justify text-sm`}>
                     {bulletPt}
                   </Text>
                 </View>

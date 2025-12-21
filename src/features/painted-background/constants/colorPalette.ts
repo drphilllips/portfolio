@@ -104,11 +104,11 @@ const cardColors = (pageColorId: ColorId): CardColors => {
       ? "text-ashbl-400"
       : "text-ghost-400",
     p: primary === "ghost"
-      ? "text-ashbl-300"
-      : "text-ghost-300",
+      ? "text-ashbl-500"
+      : "text-ghost-500",
     bulletPt: primary === "ghost"
-      ? "text-ashbl-200"
-      : "text-ghost-200",
+      ? "text-ashbl-100"
+      : "text-ghost-100",
     sep: primary === "ghost"
       ? "bg-ashbl/10"
       : "bg-ghost/10",

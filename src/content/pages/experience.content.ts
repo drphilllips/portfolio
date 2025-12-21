@@ -125,7 +125,7 @@ export const ExperiencePageContent: PageContent = PageSchema.parse({
               bullets: [
                 "Agent graph (nodes, tools, memory, routing)",
                 "Integration diagram (services + auth boundaries)",
-                "Workflow automation flowchart (trigger → agent → actions → logging/observability)",
+                "Workflow automation flowchart (trigger → agent → actions → logging / observability)",
               ],
             },
           ],
