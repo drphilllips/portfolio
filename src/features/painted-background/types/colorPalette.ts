@@ -40,6 +40,7 @@ export type ComponentColors = {
 export type PageColors = {
   bg: string
   title: string
+  sub: string
   sep: string
 }
 

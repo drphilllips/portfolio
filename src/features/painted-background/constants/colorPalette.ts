@@ -57,6 +57,9 @@ const pageColors = (pageColorId: ColorId): PageColors => {
     title: primary === "ghost"
       ? "text-ghost"
       : "text-ashbl",
+    sub: primary === "ghost"
+      ? "text-ghost/70"
+      : "text-ashbl/70",
     sep: primary === "ghost"
       ? "bg-ghost"
       : "bg-ashbl",
