@@ -1,6 +1,6 @@
 import type { SitePage } from "../../../types/pages"
 
-export const PALETTE_IDS = [
+export const COLOR_IDS = [
   "ashbl",
   "roylp",
   "chrtr",
@@ -9,7 +9,7 @@ export const PALETTE_IDS = [
   "ghost",
 ] as const
 
-export type ColorId = (typeof PALETTE_IDS)[number]
+export type ColorId = (typeof COLOR_IDS)[number]
 
 export type ColorPrimary = "ghost" | "ashbl"
 

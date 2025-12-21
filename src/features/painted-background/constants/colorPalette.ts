@@ -1,5 +1,5 @@
 import { type SitePage } from "../../../types/pages";
-import type { ButtonColors, CardColors, ColorId, ColorPrimary, ComponentColors, ContentColors, PageColors, PaletteItem, SectionColors, TagColors } from "../types/colorPalette";
+import { COLOR_IDS, type ButtonColors, type CardColors, type ColorId, type ColorPrimary, type ComponentColors, type ContentColors, type PageColors, type PaletteItem, type SectionColors, type TagColors } from "../types/colorPalette";
 
 export const NAVIGATE_PRESS_COOL_DOWN_MS = 2400
 
@@ -15,6 +15,10 @@ const COLOR_BGS: Record<ColorId, string> = {
   ghost: "bg-ghost",
 }
 
+const COLOR_TEXTS: Record<ColorId, string> = Object.fromEntries(
+  COLOR_IDS.map(colorId => [colorId, `text-${colorId}`])
+) as Record<ColorId, string>
+
 const COLOR_PRIMARIES: Record<ColorId, ColorPrimary> = {
   ashbl: "ghost",
   roylp: "ghost",
@@ -23,6 +27,12 @@ const COLOR_PRIMARIES: Record<ColorId, ColorPrimary> = {
   palbr: "ghost",
   ghost: "ashbl",
 }
+
+// Procedurally map each page color -> its primary text class (e.g. "text-ghost")
+const COLOR_PRIMARY_TEXTS: Record<ColorId, string> = Object.fromEntries(
+  (Object.entries(COLOR_PRIMARIES) as [ColorId, ColorPrimary][])
+    .map(([colorId, primary]) => [colorId, `text-${primary}`])
+) as Record<ColorId, string>
 
 const COLOR_TAG_BGS: Record<ColorId, string> = {
   ashbl: "bg-ashbl-400",
@@ -136,18 +146,23 @@ const tagColors = (pageColorId: ColorId): TagColors => {
 // Mass-export colors
 // --------
 const pi = (
-  color: ColorId, page: SitePage, name: string, bg: string, text: string, blendText: string, componentColors: ComponentColors
+  color: ColorId, page: SitePage, name: string,
 ): PaletteItem => (
-  { color, page, name, bg, text, blendText, componentColors }
+  { color, page, name,
+    bg: COLOR_BGS[color],
+    text: COLOR_PRIMARY_TEXTS[color],
+    blendText: COLOR_TEXTS[color],
+    componentColors: componentColors(color),
+  }
 )
 
 export const PALETTE_ITEMS: PaletteItem[] = [
-  pi("ashbl", "", "Home", "bg-ashbl", "text-ghost", "text-ashbl", componentColors("ashbl")),
-  pi("roylp", "about", "About", "bg-roylp", "text-ghost", "text-roylp", componentColors("roylp")),
-  pi("chrtr", "projects", "Projects", "bg-chrtr", "text-ashbl", "text-chrtr", componentColors("chrtr")),
-  pi("orngc", "experience", "Experience", "bg-orngc", "text-ghost", "text-orngc", componentColors("orngc")),
-  pi("palbr", "services", "Services", "bg-palbr", "text-ghost", "text-palbr", componentColors("palbr")),
-  pi("ghost", "contact", "Contact", "bg-ghost", "text-ashbl", "text-ghost", componentColors("ghost")),
+  pi("ashbl", "", "Home"),
+  pi("roylp", "about", "About"),
+  pi("chrtr", "projects", "Projects"),
+  pi("orngc", "experience", "Experience"),
+  pi("palbr", "services", "Services"),
+  pi("ghost", "contact", "Contact"),
 ]
 
 export const PAGE_COMPONENT_COLORS: Record<SitePage, ComponentColors> = (

@@ -62,7 +62,7 @@ export default function AppShell({
       className={`
         min-h-dvh w-dvw overflow-y-auto scroll-smooth
         ${onMobileSideways && "px-12"}
-        ${pageColors.bg} ${pageColors.title}
+        ${pageColors.title}
         flex flex-col items-center justify-center text-center
         ${className}
       `}
