@@ -8,6 +8,7 @@ export const CardSchema = z
     text: z.string().min(1).max(400).optional(),
     image: ImageSchema.optional(),
     link: LinkSchema.optional(),
+    bullets: z.array(z.string().min(1).max(100)).max(3).optional()
   })
   .refine(
     (obj) =>

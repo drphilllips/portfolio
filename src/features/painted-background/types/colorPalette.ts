@@ -46,7 +46,6 @@ export type PageColors = {
 export type SectionColors = {
   bg?: string
   h1: string
-  sep: string
 }
 
 export type ContentColors = {
@@ -54,6 +53,7 @@ export type ContentColors = {
   h2: string
   h3: string
   p: string
+  sep: string
 }
 
 export type CardColors = {
@@ -61,6 +61,8 @@ export type CardColors = {
   border: string
   h3: string
   p: string
+  bulletPt: string
+  sep: string
 }
 
 export type ButtonColors = {

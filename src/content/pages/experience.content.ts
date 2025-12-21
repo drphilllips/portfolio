@@ -60,8 +60,11 @@ export const ExperiencePageContent: PageContent = PageSchema.parse({
           cards: [
             {
               title: "Highlights",
-              text:
-                "- Designed a full-stack app connecting employees and customers\n- Built REST APIs and database models\n- Built CI/CD pipelines for repair scheduling and quoting",
+              bullets: [
+                "Designed a full-stack app connecting employees and customers",
+                "Built REST APIs and database models",
+                "Built CI/CD pipelines for repair scheduling and quoting",
+              ],
             },
             {
               title: "Tech",
@@ -73,8 +76,11 @@ export const ExperiencePageContent: PageContent = PageSchema.parse({
                 label: "5280 app screenshot placeholder",
                 src: "/images/experience/5280-app-screenshot-placeholder.jpg",
               },
-              text:
-                "- Quote flow (create/edit, line items, approvals)\n- Scheduling view (calendar / timeline / assignments)\n- Customer-facing status view (repair progress + milestones)\n- Admin/employee dashboards (task groups, departments, workload)",
+              bullets: [
+                "Quote flow (create/edit, line items, approvals)",
+                "Scheduling view (calendar / timeline / assignments)",
+                "Admin/employee dashboards (task groups, departments, workload)",
+              ],
             },
           ],
         },
@@ -100,8 +106,11 @@ export const ExperiencePageContent: PageContent = PageSchema.parse({
           cards: [
             {
               title: "Highlights",
-              text:
-                "- Developed AI-powered assistants using Django, React, LangGraph, and NodeJS\n- Automated workflows for 10,000+ employees\n- Improved efficiency across business operations",
+              bullets: [
+                "Developed AI-powered assistants using Django, React, LangGraph, and NodeJS",
+                "Automated workflows for 10,000+ employees",
+                "Improved efficiency across business operations",
+              ],
             },
             {
               title: "Tech",
@@ -113,8 +122,11 @@ export const ExperiencePageContent: PageContent = PageSchema.parse({
                 label: "Socotec architecture diagram placeholder",
                 src: "/images/experience/socotec-architecture-placeholder.jpg",
               },
-              text:
-                "- Agent graph (nodes, tools, memory, routing)\n- Integration diagram (services + auth boundaries)\n- Workflow automation flowchart (trigger → agent → actions → logging/observability)",
+              bullets: [
+                "Agent graph (nodes, tools, memory, routing)",
+                "Integration diagram (services + auth boundaries)",
+                "Workflow automation flowchart (trigger → agent → actions → logging/observability)",
+              ],
             },
           ],
         },
@@ -140,8 +152,11 @@ export const ExperiencePageContent: PageContent = PageSchema.parse({
           cards: [
             {
               title: "Highlights",
-              text:
-                "- Created 3 integrated Python automation apps streamlining Excel workflows\n- Built internal tooling with PyQt and Pandas\n- Redesigned company website\n- Improved sales pipeline with analytics-driven tools",
+              bullets: [
+                "Created 3 integrated Python automation apps streamlining Excel workflows",
+                "Redesigned company website",
+                "Improved sales pipeline with analytics-driven tools",
+              ],
             },
             {
               title: "Tech",
@@ -153,8 +168,11 @@ export const ExperiencePageContent: PageContent = PageSchema.parse({
                 label: "TAARCOM tool screenshot placeholder",
                 src: "/images/experience/taarcom-tool-screenshot-placeholder.jpg",
               },
-              text:
-                "- GUI screenshots (main flows + edge cases)\n- Report export view (inputs → generated outputs)\n- Before/after workflow comparison (manual steps eliminated)\n- Example dashboards / analytics outputs (if applicable)",
+              bullets: [
+                "GUI screenshots (main flows + edge cases)",
+                "Report export view (inputs → generated outputs)",
+                "Before/after workflow comparison (manual steps eliminated)",
+              ],
             },
           ],
         },
