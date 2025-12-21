@@ -50,13 +50,14 @@ export default function Button({ href, label }: LinkType) {
       aria-label={label}
       onClick={onClick}
       className={`
-        ${buttonColors.bg} ${buttonColors.label}
-        border ${buttonColors.border}
+        ${buttonColors.bg} border ${buttonColors.border}
         inline-flex items-center justify-center
         px-4 py-2 rounded-md
       `}
     >
-      <Text>{label}</Text>
+      <Text className={`${buttonColors.label} text-md tracking-wide font-medium`}>
+        {label?.toLocaleUpperCase()}
+      </Text>
     </a>
   )
 }

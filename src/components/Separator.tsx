@@ -24,8 +24,8 @@ export default function Separator({
         <View
           className={
             orientation === "horizontal"
-              ? `w-full opacity-40 ${color}`
-              : `h-full opacity-40 ${color}`
+              ? `w-full ${color}`
+              : `h-full ${color}`
           }
           style={{
             height: orientation === "horizontal" ? thickness : "100%",

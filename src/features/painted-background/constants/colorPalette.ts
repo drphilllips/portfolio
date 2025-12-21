@@ -25,12 +25,12 @@ const COLOR_PRIMARIES: Record<ColorId, ColorPrimary> = {
 }
 
 const COLOR_CARD_BORDERS: Record<ColorId, string> = {
-  ashbl: "border-ashbl/30",
-  roylp: "border-roylp/30",
-  chrtr: "border-chrtr/30",
-  orngc: "border-orngc/30",
-  palbr: "border-palbr/30",
-  ghost: "border-ghost/30",
+  ashbl: "border-ashbl-400",
+  roylp: "border-roylp-400",
+  chrtr: "border-chrtr-400",
+  orngc: "border-orngc-400",
+  palbr: "border-palbr-400",
+  ghost: "border-ghost-400",
 }
 
 const componentColors = (pageColorId: ColorId): ComponentColors => ({
@@ -52,8 +52,8 @@ const pageColors = (pageColorId: ColorId): PageColors => {
       ? "text-ghost/40"
       : "text-ashbl/40",
     sep: primary === "ghost"
-      ? "bg-ghost"
-      : "bg-ashbl",
+      ? "bg-ghost/40"
+      : "bg-ashbl/40",
   }
 }
 
@@ -81,8 +81,8 @@ const contentColors = (pageColorId: ColorId): ContentColors => {
       ? "text-ghost"
       : "text-ashbl",
     sep: primary === "ghost"
-      ? "bg-ghost/50"
-      : "bg-ashbl/50",
+      ? "bg-ghost/40"
+      : "bg-ashbl/40",
   }
 }
 
@@ -114,10 +114,12 @@ const buttonColors = (pageColorId: ColorId): ButtonColors => {
     bg: primary === "ghost"
       ? "bg-ghost"
       : "bg-ashbl",
-    border: COLOR_CARD_BORDERS[pageColorId],
+    border: primary === "ghost"
+      ? "border-ashbl/30"
+      : "border-ghost/30",
     label: primary === "ghost"
-      ? "text-ashbl"
-      : "text-ghost",
+      ? "text-ashbl/80"
+      : "text-ghost/80",
   }
 }
 
