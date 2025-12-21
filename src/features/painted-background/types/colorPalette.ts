@@ -35,6 +35,7 @@ export type ComponentColors = {
   contentColors: ContentColors
   cardColors: CardColors
   buttonColors: ButtonColors
+  tagColors: TagColors
 }
 
 export type PageColors = {
@@ -60,6 +61,7 @@ export type ContentColors = {
 export type CardColors = {
   bg: string
   border: string
+  shadow: string
   h3: string
   p: string
   bulletPt: string
@@ -69,5 +71,12 @@ export type CardColors = {
 export type ButtonColors = {
   bg: string
   border: string
+  label: string
+}
+
+export type TagColors = {
+  bg: string
+  border: string
+  shadow: string
   label: string
 }

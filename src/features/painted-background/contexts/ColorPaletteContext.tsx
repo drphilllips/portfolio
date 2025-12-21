@@ -2,7 +2,7 @@ import { createContext, useCallback, useEffect, useMemo, useRef, useState } from
 import { useLocation } from "react-router-dom"
 import type { SitePage } from "../../../types/pages"
 import { INIT_COMPONENT_COLORS, PAGE_COMPONENT_COLORS } from "../constants/colorPalette"
-import type { ButtonColors, CardColors, ComponentColors, ContentColors, PageColors, SectionColors } from "../types/colorPalette"
+import type { ButtonColors, CardColors, ComponentColors, ContentColors, PageColors, SectionColors, TagColors } from "../types/colorPalette"
 
 type PendingPaletteChange = {
   requestId: number
@@ -19,6 +19,7 @@ type ColorPaletteContextType = {
   contentColors: ContentColors
   cardColors: CardColors
   buttonColors: ButtonColors
+  tagColors: TagColors
 
   /**
    * Request a palette change. This does NOT immediately change the committed
@@ -98,11 +99,7 @@ export function ColorPaletteProvider({ children }: { children: React.ReactNode }
 
   const value = useMemo(
     () => ({
-      pageColors: colorPalette.pageColors,
-      sectionColors: colorPalette.sectionColors,
-      contentColors: colorPalette.contentColors,
-      cardColors: colorPalette.cardColors,
-      buttonColors: colorPalette.buttonColors,
+      ...colorPalette,
       requestPaletteChange,
       isTransitioning,
       pendingPaletteChange,

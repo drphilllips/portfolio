@@ -20,7 +20,8 @@ export default function Card({
       {(title || text || image || bullets) && (
         <View
           className={`
-            ${cardColors.bg} ${cardColors.border} border-3
+            ${cardColors.bg} ${cardColors.border} border
+            ${cardColors.shadow} shadow-sm
             px-4 pt-4 pb-6 rounded-3xl flex flex-1 flex-col items-center gap-2
           `}
         >

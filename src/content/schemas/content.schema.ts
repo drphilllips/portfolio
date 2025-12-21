@@ -11,6 +11,7 @@ export const ContentSchema = z
     image: ImageSchema.optional(),
     link: LinkSchema.optional(),
     cards: z.array(CardSchema).optional(),
+    tags: z.array(z.string().min(1).max(20)).max(5).optional()
   })
   .refine(
     (obj) =>

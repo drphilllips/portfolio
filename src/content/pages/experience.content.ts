@@ -57,6 +57,7 @@ export const ExperiencePageContent: PageContent = PageSchema.parse({
             label: "5280 experience cover placeholder",
             src: "/images/experience/5280-cover-placeholder.jpg",
           },
+          tags: ["React Native", "Django", "REST APIs", "CI/CD"],
           cards: [
             {
               title: "Highlights",
@@ -65,10 +66,6 @@ export const ExperiencePageContent: PageContent = PageSchema.parse({
                 "Built REST APIs and database models",
                 "Built CI/CD pipelines for repair scheduling and quoting",
               ],
-            },
-            {
-              title: "Tech",
-              text: "React Native, Django, REST APIs, CI/CD",
             },
             {
               title: "Screenshots to collect",
@@ -103,6 +100,7 @@ export const ExperiencePageContent: PageContent = PageSchema.parse({
             label: "Socotec experience cover placeholder",
             src: "/images/experience/socotec-cover-placeholder.jpg",
           },
+          tags: ["Django", "React", "LangGraph", "NodeJS"],
           cards: [
             {
               title: "Highlights",
@@ -111,10 +109,6 @@ export const ExperiencePageContent: PageContent = PageSchema.parse({
                 "Automated workflows for 10,000+ employees",
                 "Improved efficiency across business operations",
               ],
-            },
-            {
-              title: "Tech",
-              text: "Django, React, LangGraph, NodeJS",
             },
             {
               title: "Diagrams to collect",
@@ -149,6 +143,7 @@ export const ExperiencePageContent: PageContent = PageSchema.parse({
             label: "TAARCOM experience cover placeholder",
             src: "/images/experience/taarcom-cover-placeholder.jpg",
           },
+          tags: ["Python", "PyQT", "Pandas", "Excel Automation"],
           cards: [
             {
               title: "Highlights",
@@ -157,10 +152,6 @@ export const ExperiencePageContent: PageContent = PageSchema.parse({
                 "Redesigned company website",
                 "Improved sales pipeline with analytics-driven tools",
               ],
-            },
-            {
-              title: "Tech",
-              text: "Python, PyQt, Pandas, Excel automation",
             },
             {
               title: "Screenshots to collect",

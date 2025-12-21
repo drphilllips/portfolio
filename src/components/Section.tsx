@@ -20,12 +20,15 @@ export default function Section({
         </Text>
       )}
       <View className="w-full flex flex-col items-center gap-4">
-        {content.map(({ title, shortText, longText, cards }: ContentType) => (
+        {content.map(({ title, shortText, longText, image, link, cards, tags }: ContentType) => (
           <Content
             title={title}
             shortText={shortText}
             longText={longText}
+            image={image}
+            link={link}
             cards={cards}
+            tags={tags}
           />
         ))}
       </View>

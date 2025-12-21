@@ -1,5 +1,5 @@
 import { type SitePage } from "../../../types/pages";
-import type { ButtonColors, CardColors, ColorId, ColorPrimary, ComponentColors, ContentColors, PageColors, PaletteItem, SectionColors } from "../types/colorPalette";
+import type { ButtonColors, CardColors, ColorId, ColorPrimary, ComponentColors, ContentColors, PageColors, PaletteItem, SectionColors, TagColors } from "../types/colorPalette";
 
 export const NAVIGATE_PRESS_COOL_DOWN_MS = 2400
 
@@ -24,13 +24,13 @@ const COLOR_PRIMARIES: Record<ColorId, ColorPrimary> = {
   ghost: "ashbl",
 }
 
-const COLOR_CARD_BORDERS: Record<ColorId, string> = {
-  ashbl: "border-ashbl-400",
-  roylp: "border-roylp-400",
-  chrtr: "border-chrtr-400",
-  orngc: "border-orngc-400",
-  palbr: "border-palbr-400",
-  ghost: "border-ghost-400",
+const COLOR_TAG_BGS: Record<ColorId, string> = {
+  ashbl: "bg-ashbl-400",
+  roylp: "bg-roylp-400",
+  chrtr: "bg-chrtr-400",
+  orngc: "bg-orngc-400",
+  palbr: "bg-palbr-400",
+  ghost: "bg-ghost-400",
 }
 
 const componentColors = (pageColorId: ColorId): ComponentColors => ({
@@ -39,6 +39,7 @@ const componentColors = (pageColorId: ColorId): ComponentColors => ({
   contentColors: contentColors(pageColorId),
   cardColors: cardColors(pageColorId),
   buttonColors: buttonColors(pageColorId),
+  tagColors: tagColors(pageColorId),
 })
 
 const pageColors = (pageColorId: ColorId): PageColors => {
@@ -52,8 +53,8 @@ const pageColors = (pageColorId: ColorId): PageColors => {
       ? "text-ghost/40"
       : "text-ashbl/40",
     sep: primary === "ghost"
-      ? "bg-ghost/40"
-      : "bg-ashbl/40",
+      ? "bg-ghost/20"
+      : "bg-ashbl/20",
   }
 }
 
@@ -81,18 +82,17 @@ const contentColors = (pageColorId: ColorId): ContentColors => {
       ? "text-ghost"
       : "text-ashbl",
     sep: primary === "ghost"
-      ? "bg-ghost/40"
-      : "bg-ashbl/40",
+      ? "bg-ghost/10"
+      : "bg-ashbl/10",
   }
 }
 
 const cardColors = (pageColorId: ColorId): CardColors => {
   const primary = COLOR_PRIMARIES[pageColorId]
   return {
-    bg: primary === "ghost"
-      ? "bg-ashbl/20"
-      : "bg-ghost/20",
-    border: COLOR_CARD_BORDERS[pageColorId],
+    bg: "bg-ghost/30",
+    border: "border-ghost/30",
+    shadow: "shadow-ashbl/20",
     h3: primary === "ghost"
       ? "text-ghost-400"
       : "text-ashbl-400",
@@ -120,6 +120,15 @@ const buttonColors = (pageColorId: ColorId): ButtonColors => {
     label: primary === "ghost"
       ? "text-ashbl/80"
       : "text-ghost/80",
+  }
+}
+
+const tagColors = (pageColorId: ColorId): TagColors => {
+  return {
+    bg: COLOR_TAG_BGS[pageColorId],
+    border: "border-ghost/30",
+    shadow: "shadow-ashbl/10",
+    label: "text-ghost/90",
   }
 }
 
@@ -157,4 +166,5 @@ export const INIT_COMPONENT_COLORS: ComponentColors = {
   contentColors: contentColors("ashbl"),
   cardColors: cardColors("ashbl"),
   buttonColors: buttonColors("ashbl"),
+  tagColors: tagColors("ashbl"),
 }
