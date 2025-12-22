@@ -1,5 +1,5 @@
 import { type SitePage } from "../../../types/pages";
-import { type ButtonColors, type CardColors, type ColorId, type ColorPrimary, type ComponentColors, type ContentColors, type PageColors, type PaletteItem, type SectionColors, type TagColors } from "../types/colorPalette";
+import { type ButtonColors, type CardColors, type ColorId, type ColorPrimary, type ComponentColors, type ContentColors, type CtaColors, type PageColors, type PaletteItem, type SectionColors, type TagColors } from "../types/colorPalette";
 
 export const NAVIGATE_PRESS_COOL_DOWN_MS = 2400
 
@@ -59,6 +59,7 @@ const componentColors = (pageColorId: ColorId): ComponentColors => ({
   cardColors: cardColors(pageColorId),
   buttonColors: buttonColors(pageColorId),
   tagColors: tagColors(pageColorId),
+  ctaColors: ctaColors(pageColorId),
 })
 
 const pageColors = (pageColorId: ColorId): PageColors => {
@@ -151,6 +152,27 @@ const tagColors = (pageColorId: ColorId): TagColors => {
   }
 }
 
+const ctaColors = (pageColorId: ColorId): CtaColors => {
+  const primary = COLOR_PRIMARIES[pageColorId]
+  return {
+    bg: primary === "ghost"
+      ? "bg-ghost"
+      : "bg-ashbl",
+    border: primary === "ghost"
+      ? "border-ashbl/30"
+      : "border-ghost/30",
+    h3: primary === "ghost"
+      ? "text-ashbl-400"
+      : "text-ghost-400",
+    h4: primary === "ghost"
+      ? "text-ashbl-500"
+      : "text-ghost-500",
+    sep: primary === "ghost"
+      ? "bg-ashbl/10"
+      : "bg-ghost/10",
+  }
+}
+
 // ----------
 // Mass-export colors
 // --------
@@ -191,4 +213,5 @@ export const INIT_COMPONENT_COLORS: ComponentColors = {
   cardColors: cardColors("ghost"),
   buttonColors: buttonColors("ghost"),
   tagColors: tagColors("ghost"),
+  ctaColors: ctaColors("ghost"),
 }

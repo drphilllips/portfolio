@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-export function useScrollSpyHash(sectionIds: string[], resetId?: string) {
+export function useScrollSpyHash(sectionIds: string[], hasScrolled: boolean, resetId?: string) {
   const lastIdRef = useRef<string | null>(null);
   const [visibleSection, setVisibleSection] = useState<string | null>(null);
 
@@ -13,6 +13,12 @@ export function useScrollSpyHash(sectionIds: string[], resetId?: string) {
 
     const observer = new IntersectionObserver(
       (entries) => {
+        const { pathname, search } = window.location;
+
+        if (!hasScrolled) {
+          setVisibleSection(null);
+          window.history.replaceState(null, "", `${pathname}${search}`);
+        }
         // Pick the entry that is intersecting and closest to the top.
         const visible = entries
           .filter((e) => e.isIntersecting)
@@ -24,8 +30,6 @@ export function useScrollSpyHash(sectionIds: string[], resetId?: string) {
         if (!id || lastIdRef.current === id) return;
 
         lastIdRef.current = id;
-
-        const { pathname, search } = window.location;
 
         if (resetId && id === resetId) {
           setVisibleSection(null);
@@ -45,7 +49,7 @@ export function useScrollSpyHash(sectionIds: string[], resetId?: string) {
 
     elements.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
-  }, [sectionIds, resetId]);
+  }, [hasScrolled, sectionIds, resetId]);
 
   return { visibleSection };
 }

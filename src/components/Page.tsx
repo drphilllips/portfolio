@@ -20,7 +20,7 @@ export default function Page({
   const { pageColors } = useColorPalette()
   const { hasScrolled } = useSmoothScroll()
   const sectionIds = useMemo(() => sections.map((s) => s.id), [sections])
-  const { visibleSection } = useScrollSpyHash([heroSection.id, ...sectionIds], "hero")
+  const { visibleSection } = useScrollSpyHash([heroSection.id, ...sectionIds], hasScrolled, "hero")
 
   return (
     <View className="relative flex flex-col items-center w-full lg:px-12 px-4 lg:pt-28 pt-20 lg:pb-28 pb-20 gap-8">

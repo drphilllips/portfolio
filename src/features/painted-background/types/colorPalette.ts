@@ -36,6 +36,7 @@ export type ComponentColors = {
   cardColors: CardColors
   buttonColors: ButtonColors
   tagColors: TagColors
+  ctaColors: CtaColors
 }
 
 export type PageColors = {
@@ -79,4 +80,12 @@ export type TagColors = {
   border: string
   shadow: string
   label: string
+}
+
+export type CtaColors = {
+  bg: string
+  border: string
+  h3: string
+  h4: string
+  sep: string
 }

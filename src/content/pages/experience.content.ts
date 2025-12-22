@@ -19,7 +19,7 @@ export const ExperiencePageContent: PageContent = PageSchema.parse({
   ctas: [
     {
       shortDesc:
-        "Contract web & mobile development for an auto body shop. Enhances communication for customers and employees.",
+        "Mobile App Developer (Contract)",
       link: {
         label: "@ 5280",
         href: "#5280",
@@ -27,7 +27,7 @@ export const ExperiencePageContent: PageContent = PageSchema.parse({
     },
     {
       shortDesc:
-        "Developed AI-powered assistants using Django, React, and LangGraph. Automated workflows for 10,000+ employees.",
+        "Full-Stack Chatbot Engineer",
       link: {
         label: "@ Socotec",
         href: "#socotec",
@@ -35,7 +35,7 @@ export const ExperiencePageContent: PageContent = PageSchema.parse({
     },
     {
       shortDesc:
-        "Create 3 Python automation apps to streamline Excel-based workflows. Improved sales data pipelines.",
+        "Sales Ops Intern & Python App Developer",
       link: {
         label: "@ Taarcom",
         href: "#taarcom",

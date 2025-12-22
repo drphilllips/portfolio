@@ -44,7 +44,7 @@ export function useSmoothScroll(href?: string) {
     []
   )
 
-  const scrollOnClickLink: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
+  const scrollOnClickLink = (e: MouseEvent | React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     // only navigate if we have a href provided
     if (!href) return
     // Only handle hash navigation

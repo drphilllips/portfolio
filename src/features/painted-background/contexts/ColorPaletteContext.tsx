@@ -2,24 +2,18 @@ import { createContext, useCallback, useEffect, useMemo, useRef, useState } from
 import { useLocation } from "react-router-dom"
 import type { SitePage } from "../../../types/pages"
 import { INIT_COMPONENT_COLORS, PAGE_COMPONENT_COLORS } from "../constants/colorPalette"
-import type { ButtonColors, CardColors, ComponentColors, ContentColors, PageColors, SectionColors, TagColors } from "../types/colorPalette"
+import type { ComponentColors } from "../types/colorPalette"
 
 type PendingPaletteChange = {
   requestId: number
   componentColors: ComponentColors
 }
 
-type ColorPaletteContextType = {
+type ColorPaletteContextType = ComponentColors & {
   /**
    * The committed palette that the DOM should currently be using.
    * `Page` consumes this value.
    */
-  pageColors: PageColors
-  sectionColors: SectionColors
-  contentColors: ContentColors
-  cardColors: CardColors
-  buttonColors: ButtonColors
-  tagColors: TagColors
 
   /**
    * Request a palette change. This does NOT immediately change the committed
