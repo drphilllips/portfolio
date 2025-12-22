@@ -20,7 +20,7 @@ export const ExperiencePageContent: PageType = PageSchema.parse({
       subtitle:
         "2025",
       link: {
-        label: "@ 5280 Auto Body",
+        label: "@ 5280 Auto Body Shop",
         href: "#5280",
       },
     },
