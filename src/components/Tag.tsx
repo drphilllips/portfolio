@@ -14,7 +14,7 @@ export default function Tag({
       className={`
         ${tagColors.bg} border ${tagColors.border} shadow-2xs ${tagColors.shadow}
         flex flex-row px-2 py-px items-center justify-center
-        rounded-xl text-sm
+        rounded-xl text-sm cursor-default
       `}
     >
       <Text className={`${tagColors.label} font-semibold`}>{tag}</Text>
