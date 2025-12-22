@@ -26,7 +26,6 @@ export default function Cta({
         rounded-lg
         ${(title || subtitle) ? "px-3 pt-3 pb-4" : "p-2"}
         cursor-pointer
-        ${active && "underline underline-offset-2"}
       `}
       whileHover={!shouldReduceMotion ? { scale: 1.02 } : undefined}
       whileTap={!shouldReduceMotion ? { scale: 0.98 } : undefined}
@@ -52,7 +51,10 @@ export default function Cta({
           </View>
         )}
         <Text
-          className={`${ctaColors.h3} text-start text-xl font-bold leading-none`}
+          className={`
+            ${active && "underline underline-offset-2"} ${ctaColors.h3}
+            text-start text-xl font-bold leading-none
+          `}
         >
           {link.label}
         </Text>

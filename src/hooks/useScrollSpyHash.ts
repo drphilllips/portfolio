@@ -1,48 +1,54 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react"
 
-export function useScrollSpyHash(sectionIds: string[], hasScrolled: boolean, resetId?: string) {
-  const lastIdRef = useRef<string | null>(null);
-  const [visibleSection, setVisibleSection] = useState<string | null>(null);
+export function useScrollSpyHash(sectionIds: string[], atTopOfPage: boolean, atEndOfPage: boolean, resetId?: string) {
+  const lastIdRef = useRef<string | null>(null)
+  const [visibleSection, setVisibleSection] = useState<string | null>(null)
 
   useEffect(() => {
     const elements = sectionIds
       .map((id) => document.getElementById(id))
-      .filter(Boolean) as HTMLElement[];
+      .filter(Boolean) as HTMLElement[]
 
-    if (!elements.length) return;
+    if (!elements.length) return
 
     const observer = new IntersectionObserver(
       (entries) => {
-        const { pathname, search } = window.location;
+        const { pathname, search } = window.location
 
         // Don't set any hash until the user has actually scrolled.
         // Also, avoid caching an id in `lastIdRef` while we're in this state,
         // otherwise we can accidentally "skip" the first section once scrolling begins.
-        if (!hasScrolled) {
-          lastIdRef.current = null;
-          setVisibleSection(null);
-          window.history.replaceState(null, "", `${pathname}${search}`);
-          return;
+        if (atTopOfPage) {
+          lastIdRef.current = null
+          setVisibleSection(null)
+          window.history.replaceState(null, "", `${pathname}${search}`)
+          return
+        } else if (atEndOfPage) {
+          lastIdRef.current =  null
+          const lastId = sectionIds[sectionIds.length-1]
+          setVisibleSection(lastId)
+          window.history.replaceState(null, "", `${pathname}${search}#${lastId}`)
+          return
         }
         // Pick the entry that is intersecting and closest to the top.
         const visible = entries
           .filter((e) => e.isIntersecting)
-          .sort((a, b) => (a.boundingClientRect.top - b.boundingClientRect.top))[0];
+          .sort((a, b) => (a.boundingClientRect.top - b.boundingClientRect.top))[0]
 
-        if (!visible) return;
+        if (!visible) return
 
-        const id = (visible.target as HTMLElement).id;
+        const id = (visible.target as HTMLElement).id
         // If we're already showing this id, no need to re-write the hash.
-        if (!id || lastIdRef.current === id) return;
+        if (!id || lastIdRef.current === id) return
 
-        lastIdRef.current = id;
+        lastIdRef.current = id
 
         if (resetId && id === resetId) {
-          setVisibleSection(null);
-          window.history.replaceState(null, "", `${pathname}${search}`);
+          setVisibleSection(null)
+          window.history.replaceState(null, "", `${pathname}${search}`)
         } else {
-          setVisibleSection(id);
-          window.history.replaceState(null, "", `${pathname}${search}#${id}`);
+          setVisibleSection(id)
+          window.history.replaceState(null, "", `${pathname}${search}#${id}`)
         }
       },
       {
@@ -51,11 +57,11 @@ export function useScrollSpyHash(sectionIds: string[], hasScrolled: boolean, res
         threshold: [0, 0.1],
         rootMargin: "-35% 0px -60% 0px",
       }
-    );
+    )
 
-    elements.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, [hasScrolled, sectionIds, resetId]);
+    elements.forEach((el) => observer.observe(el))
+    return () => observer.disconnect()
+  }, [atTopOfPage, atEndOfPage, sectionIds, resetId])
 
-  return { visibleSection };
+  return { visibleSection }
 }

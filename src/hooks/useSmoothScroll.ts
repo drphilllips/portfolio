@@ -1,15 +1,24 @@
 import { useCallback, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { END_OF_PAGE_PX, START_OF_PAGE_PX } from "../constants/pageSections"
 
 type EasingFn = (t: number) => number
 
 export function useSmoothScroll(href?: string) {
-  const [hasScrolled, setHasScrolled] = useState(false)
+  const [atTopOfPage, setAtTopOfPage] = useState(false)
+  const [atEndOfPage, setAtEndOfPage] = useState(false)
   const navigate = useNavigate()
 
   useEffect(() => {
     const onScroll = () => {
-      setHasScrolled(window.scrollY >= 10)
+      const scrollTop = window.scrollY
+      const viewportHeight = window.innerHeight
+      const documentHeight = document.documentElement.scrollHeight
+
+      setAtTopOfPage(scrollTop <= START_OF_PAGE_PX)
+      setAtEndOfPage(
+        scrollTop + viewportHeight >= documentHeight - END_OF_PAGE_PX
+      )
     }
 
     onScroll() // initialize on mount
@@ -79,7 +88,7 @@ export function useSmoothScroll(href?: string) {
     navigate({ hash }, { replace: true })
   }
 
-  return { scrollOnClickLink, smoothScrollTo, hasScrolled }
+  return { scrollOnClickLink, smoothScrollTo, atTopOfPage, atEndOfPage }
 }
 
 function easeInOutCubic(t: number) {
