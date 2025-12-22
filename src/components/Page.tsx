@@ -13,6 +13,7 @@ import Cta from "./Cta"
 
 export default function Page({
   title,
+  sectIcon,
   heroSection,
   ctas,
   sections,
@@ -40,13 +41,13 @@ export default function Page({
             </Text>
             {visibleSection && (
               <Text className={`${pageColors.sub} text-2xl mb-px`}>
-                @ {visibleSection}
+                {sectIcon} {visibleSection}
               </Text>
             )}
           </View>
         </View>
       )}
-      <View className="flex lg:px-40 px-4 flex-col gap-0">
+      <View className="flex lg:px-40 px-4 flex-col gap-4">
         <Section id={heroSection.id} title={heroSection.title} content={heroSection.content} />
         <View className="flex flex-row w-full flex-wrap justify-start gap-3">
           {ctas.map(({ shortDesc, link }: CtaType, i) => (

@@ -42,7 +42,11 @@ export default function Cta({
         >
           {link.label}
         </Text>
-        <Text className={`${ctaColors.h4} text-lg leading-tight text-start`}>{shortDesc}</Text>
+        {shortDesc && (
+          <Text className={`${ctaColors.h4} text-lg leading-tight text-start`}>
+            {shortDesc}
+          </Text>
+        )}
       </View>
       <SquareArrowOutUpRight className={ctaColors.h3} size={16} />
     </motion.button>

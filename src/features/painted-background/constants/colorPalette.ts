@@ -110,7 +110,9 @@ const contentColors = (pageColorId: ColorId): ContentColors => {
 const cardColors = (pageColorId: ColorId): CardColors => {
   const primary = COLOR_PRIMARIES[pageColorId]
   return {
-    bg: "bg-ghost/30",
+    bg: primary === "ghost"
+     ? "bg-ashbl/30"
+     : "bg-ghost/30",
     border: "border-ghost/30",
     shadow: "shadow-ashbl/20",
     h3: primary === "ghost"
@@ -144,11 +146,14 @@ const buttonColors = (pageColorId: ColorId): ButtonColors => {
 }
 
 const tagColors = (pageColorId: ColorId): TagColors => {
+  const primary = COLOR_PRIMARIES[pageColorId]
   return {
     bg: COLOR_TAG_BGS[pageColorId],
     border: "border-ghost/30",
     shadow: "shadow-ashbl/10",
-    label: "text-ashbl",
+    label: primary === "ghost"
+      ? "text-ghost"
+      : "text-ashbl",
   }
 }
 
@@ -156,17 +161,17 @@ const ctaColors = (pageColorId: ColorId): CtaColors => {
   const primary = COLOR_PRIMARIES[pageColorId]
   return {
     bg: primary === "ghost"
-      ? "bg-ghost"
-      : "bg-ashbl",
+      ? "bg-ghost/90"
+      : "bg-ashbl/90",
     border: primary === "ghost"
       ? "border-ashbl/30"
       : "border-ghost/30",
     h3: primary === "ghost"
+      ? "text-ashbl-300"
+      : "text-ghost-300",
+    h4: primary === "ghost"
       ? "text-ashbl-400"
       : "text-ghost-400",
-    h4: primary === "ghost"
-      ? "text-ashbl-500"
-      : "text-ghost-500",
     sep: primary === "ghost"
       ? "bg-ashbl/10"
       : "bg-ghost/10",

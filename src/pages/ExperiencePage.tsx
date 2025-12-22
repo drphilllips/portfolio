@@ -3,11 +3,12 @@ import { ExperiencePageContent } from "../content/pages/experience.content"
 import type { PageType } from "../content/schemas/page.schema"
 
 export default function ExperiencePage() {
-  const { title, heroSection, ctas, sections }: PageType = ExperiencePageContent
+  const { title, sectIcon, heroSection, ctas, sections }: PageType = ExperiencePageContent
 
   return (
     <Page
       title={title}
+      sectIcon={sectIcon}
       heroSection={heroSection}
       ctas={ctas}
       sections={sections}

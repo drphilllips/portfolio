@@ -5,6 +5,7 @@ import { CtaSchema } from "./cta.schema"
 export const PageSchema = z
   .object({
     title: z.string().min(1).max(50).optional(),
+    sectIcon: z.string().length(1),
     heroSection: SectionSchema,
     ctas: z.array(CtaSchema).min(1),
     sections: z.array(SectionSchema).min(1),
@@ -15,62 +16,3 @@ export const PageSchema = z
   )
 
 export type PageType = z.infer<typeof PageSchema>
-
-/**
-type PageType = {
-    heroSection: {
-        id: string;
-        content: {
-            title?: string | undefined;
-            date?: string | undefined;
-            desc?: string | undefined;
-            link?: {
-                href: string;
-                label?: string | undefined;
-            } | undefined;
-            cards?: {
-                title?: string | undefined;
-                text?: string | undefined;
-                link?: {
-                    href: string;
-                    label?: string | undefined;
-                } | undefined;
-                bullets?: string[] | undefined;
-            }[] | undefined;
-            tags?: string[] | undefined;
-        }[];
-        title?: string | undefined;
-    };
-    ctas: {
-        link: {
-            href: string;
-            label?: string | undefined;
-        };
-        shortDesc?: string | undefined;
-    }[];
-    sections: {
-        id: string;
-        content: {
-            title?: string | undefined;
-            date?: string | undefined;
-            desc?: string | undefined;
-            link?: {
-                href: string;
-                label?: string | undefined;
-            } | undefined;
-            cards?: {
-                title?: string | undefined;
-                text?: string | undefined;
-                link?: {
-                    href: string;
-                    label?: string | undefined;
-                } | undefined;
-                bullets?: string[] | undefined;
-            }[] | undefined;
-            tags?: string[] | undefined;
-        }[];
-        title?: string | undefined;
-    }[];
-    title?: string | undefined;
-}
- */

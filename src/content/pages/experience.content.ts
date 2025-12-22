@@ -2,6 +2,7 @@ import { PageSchema, type PageType } from "../schemas/page.schema";
 
 export const ExperiencePageContent: PageType = PageSchema.parse({
   title: "Experience",
+  sectIcon: "@",
   heroSection: {
     id: "hero",
     content: [

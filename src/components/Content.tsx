@@ -31,7 +31,7 @@ export default function Content({
             </Text>
           )}
           {tags && (
-            <View className="flex flex-row flex-wrap gap-[6px] items-start justify-center">
+            <View className="flex flex-row flex-wrap gap-[6px] items-start justify-start">
               {tags.map((tag: string, i) => (
                 <Tag key={i} tag={tag} />
               ))}
@@ -60,13 +60,15 @@ export default function Content({
           )}
         </View>
       )}
-      <View className="flex lg:flex-row flex-col gap-3">
-        {cards && cards.map(
-          ({title, text, image, link, bullets}: CardType, i) => (
-            <Card key={i} title={title} text={text} image={image} link={link} bullets={bullets} />
-          )
-        )}
-      </View>
+      {cards && (
+        <View className="flex lg:flex-row flex-col gap-3">
+          {cards.map(
+            ({title, text, image, link, bullets}: CardType, i) => (
+              <Card key={i} title={title} text={text} image={image} link={link} bullets={bullets} />
+            )
+          )}
+        </View>
+      )}
     </View>
   )
 }

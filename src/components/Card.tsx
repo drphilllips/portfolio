@@ -5,6 +5,7 @@ import View from "./View"
 import Button from "./Button"
 import { useColorPalette } from "../features/painted-background/contexts/useColorPalette"
 import { Component } from "lucide-react"
+import Separator from "./Separator"
 
 export default function Card({
   title,
@@ -32,10 +33,11 @@ export default function Card({
           )}
           {image && <Image label={image.label} src={image.src} /> }
           {text && (
-            <Text className={`${cardColors.p}`}>
+            <Text className={`${cardColors.p} text-start`}>
               {text}
             </Text>
           )}
+          {(text && bullets) && <Separator color={cardColors.sep} />}
           {bullets && (
             <View className={`flex flex-col gap-2 rounded-xl overflow-hidden`}>
               {bullets.map((bulletPt: string, i) =>(
