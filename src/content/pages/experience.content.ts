@@ -9,10 +9,6 @@ export const ExperiencePageContent: PageType = PageSchema.parse({
         title: "Building full-stack products from UI to API",
         desc:
           "This page highlights three recent roles where I shipped product features end-to-end.",
-        image: {
-          label: "Experience hero banner placeholder",
-          src: "/images/experience/hero-banner-placeholder.jpg",
-        },
       },
     ],
   },
@@ -55,10 +51,6 @@ export const ExperiencePageContent: PageType = PageSchema.parse({
           date: "Jun 2025 – Present",
           desc:
             "Building a full-stack internal + customer-facing application to streamline repair operations.\n\nI’ve focused on mobile UX, reliable backend APIs, and the data model needed to support quoting, scheduling, and repair task tracking across departments.",
-          image: {
-            label: "5280 experience cover placeholder",
-            src: "/images/experience/5280-cover-placeholder.jpg",
-          },
           tags: ["React Native", "Django", "REST APIs", "CI/CD"],
           cards: [
             {
@@ -71,10 +63,6 @@ export const ExperiencePageContent: PageType = PageSchema.parse({
             },
             {
               title: "Screenshots to collect",
-              image: {
-                label: "5280 app screenshot placeholder",
-                src: "/images/experience/5280-app-screenshot-placeholder.jpg",
-              },
               bullets: [
                 "Quote flow (create/edit, line items, approvals)",
                 "Scheduling view (calendar / timeline / assignments)",
@@ -98,10 +86,6 @@ export const ExperiencePageContent: PageType = PageSchema.parse({
           date: "Oct 2024 – Jun 2025",
           desc:
             "Developed AI-powered assistant experiences and supporting web/backend tooling.\n\nThe work emphasized reliable integrations, maintainable workflows, and productizing agent behavior so it could scale to enterprise usage.",
-          image: {
-            label: "Socotec experience cover placeholder",
-            src: "/images/experience/socotec-cover-placeholder.jpg",
-          },
           tags: ["Django", "React", "LangGraph", "NodeJS"],
           cards: [
             {
@@ -114,10 +98,6 @@ export const ExperiencePageContent: PageType = PageSchema.parse({
             },
             {
               title: "Diagrams to collect",
-              image: {
-                label: "Socotec architecture diagram placeholder",
-                src: "/images/experience/socotec-architecture-placeholder.jpg",
-              },
               bullets: [
                 "Agent graph (nodes, tools, memory, routing)",
                 "Integration diagram (services + auth boundaries)",
@@ -141,10 +121,6 @@ export const ExperiencePageContent: PageType = PageSchema.parse({
           date: "2022 – 2024",
           desc:
             "Built internal tools to streamline sales operations and reduce manual Excel-heavy workflows.\n\nThis included designing Python desktop apps and analytics-driven utilities that made reporting faster and more consistent for day-to-day pipeline work.",
-          image: {
-            label: "TAARCOM experience cover placeholder",
-            src: "/images/experience/taarcom-cover-placeholder.jpg",
-          },
           tags: ["Python", "PyQT", "Pandas", "Excel Automation"],
           cards: [
             {
@@ -157,10 +133,6 @@ export const ExperiencePageContent: PageType = PageSchema.parse({
             },
             {
               title: "Screenshots to collect",
-              image: {
-                label: "TAARCOM tool screenshot placeholder",
-                src: "/images/experience/taarcom-tool-screenshot-placeholder.jpg",
-              },
               bullets: [
                 "GUI screenshots (main flows + edge cases)",
                 "Report export view (inputs → generated outputs)",
