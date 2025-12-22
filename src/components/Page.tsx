@@ -19,9 +19,9 @@ export default function Page({
   sections,
 }: PageType) {
   const { pageColors } = useColorPalette()
-  const { atTopOfPage, atEndOfPage } = useSmoothScroll()
+  const { atTopOfPage } = useSmoothScroll()
   const sectionIds = useMemo(() => sections.map((s) => s.id), [sections])
-  const { visibleSection } = useScrollSpyHash([heroSection.id, ...sectionIds], atTopOfPage, atEndOfPage, "hero")
+  const { visibleSection } = useScrollSpyHash([heroSection.id, ...sectionIds], atTopOfPage, "hero")
 
   return (
     <View className="relative flex flex-col items-start w-full lg:pt-24 pt-20 lg:pb-28 pb-20 gap-8">
@@ -62,7 +62,7 @@ export default function Page({
         {sections.map(({ id, title, content }: SectionType, i) => (
           <>
             {i > 0 && <Separator key={`sep-${i}`} color={pageColors.sep} />}
-            <Section key={id} id={id} title={title} content={content}  />
+            <Section key={id} id={id} title={title} content={content} lastSection={i === sections.length-1} />
           </>
         ))}
       </View>
