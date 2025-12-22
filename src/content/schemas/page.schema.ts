@@ -15,3 +15,62 @@ export const PageSchema = z
   )
 
 export type PageType = z.infer<typeof PageSchema>
+
+/**
+type PageType = {
+    heroSection: {
+        id: string;
+        content: {
+            title?: string | undefined;
+            date?: string | undefined;
+            desc?: string | undefined;
+            link?: {
+                href: string;
+                label?: string | undefined;
+            } | undefined;
+            cards?: {
+                title?: string | undefined;
+                text?: string | undefined;
+                link?: {
+                    href: string;
+                    label?: string | undefined;
+                } | undefined;
+                bullets?: string[] | undefined;
+            }[] | undefined;
+            tags?: string[] | undefined;
+        }[];
+        title?: string | undefined;
+    };
+    ctas: {
+        link: {
+            href: string;
+            label?: string | undefined;
+        };
+        shortDesc?: string | undefined;
+    }[];
+    sections: {
+        id: string;
+        content: {
+            title?: string | undefined;
+            date?: string | undefined;
+            desc?: string | undefined;
+            link?: {
+                href: string;
+                label?: string | undefined;
+            } | undefined;
+            cards?: {
+                title?: string | undefined;
+                text?: string | undefined;
+                link?: {
+                    href: string;
+                    label?: string | undefined;
+                } | undefined;
+                bullets?: string[] | undefined;
+            }[] | undefined;
+            tags?: string[] | undefined;
+        }[];
+        title?: string | undefined;
+    }[];
+    title?: string | undefined;
+}
+ */

@@ -26,7 +26,7 @@ export default function Content({
       {(tags || title) && (
         <View className="flex flex-col gap-3 items-start">
           {title && (
-            <Text className={`${contentColors.h2} text-start lg:max-w-prose max-w-xs text-2xl leading-tight font-bold`}>
+            <Text className={`${contentColors.h2} text-start text-2xl leading-tight font-bold`}>
               {title}
             </Text>
           )}
@@ -46,7 +46,7 @@ export default function Content({
             <View className="flex flex-col gap-2">
               <View className="flex flex-row items-end gap-1 mr-6">
                 <CalendarDays className={`${contentColors.h3}`} size={20} />
-                <Text className={`${contentColors.h3} max-w-xs font-bold leading-tight`}>
+                <Text className={`${contentColors.h3} font-bold leading-tight`}>
                   {date}
                 </Text>
               </View>
@@ -54,7 +54,7 @@ export default function Content({
             </View>
           )}
           {desc && (
-            <Text className={`${contentColors.p} text-start lg:max-w-prose max-w-xs font-medium`}>
+            <Text className={`${contentColors.p} text-start font-medium`}>
               {desc}
             </Text>
           )}

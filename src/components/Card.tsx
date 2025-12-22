@@ -41,7 +41,7 @@ export default function Card({
               {bullets.map((bulletPt: string, i) =>(
                 <View key={i} className={`flex flex-row items-start gap-1`}>
                   <Component className={`${cardColors.h3} shrink-0 mt-[5px]`} size={12} strokeWidth={2.5} />
-                  <Text className={`${cardColors.bulletPt} text-left max-w-sm leading-snug`}>
+                  <Text className={`${cardColors.bulletPt} text-left leading-snug`}>
                     {bulletPt}
                   </Text>
                 </View>
