@@ -4,7 +4,7 @@ import type { ContentType } from "../content/schemas/content.schema";
 import Content from "./Content";
 import View from "./View";
 import { useColorPalette } from "../features/painted-background/contexts/useColorPalette";
-import { PAGE_LASE_SECTION_MIN_HEIGHT } from "../constants/pageSections";
+import { PAGE_LAST_SECTION_MIN_HEIGHT } from "../constants/pageSections";
 
 export default function Section({
   id,
@@ -19,8 +19,10 @@ export default function Section({
   return (
     <section
       id={id}
-      className={`${sectionColors.bg} flex flex-col w-full items-start gap-6`}
-      style={{ minHeight: lastSection ? PAGE_LASE_SECTION_MIN_HEIGHT : 0}}
+      className={`
+        ${lastSection && PAGE_LAST_SECTION_MIN_HEIGHT}
+        ${sectionColors.bg} flex flex-col w-full items-start gap-6
+      `}
     >
       {title && (
         <Text className={`${sectionColors.h1} text-3xl`}>
