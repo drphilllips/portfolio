@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 type EasingFn = (t: number) => number
 
-export function useSmoothScroll() {
+export function useSmoothScroll(href?: string) {
   const [hasScrolled, setHasScrolled] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const onScroll = () => {
@@ -42,7 +44,42 @@ export function useSmoothScroll() {
     []
   )
 
-  return { smoothScrollTo, hasScrolled }
+  const scrollOnClickLink: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
+    // only navigate if we have a href provided
+    if (!href) return
+    // Only handle hash navigation
+    const hashIndex = href.indexOf("#")
+    if (hashIndex === -1) return
+
+    const hash = href.slice(hashIndex) // "#taarcom"
+    const id = hash.slice(1) // "taarcom"
+    if (!id) return
+
+    // If href includes a path (e.g. "/experience#taarcom") and you're not on it,
+    // let the router navigate normally (or handle as a separate case).
+    const pathPart = href.slice(0, hashIndex)
+    if (pathPart && pathPart !== location.pathname) return
+
+    e.preventDefault()
+
+    const el = document.getElementById(id)
+    if (!el) {
+      // still update the hash so it can be retried after render if needed
+      navigate({ hash }, { replace: true })
+      return
+    }
+
+    const y =
+      el.getBoundingClientRect().top +
+      window.scrollY
+
+    smoothScrollTo(y-32, 800) // 👈 slower & more relaxed
+
+    // Update URL hash without causing a remount (your RouteTransitionOutlet ignores hash)
+    navigate({ hash }, { replace: true })
+  }
+
+  return { scrollOnClickLink, smoothScrollTo, hasScrolled }
 }
 
 function easeInOutCubic(t: number) {

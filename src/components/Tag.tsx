@@ -17,7 +17,7 @@ export default function Tag({
         rounded-xl text-sm
       `}
     >
-      <Text className={`${tagColors.label} text-shadow-md font-medium`}>{tag}</Text>
+      <Text className={`${tagColors.label} font-semibold`}>{tag}</Text>
     </View>
   )
 }

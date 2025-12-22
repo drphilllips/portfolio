@@ -22,11 +22,11 @@ export default function Card({
           className={`
             ${cardColors.bg} ${cardColors.border} border
             ${cardColors.shadow} shadow-sm
-            px-4 pt-4 pb-6 rounded-3xl flex flex-1 flex-col items-center gap-2
+            px-4 pt-4 pb-6 rounded-2xl flex flex-1 flex-col items-start gap-2
           `}
         >
           {title && (
-            <Text className={`${cardColors.h3} text-xl font-semibold`}>
+            <Text className={`${cardColors.h3} text-start text-xl font-semibold`}>
               {title}
             </Text>
           )}
@@ -37,11 +37,11 @@ export default function Card({
             </Text>
           )}
           {bullets && (
-            <View className={`flex flex-col p-1  gap-2 rounded-xl overflow-hidden`}>
+            <View className={`flex flex-col gap-2 rounded-xl overflow-hidden`}>
               {bullets.map((bulletPt: string, i) =>(
-                <View key={i} className={`flex flex-row items-start px-4 gap-3`}>
-                  <Component className={`${cardColors.h3} shrink-0 mt-1`} size={12} strokeWidth={2.5} />
-                  <Text className={`${cardColors.bulletPt} text-justify text-sm`}>
+                <View key={i} className={`flex flex-row items-start gap-1`}>
+                  <Component className={`${cardColors.h3} shrink-0 mt-[5px]`} size={12} strokeWidth={2.5} />
+                  <Text className={`${cardColors.bulletPt} text-left max-w-sm leading-snug`}>
                     {bulletPt}
                   </Text>
                 </View>

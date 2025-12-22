@@ -2,45 +2,47 @@ import { PageSchema, type PageContent } from "../schemas/page.schema";
 
 export const ExperiencePageContent: PageContent = PageSchema.parse({
   title: "Experience",
-  sections: [
-    // ---------------------------------------------
-    // Hero
-    // ---------------------------------------------
-    {
-      id: "hero",
-      content: [
-        {
-          title: "Building full-stack products from UI to API",
-          longText:
-            "This page highlights three recent roles where I shipped product features end-to-end.\n\nUse the quick links below to jump into each experience section.\nEach section includes an overview, highlights, tech stack, and media placeholders for screenshots/diagrams to collect.",
-          image: {
-            label: "Experience hero banner placeholder",
-            src: "/images/experience/hero-banner-placeholder.jpg",
-          },
-          cards: [
-            {
-              link: {
-                label: "5280 Auto Hail Repair",
-                href: "#5280",
-              },
-            },
-            {
-              link: {
-                label: "Socotec",
-                href: "#socotec",
-              },
-            },
-            {
-              link: {
-                label: "TAARCOM, Inc.",
-                href: "#taarcom",
-              },
-            },
-          ],
+  heroSection: {
+    id: "hero",
+    content: [
+      {
+        title: "Building full-stack products from UI to API",
+        desc:
+          "This page highlights three recent roles where I shipped product features end-to-end.",
+        image: {
+          label: "Experience hero banner placeholder",
+          src: "/images/experience/hero-banner-placeholder.jpg",
         },
-      ],
+      },
+    ],
+  },
+  ctas: [
+    {
+      shortDesc:
+        "Contract web & mobile development for an auto body shop. Enhances communication for customers and employees.",
+      link: {
+        label: "@ 5280",
+        href: "#5280",
+      },
     },
-
+    {
+      shortDesc:
+        "Developed AI-powered assistants using Django, React, and LangGraph. Automated workflows for 10,000+ employees.",
+      link: {
+        label: "@ Socotec",
+        href: "#socotec",
+      },
+    },
+    {
+      shortDesc:
+        "Create 3 Python automation apps to streamline Excel-based workflows. Improved sales data pipelines.",
+      link: {
+        label: "@ Taarcom",
+        href: "#taarcom",
+      },
+    },
+  ],
+  sections: [
     // ---------------------------------------------
     // 5280
     // ---------------------------------------------
@@ -50,8 +52,8 @@ export const ExperiencePageContent: PageContent = PageSchema.parse({
       content: [
         {
           title: "Mobile App Developer (Contract)",
-          shortText: "Jun 2025 – Present",
-          longText:
+          date: "Jun 2025 – Present",
+          desc:
             "Building a full-stack internal + customer-facing application to streamline repair operations.\n\nI’ve focused on mobile UX, reliable backend APIs, and the data model needed to support quoting, scheduling, and repair task tracking across departments.",
           image: {
             label: "5280 experience cover placeholder",
@@ -93,8 +95,8 @@ export const ExperiencePageContent: PageContent = PageSchema.parse({
       content: [
         {
           title: "Full-Stack Chatbot Engineer",
-          shortText: "Oct 2024 – Jun 2025",
-          longText:
+          date: "Oct 2024 – Jun 2025",
+          desc:
             "Developed AI-powered assistant experiences and supporting web/backend tooling.\n\nThe work emphasized reliable integrations, maintainable workflows, and productizing agent behavior so it could scale to enterprise usage.",
           image: {
             label: "Socotec experience cover placeholder",
@@ -136,8 +138,8 @@ export const ExperiencePageContent: PageContent = PageSchema.parse({
       content: [
         {
           title: "Sales Ops Intern & Python App Developer",
-          shortText: "2022 – 2024",
-          longText:
+          date: "2022 – 2024",
+          desc:
             "Built internal tools to streamline sales operations and reduce manual Excel-heavy workflows.\n\nThis included designing Python desktop apps and analytics-driven utilities that made reporting faster and more consistent for day-to-day pipeline work.",
           image: {
             label: "TAARCOM experience cover placeholder",

@@ -6,8 +6,8 @@ import { LinkSchema } from "./link.schema"
 export const ContentSchema = z
   .object({
     title: z.string().min(1).max(50).optional(),
-    shortText: z.string().min(1).max(100).optional(),
-    longText: z.string().min(1).max(2000).optional(),
+    date: z.string().min(1).max(100).optional(),
+    desc: z.string().min(1).max(2000).optional(),
     image: ImageSchema.optional(),
     link: LinkSchema.optional(),
     cards: z.array(CardSchema).optional(),

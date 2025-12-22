@@ -8,9 +8,13 @@ import Separator from "./Separator"
 import { useColorPalette } from "../features/painted-background/contexts/useColorPalette"
 import { useSmoothScroll } from "../hooks/useSmoothScroll"
 import { useScrollSpyHash } from "../hooks/useScrollSpyHash"
+import type { CtaType } from "../content/schemas/cta.schema"
+import Cta from "./Cta"
 
 export default function Page({
   title,
+  heroSection,
+  ctas,
   sections,
 }: PageContent) {
   const { pageColors } = useColorPalette()
@@ -19,7 +23,7 @@ export default function Page({
   const { visibleSection } = useScrollSpyHash(sectionIds, "hero")
 
   return (
-    <View className="relative flex flex-col items-center w-full lg:px-12 px-4 pt-28 lg:pb-28 pb-20 gap-8">
+    <View className="relative flex flex-col items-center w-full lg:px-12 px-4 lg:pt-28 pt-20 lg:pb-28 pb-20 gap-8">
       {title && (
         <View
           className={`
@@ -42,6 +46,14 @@ export default function Page({
           </View>
         </View>
       )}
+      <View className="flex flex-col gap-0">
+        <Section id={heroSection.id} title={heroSection.title} content={heroSection.content} />
+        <View className="flex flex-row w-full flex-wrap justify-between lg:gap-6 gap-3">
+          {ctas.map(({ shortDesc, link }: CtaType, i) => (
+            <Cta key={i} shortDesc={shortDesc} link={link} />
+          ))}
+        </View>
+      </View>
       {sections.map(({ id, title, content }: SectionContent, i) => (
         <>
           {i > 0 && <Separator key={`sep-${i}`} color={pageColors.sep} />}

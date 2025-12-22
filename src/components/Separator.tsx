@@ -3,21 +3,36 @@ import View from "./View"
 export default function Separator({
   color,
   orientation = "horizontal",
+  justify = "center",
   level = "section",
   thickness = 1,
 }: {
   color: string
   orientation?: "horizontal" | "vertical"
+  justify?: "start" | "center" | "end"
   level?: "section" | "content"
   thickness?: number
 }) {
+
+  const justifyClass =
+    orientation === "horizontal"
+    ? justify === "start"
+        ? "justify-start"
+        : justify === "end"
+          ? "justify-end"
+          : "justify-center"
+    : justify === "start"
+      ? "items-start"
+      : justify === "end"
+        ? "items-end"
+        : "items-center"
 
   return (
     <View
       className={
         orientation === "horizontal"
-          ? "w-full flex justify-center"
-          : "h-full flex items-center"
+          ? `w-full flex ${justifyClass}`
+          : `h-full flex ${justifyClass}`
       }
     >
       {level === "section" ? (
@@ -37,8 +52,8 @@ export default function Separator({
         <View
           className={
             orientation === "horizontal"
-              ? "flex items-center justify-center gap-3"
-              : "flex flex-col items-center justify-center gap-3"
+              ? `flex ${justifyClass} gap-3`
+              : `flex flex-col ${justifyClass} gap-3`
           }
           aria-hidden="true"
         >

@@ -44,12 +44,12 @@ const COLOR_PRIMARY_TEXTS: Record<ColorId, string> = {
 }
 
 const COLOR_TAG_BGS: Record<ColorId, string> = {
-  ashbl: "bg-ashbl-400",
-  roylp: "bg-roylp-400",
-  chrtr: "bg-chrtr-400",
-  orngc: "bg-orngc-400",
-  palbr: "bg-palbr-400",
-  ghost: "bg-ghost-400",
+  ashbl: "bg-ashbl-300",
+  roylp: "bg-roylp-300",
+  chrtr: "bg-chrtr-300",
+  orngc: "bg-orngc-300",
+  palbr: "bg-palbr-300",
+  ghost: "bg-ghost-300",
 }
 
 const componentColors = (pageColorId: ColorId): ComponentColors => ({
@@ -95,8 +95,8 @@ const contentColors = (pageColorId: ColorId): ContentColors => {
       ? "text-ghost"
       : "text-ashbl",
     h3: primary === "ghost"
-      ? "text-ghost"
-      : "text-ashbl",
+      ? "text-ghost-300"
+      : "text-ashbl-300",
     p: primary === "ghost"
       ? "text-ghost"
       : "text-ashbl",
@@ -147,7 +147,7 @@ const tagColors = (pageColorId: ColorId): TagColors => {
     bg: COLOR_TAG_BGS[pageColorId],
     border: "border-ghost/30",
     shadow: "shadow-ashbl/10",
-    label: "text-ghost/90 text-shadow-ashbl/10",
+    label: "text-ashbl",
   }
 }
 

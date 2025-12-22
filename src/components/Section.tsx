@@ -13,18 +13,18 @@ export default function Section({
   const { sectionColors } = useColorPalette()
 
   return (
-    <section id={id} className={`${sectionColors.bg} flex flex-col w-full items-center gap-6`}>
+    <section id={id} className={`${sectionColors.bg} flex flex-col w-full items-start gap-6`}>
       {title && (
         <Text className={`${sectionColors.h1} text-3xl`}>
           {title}
         </Text>
       )}
-      <View className="w-full flex flex-col items-center gap-4">
-        {content.map(({ title, shortText, longText, image, link, cards, tags }: ContentType) => (
+      <View className="w-full flex flex-col items-start gap-4">
+        {content.map(({ title, date: shortText, desc: longText, image, link, cards, tags }: ContentType) => (
           <Content
             title={title}
-            shortText={shortText}
-            longText={longText}
+            date={shortText}
+            desc={longText}
             image={image}
             link={link}
             cards={cards}
