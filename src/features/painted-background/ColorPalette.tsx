@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from "react"
-import { motion, useReducedMotion } from "motion/react"
+import { useReducedMotion } from "motion/react"
 import { useColorPalette } from "./contexts/useColorPalette"
 import type { PaletteItem } from "./types/colorPalette"
 import { PALETTE_ITEMS, NAVIGATE_PRESS_COOL_DOWN_MS } from "../../styles/colorPalette"
-import MotionButton from "../../components/MotionButton"
 import View from "../../components/View"
 import Text from "../../components/Text"
 import { useLocation, useNavigate } from "react-router-dom"
 import type { SitePage } from "../../types/pages"
 import { useResponsiveDesign } from "../../contexts/useResponsiveDesign"
+import MotionButton from "../../components/MotionButton"
 
 const OPEN_VISIBLE_FRACTION = 0.7
 const OPEN_VISIBLE_MAX_PX = 280
@@ -154,33 +154,26 @@ export default function ColorPalette() {
   return (
     <View className="fixed bottom-4 right-4 z-50">
       {/* Board (always mounted) */}
-      <motion.div
+      <MotionButton
+        aria-label={isOpen ? "Close color palette" : "Open color palette"}
         className={`
           relative rounded-full border border-secondary/30
           bg-secondary/10 shadow-md backdrop-blur-sm
           flex items-center justify-center origin-bottom-right
+          ${!(isOpen || isCooldown) && "cursor-pointer"}
         `}
+        onClick={() => {
+          if (isCooldown && !isOpen) return
+          setIsOpen((v) => !v)
+        }}
         animate={{
           width: isOpen ? boardOpenSizeScaled : boardClosedSize,
           height: isOpen ? boardOpenSizeScaled : boardClosedSize,
           x: isOpen ? boardCenterShift : 0,
           y: isOpen ? boardCenterShift : 0,
         }}
-        transition={boardTransition}
-      >
-        <MotionButton
-          type="button"
-          aria-label={isOpen ? "Close color palette" : "Open color palette"}
-          className={`
-            relative h-full w-full rounded-full flex items-center justify-center
-          `}
-          onClick={() => {
-            if (isCooldown && !isOpen) return
-            setIsOpen((v) => !v)
-          }}
-          disableMotion={isOpen || isCooldown}
-        >
-          {/* Single dot layer (dots always exist exactly once) */}
+        transition={boardTransition} // Single dot layer (dots always exist exactly once)
+        renderChildren={() => (
           <View className="absolute inset-0">
             {items.map((item, i) => {
               // Closed ring targets
@@ -272,9 +265,8 @@ export default function ColorPalette() {
                 : { ...baseSpring, delay }
 
               return (
-                <motion.a
+                <MotionButton
                   key={item.color}
-                  type="button"
                   aria-label={`Select ${item.color} palette`}
                   className={`
                     absolute ${item.bg}
@@ -296,6 +288,7 @@ export default function ColorPalette() {
                   }
                   // Drive motion purely via transforms (single element)
                   animate={{ x, y, scale, opacity: 1 }}
+                  disableMotion={!isOpen}
                   transition={transition}
                   // Dots should not be focusable specks when closed
                   tabIndex={isOpen ? 0 : -1}
@@ -313,29 +306,27 @@ export default function ColorPalette() {
                     }
                     setIsOpen(false)
                   }}
-                  // Hover/tap polish only when open (and not reduced motion)
-                  whileHover={isOpen && !shouldReduceMotion ? { scale: 1.05 } : undefined}
-                  whileTap={isOpen && !shouldReduceMotion ? { scale: 0.95 } : undefined}
-                >
-                  <Text
-                    as="span"
-                    className={`
-                      ${isOpen && i !== 0
-                        ? item.text
-                        : item.blendText
-                      }
-                      m-0 leading-none font-semibold font-mono text-[12px]
-                      transition-colors duration-300
-                    `}
-                  >
-                    {item.name}
-                  </Text>
-                </motion.a>
+                  renderChildren={() => (
+                    <Text
+                      as="span"
+                      className={`
+                        ${isOpen && i !== 0
+                          ? item.text
+                          : item.blendText
+                        }
+                        m-0 leading-none font-semibold font-mono text-[12px]
+                        transition-colors duration-300
+                      `}
+                    >
+                      {item.name}
+                    </Text>
+                  )}
+                />
               )
             })}
           </View>
-        </MotionButton>
-      </motion.div>
+        )}
+      />
     </View>
   )
 }
