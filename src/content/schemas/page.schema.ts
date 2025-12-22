@@ -14,4 +14,4 @@ export const PageSchema = z
     { message: "There must be the same amount of CTAs as sections" }
   )
 
-export type PageContent = z.infer<typeof PageSchema>
+export type PageType = z.infer<typeof PageSchema>

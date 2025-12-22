@@ -1,4 +1,4 @@
-import type { SectionContent } from "../content/schemas/section.schema";
+import type { SectionType } from "../content/schemas/section.schema";
 import Text from "./Text";
 import type { ContentType } from "../content/schemas/content.schema";
 import Content from "./Content";
@@ -9,7 +9,7 @@ export default function Section({
   id,
   title,
   content,
-}: SectionContent) {
+}: SectionType) {
   const { sectionColors } = useColorPalette()
 
   return (

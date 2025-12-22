@@ -1,9 +1,9 @@
 import Page from "../components/Page"
 import { ExperiencePageContent } from "../content/pages/experience.content"
-import type { PageContent } from "../content/schemas/page.schema"
+import type { PageType } from "../content/schemas/page.schema"
 
 export default function ExperiencePage() {
-  const { title, heroSection, ctas, sections }: PageContent = ExperiencePageContent
+  const { title, heroSection, ctas, sections }: PageType = ExperiencePageContent
 
   return (
     <Page

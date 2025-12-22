@@ -1,9 +1,9 @@
 import { useMemo } from "react"
-import type { PageContent } from "../content/schemas/page.schema"
+import type { PageType } from "../content/schemas/page.schema"
 import View from "./View"
 import Text from "./Text"
 import Section from "./Section"
-import type { SectionContent } from "../content/schemas/section.schema"
+import type { SectionType } from "../content/schemas/section.schema"
 import Separator from "./Separator"
 import { useColorPalette } from "../features/painted-background/contexts/useColorPalette"
 import { useSmoothScroll } from "../hooks/useSmoothScroll"
@@ -16,7 +16,7 @@ export default function Page({
   heroSection,
   ctas,
   sections,
-}: PageContent) {
+}: PageType) {
   const { pageColors } = useColorPalette()
   const { hasScrolled } = useSmoothScroll()
   const sectionIds = useMemo(() => sections.map((s) => s.id), [sections])
@@ -54,7 +54,7 @@ export default function Page({
           ))}
         </View>
       </View>
-      {sections.map(({ id, title, content }: SectionContent, i) => (
+      {sections.map(({ id, title, content }: SectionType, i) => (
         <>
           {i > 0 && <Separator key={`sep-${i}`} color={pageColors.sep} />}
           <Section key={id} id={id} title={title} content={content}  />

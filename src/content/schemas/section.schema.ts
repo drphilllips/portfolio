@@ -7,4 +7,4 @@ export const SectionSchema = z.object({
   content: z.array(ContentSchema).min(1),
 })
 
-export type SectionContent = z.infer<typeof SectionSchema>
+export type SectionType = z.infer<typeof SectionSchema>

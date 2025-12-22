@@ -1,6 +1,6 @@
-import { PageSchema, type PageContent } from "../schemas/page.schema";
+import { PageSchema, type PageType } from "../schemas/page.schema";
 
-export const ExperiencePageContent: PageContent = PageSchema.parse({
+export const ExperiencePageContent: PageType = PageSchema.parse({
   title: "Experience",
   heroSection: {
     id: "hero",
