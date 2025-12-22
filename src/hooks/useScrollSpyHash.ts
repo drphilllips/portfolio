@@ -15,9 +15,14 @@ export function useScrollSpyHash(sectionIds: string[], hasScrolled: boolean, res
       (entries) => {
         const { pathname, search } = window.location;
 
+        // Don't set any hash until the user has actually scrolled.
+        // Also, avoid caching an id in `lastIdRef` while we're in this state,
+        // otherwise we can accidentally "skip" the first section once scrolling begins.
         if (!hasScrolled) {
+          lastIdRef.current = null;
           setVisibleSection(null);
           window.history.replaceState(null, "", `${pathname}${search}`);
+          return;
         }
         // Pick the entry that is intersecting and closest to the top.
         const visible = entries
@@ -27,6 +32,7 @@ export function useScrollSpyHash(sectionIds: string[], hasScrolled: boolean, res
         if (!visible) return;
 
         const id = (visible.target as HTMLElement).id;
+        // If we're already showing this id, no need to re-write the hash.
         if (!id || lastIdRef.current === id) return;
 
         lastIdRef.current = id;
