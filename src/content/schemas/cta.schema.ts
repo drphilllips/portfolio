@@ -2,7 +2,8 @@ import * as z from "zod"
 import { LinkSchema } from "./link.schema"
 
 export const CtaSchema = z.object({
-  shortDesc: z.string().min(1).max(150).optional(),
+  title: z.string().min(1).max(150).optional(),
+  subtitle: z.string().min(1).max(20).optional(),
   link: LinkSchema,
 })
 

@@ -1,7 +1,7 @@
 import { createContext, useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useLocation } from "react-router-dom"
 import type { SitePage } from "../../../types/pages"
-import { INIT_COMPONENT_COLORS, PAGE_COMPONENT_COLORS } from "../constants/colorPalette"
+import { INIT_COMPONENT_COLORS, PAGE_COMPONENT_COLORS } from "../../../styles/colorPalette"
 import type { ComponentColors } from "../types/colorPalette"
 
 type PendingPaletteChange = {

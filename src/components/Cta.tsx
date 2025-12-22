@@ -5,10 +5,11 @@ import { useSmoothScroll } from "../hooks/useSmoothScroll"
 import Text from "./Text"
 import { motion, useReducedMotion } from "motion/react"
 import View from "./View"
-import { SquareArrowOutUpRight } from "lucide-react"
+import { Link } from "lucide-react"
 
 export default function Cta({
-  shortDesc,
+  title,
+  subtitle,
   link,
 }: CtaType) {
   const { ctaColors } = useColorPalette()
@@ -22,8 +23,10 @@ export default function Cta({
       className={`
         ${ctaColors.bg} border-2 ${ctaColors.border}
         flex flex-row items-start gap-3
-        p-2 rounded-lg
+        rounded-lg
+        ${(title || subtitle) ? "px-3 pt-3 pb-4" : "p-2"}
         cursor-pointer
+        ${active && "underline underline-offset-2"}
       `}
       whileHover={!shouldReduceMotion ? { scale: 1.02 } : undefined}
       whileTap={!shouldReduceMotion ? { scale: 0.98 } : undefined}
@@ -33,22 +36,28 @@ export default function Cta({
       onTapStart={() => setActive(true)}
       onTouchEnd={() => setActive(false)}
     >
-      <View className="flex flex-col gap-1 w-full items-start justify-between">
+      <View className="flex flex-col gap-3 w-full items-start justify-between">
+        {(subtitle || title) && (
+          <View className="flex flex-col gap-1">
+            {subtitle && (
+              <Text className={`${ctaColors.h5} leading-none text-start`}>
+                {subtitle}
+              </Text>
+            )}
+            {title && (
+              <Text className={`${ctaColors.h4} text-lg leading-none text-start`}>
+                {title}
+              </Text>
+            )}
+          </View>
+        )}
         <Text
-          className={`
-            ${ctaColors.h3} ${active && "underline underline-offset-2"}
-            text-start text-xl font-bold leading-none
-          `}
+          className={`${ctaColors.h3} text-start text-xl font-bold leading-none`}
         >
           {link.label}
         </Text>
-        {shortDesc && (
-          <Text className={`${ctaColors.h4} text-lg leading-tight text-start`}>
-            {shortDesc}
-          </Text>
-        )}
       </View>
-      <SquareArrowOutUpRight className={ctaColors.h3} size={16} />
+      <Link className={ctaColors.h3} size={16} />
     </motion.button>
   )
 }

@@ -1,5 +1,5 @@
-import { type SitePage } from "../../../types/pages";
-import { type ButtonColors, type CardColors, type ColorId, type ColorPrimary, type ComponentColors, type ContentColors, type CtaColors, type PageColors, type PaletteItem, type SectionColors, type TagColors } from "../types/colorPalette";
+import { type SitePage } from "../types/pages";
+import { type ButtonColors, type CardColors, type ColorId, type ColorPrimary, type ComponentColors, type ContentColors, type CtaColors, type PageColors, type PaletteItem, type SectionColors, type TagColors } from "../features/painted-background/types/colorPalette";
 
 export const NAVIGATE_PRESS_COOL_DOWN_MS = 2400
 
@@ -172,6 +172,9 @@ const ctaColors = (pageColorId: ColorId): CtaColors => {
     h4: primary === "ghost"
       ? "text-ashbl-400"
       : "text-ghost-400",
+    h5: primary === "ghost"
+      ? "text-ashbl-300/50"
+      : "text-ghost-300/50",
     sep: primary === "ghost"
       ? "bg-ashbl/10"
       : "bg-ghost/10",

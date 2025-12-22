@@ -87,5 +87,6 @@ export type CtaColors = {
   border: string
   h3: string
   h4: string
+  h5: string
   sep: string
 }

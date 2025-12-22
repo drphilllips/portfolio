@@ -50,8 +50,8 @@ export default function Page({
       <View className="flex lg:px-40 px-4 flex-col gap-4">
         <Section id={heroSection.id} title={heroSection.title} content={heroSection.content} />
         <View className="flex flex-row w-full flex-wrap justify-start gap-3">
-          {ctas.map(({ shortDesc, link }: CtaType, i) => (
-            <Cta key={i} shortDesc={shortDesc} link={link} />
+          {ctas.map(({ title, subtitle, link }: CtaType, i) => (
+            <Cta key={i} title={title} subtitle={subtitle} link={link} />
           ))}
         </View>
       </View>

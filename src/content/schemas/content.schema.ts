@@ -5,7 +5,7 @@ import { LinkSchema } from "./link.schema"
 
 export const ContentSchema = z
   .object({
-    title: z.string().min(1).max(50).optional(),
+    title: z.string().min(1).max(70).optional(),
     date: z.string().min(1).max(100).optional(),
     desc: z.string().min(1).max(2000).optional(),
     image: ImageSchema.optional(),
