@@ -19,7 +19,7 @@ export default function Section({
           {title}
         </Text>
       )}
-      <View className="w-full flex flex-col items-start gap-4">
+      <View className="w-full flex flex-col items-start gap-6">
         {content.map(({ title, date: shortText, desc: longText, image, link, cards, tags }: ContentType) => (
           <Content
             title={title}

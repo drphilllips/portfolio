@@ -9,7 +9,6 @@ export const AboutPageContent: PageType = PageSchema.parse({
     content: [
       {
         title: "Computer Science & Data Science Graduate (BS/MS)",
-        desc: "...And...",
       },
       {
         title: "Full-Stack Engineer with a Passion for Data + UX Design",
