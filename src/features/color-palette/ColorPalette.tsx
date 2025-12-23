@@ -1,19 +1,14 @@
-import { useEffect, useRef, useState } from "react"
+import { useState } from "react"
 import { type TargetAndTransition, type Transition } from "motion/react"
-import { useColorPalette } from "../../contexts/useColorPalette"
 import { PALETTE_ITEMS } from "../../styles/colorPalette"
 import View from "../../components/basic/View"
 import Text from "../../components/basic/Text"
-import { useLocation, useNavigate } from "react-router-dom"
-import type { SitePage } from "../../types/pages"
 import Button from "../../components/basic/Button"
 import type { PaletteItem } from "../../types/colorPalette"
-import { SELECT_PALETTE_COLOR_COOL_DOWN_MS } from "./constants/colorPalette"
 import useViewportScaledSizing from "./hooks/useViewportScaledSizing"
 import usePaletteBoardAnimationDriver from "./hooks/usePaletteBoardAnimationDriver"
 import usePaletteRingAnimationDriver from "./hooks/usePaletteRingAnimationDriver"
-
-
+import useSelectPaletteColor from "./hooks/useSelectPaletteColor"
 
 /**
  * ColorPalette
@@ -53,49 +48,8 @@ import usePaletteRingAnimationDriver from "./hooks/usePaletteRingAnimationDriver
  * - This component is intended to be mounted once at the application level.
  */
 export default function ColorPalette() {
-  const { requestPaletteChange } = useColorPalette()
-  const navigate = useNavigate()
-  const { pathname } = useLocation()
-  const [isOpen, setIsOpen] = useState(false)
   const [items, setItems] = useState<PaletteItem[]>(PALETTE_ITEMS)
-
-  const [isCooldown, setIsCooldown] = useState(false)
-  const cooldownTimerRef = useRef<number | null>(null)
-
-  const startCooldown = (ms: number) => {
-    setIsCooldown(true)
-    if (cooldownTimerRef.current !== null) {
-      window.clearTimeout(cooldownTimerRef.current)
-    }
-    cooldownTimerRef.current = window.setTimeout(() => {
-      cooldownTimerRef.current = null
-      setIsCooldown(false)
-    }, ms)
-  }
-
-  useEffect(() => {
-    return () => {
-      if (cooldownTimerRef.current !== null) {
-        window.clearTimeout(cooldownTimerRef.current)
-      }
-    }
-  }, [])
-
-  function reorderPalette(firstItem: PaletteItem) {
-    setItems(prev => {
-      const restOfItems = prev.filter(item => item.color !== firstItem.color)
-      return [firstItem, ...restOfItems]
-    })
-  }
-
-  useEffect(() => {
-    const sitePage = pathname.split("/")[1] as SitePage
-    const pathItem = items.find(item => item.page === sitePage)
-    const pathItemIndex = pathItem ? items.indexOf(pathItem) : null
-    if (pathItem && pathItemIndex !== 0) {
-      setTimeout(() => reorderPalette(pathItem),0)
-    }
-  }, [pathname, items])
+  const [isOpen, setIsOpen] = useState(false)
 
   const {
       boardCenterShift,
@@ -106,22 +60,15 @@ export default function ColorPalette() {
     boardTransition,
     animateBoard,
   } = usePaletteBoardAnimationDriver(
-    boardCenterShift,
-    boardOpenSizeScaled,
-    isOpen,
+    boardCenterShift, boardOpenSizeScaled, isOpen,
   )
 
-  function handleSelectPaletteColor(item: PaletteItem, itemIndex: number) {
-    if (!isOpen) return
-    if (isCooldown) return
-    if (itemIndex !== 0) {
-      reorderPalette(item)
-      requestPaletteChange(item.componentColors)
-      startCooldown(SELECT_PALETTE_COLOR_COOL_DOWN_MS)
-      navigate(`/${item.page}`)
-    }
-    setIsOpen(false)
-  }
+  const {
+    isCooldown,
+    handleSelectPaletteColor
+  } = useSelectPaletteColor(
+    items, setItems, isOpen, setIsOpen,
+  )
 
   return (
     <View className="fixed bottom-4 right-4 z-50">
@@ -198,9 +145,7 @@ function PaletteDot({
   transition: Transition
   onClick: (item: PaletteItem, itemIndex: number) => void
 }) {
-  const {
-    dotSizeOpenScaled,
-  } = useViewportScaledSizing()
+  const { dotSizeOpenScaled } = useViewportScaledSizing()
 
   return (
     <Button
