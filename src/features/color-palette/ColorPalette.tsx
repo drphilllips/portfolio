@@ -9,6 +9,7 @@ import useViewportScaledSizing from "./hooks/useViewportScaledSizing"
 import usePaletteBoardAnimationDriver from "./hooks/usePaletteBoardAnimationDriver"
 import usePaletteRingAnimationDriver from "./hooks/usePaletteRingAnimationDriver"
 import useSelectPaletteColor from "./hooks/useSelectPaletteColor"
+import { useSmoothScroll } from "../../hooks/useSmoothScroll"
 
 /**
  * ColorPalette
@@ -70,6 +71,17 @@ export default function ColorPalette() {
     items, setItems, isOpen, setIsOpen,
   )
 
+  const { atTopOfPage, smoothScrollTo } = useSmoothScroll()
+
+  function handleBoardClick() {
+    if (atTopOfPage) {
+      if (isCooldown && !isOpen) return
+      setIsOpen((v) => !v)
+    } else {
+      smoothScrollTo(0)
+    }
+  }
+
   return (
     <View className="fixed bottom-4 right-4 z-50">
       {/* Board (always mounted) */}
@@ -81,10 +93,7 @@ export default function ColorPalette() {
           flex items-center justify-center origin-bottom-right
           ${!(isOpen || isCooldown) && "cursor-pointer"}
         `}
-        onClick={() => {
-          if (isCooldown && !isOpen) return
-          setIsOpen((v) => !v)
-        }}
+        onClick={handleBoardClick}
         animate={animateBoard}
         transition={boardTransition} // Single dot layer (dots always exist exactly once)
         renderChildren={() => (

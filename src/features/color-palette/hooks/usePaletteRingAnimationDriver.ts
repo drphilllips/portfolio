@@ -4,6 +4,8 @@ import { BASE_RING_RADIUS, BASE_SPRING, INNER_ARC_END_ANGLE, INNER_ARC_INDICES, 
 import type { PalettePosition } from "../types/paletteAnimation";
 import useViewportScaledSizing from "./useViewportScaledSizing";
 import { useReducedMotion, type TargetAndTransition, type Transition } from "motion/react";
+import { useSmoothScroll } from "../../../hooks/useSmoothScroll";
+import useChangedDeps from "../../../hooks/useChangedDeps";
 
 
 export default function usePaletteRingAnimationDriver(
@@ -15,8 +17,13 @@ export default function usePaletteRingAnimationDriver(
     arcOuterRadiusScaled,
     speckScale,
   } = useViewportScaledSizing()
-
+  const { atTopOfPage } = useSmoothScroll()
   const shouldReduceMotion = useReducedMotion()
+
+  // track which dependency changed
+  const changedDeps = useChangedDeps({
+    items, isBoardOpen, shouldReduceMotion, atTopOfPage
+  })
 
   // dot scaling
   const dotScale = useMemo(() => (
@@ -24,15 +31,19 @@ export default function usePaletteRingAnimationDriver(
   ), [isBoardOpen, speckScale])
 
   // ring dot transitions (delayed based on level)
-  const paletteRingDotTransitions: Transition[] = useMemo(() => (
-    items.map((_, i) => (
+  const paletteRingDotTransitions: Transition[] = useMemo(() => {
+    // if at-top changed, there is no transition delays
+    const didAtTopChange = changedDeps?.includes("atTopOfPage")
+    return items.map((_, i) => (
       shouldReduceMotion
         ? { duration: 0 }
-        : { ...BASE_SPRING,
-            delay: getDotTransitionDelay(i, isBoardOpen, shouldReduceMotion)
-          }
+        : didAtTopChange
+          ? BASE_SPRING
+          : {...BASE_SPRING,
+              delay: getDotRingArcTransitionDelay(i, isBoardOpen, shouldReduceMotion)
+            }
     ))
-  ), [items, isBoardOpen, shouldReduceMotion])
+  }, [items, isBoardOpen, shouldReduceMotion, changedDeps])
 
   // ----------
   // Dot arc <-> ring positioning
@@ -47,13 +58,20 @@ export default function usePaletteRingAnimationDriver(
     )
   ), [items, arcInnerRadiusScaled, arcOuterRadiusScaled])
 
+  const scrollToTopArrowTargets: PalettePosition[] = useMemo(() => (
+    items.map((_, i) => getArrowTarget(i))
+  ), [items])
+
   // dot position animations
-  const paletteRingDotAnimations: TargetAndTransition[] = useMemo(() => (
-    items.map((_, i) => {
-      const target = isBoardOpen ? openArcTargets[i] : closedRingTargets[i]
+  const paletteRingDotAnimations: TargetAndTransition[] = useMemo(() => {
+    return items.map((_, i) => {
+      const target =
+        atTopOfPage
+          ? isBoardOpen ? openArcTargets[i] : closedRingTargets[i]
+          : scrollToTopArrowTargets[i]
       return { ...target, scale: dotScale, opacity: 1 }
     })
-  ), [items, closedRingTargets, openArcTargets, isBoardOpen, dotScale])
+  }, [items, closedRingTargets, openArcTargets, scrollToTopArrowTargets, isBoardOpen, dotScale, atTopOfPage])
 
   return { dotScale, paletteRingDotAnimations, paletteRingDotTransitions }
 }
@@ -63,7 +81,7 @@ export default function usePaletteRingAnimationDriver(
 // --------
 
 // transition delays based on arc index
-function getDotTransitionDelay(itemIndex: number, isBoardOpen: boolean, shouldReduceMotion: boolean | null) {
+function getDotRingArcTransitionDelay(itemIndex: number, isBoardOpen: boolean, shouldReduceMotion: boolean | null) {
   const arcIndex = getArcIndex(itemIndex)
   return (
     shouldReduceMotion || itemIndex === 0
@@ -77,8 +95,8 @@ function getDotTransitionDelay(itemIndex: number, isBoardOpen: boolean, shouldRe
 function getArcIndex(itemIndex: number): number {
   return (
     INNER_ARC_INDICES.indexOf(itemIndex) !== -1
-    ? 0
-    : 1
+      ? 0
+      : 1
   )
 }
 
@@ -141,4 +159,17 @@ function getRingTarget(
   const x = BASE_RING_RADIUS * Math.cos(angle)
   const y = BASE_RING_RADIUS * Math.sin(angle)
   return { x, y }
+}
+
+// Scroll to top arrow targets (right triangle)
+function getArrowTarget(itemIndex: number): PalettePosition {
+  switch (itemIndex) {
+    case 0: return { x: 0, y: BASE_RING_RADIUS }
+    case 1: return { x: -BASE_RING_RADIUS, y: 0 }
+    case 2: return { x: -BASE_RING_RADIUS/2, y: -BASE_RING_RADIUS/2 }
+    case 3: return { x: 0, y: -BASE_RING_RADIUS }
+    case 4: return { x: BASE_RING_RADIUS/2, y: -BASE_RING_RADIUS/2 }
+    case 5: return { x: BASE_RING_RADIUS, y: 0 }
+    default: return { x: 0, y: 0 }
+  }
 }
