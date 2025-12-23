@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { useReducedMotion } from "motion/react"
-import { useColorPalette } from "./contexts/useColorPalette"
-import type { PaletteItem } from "./types/colorPalette"
+import { useColorPalette } from "../../contexts/useColorPalette"
 import { PALETTE_ITEMS } from "../../styles/colorPalette"
 import View from "../../components/basic/View"
 import Text from "../../components/basic/Text"
@@ -9,7 +8,8 @@ import { useLocation, useNavigate } from "react-router-dom"
 import type { SitePage } from "../../types/pages"
 import { useResponsiveDesign } from "../../contexts/useResponsiveDesign"
 import Button from "../../components/basic/Button"
-import { NAVIGATE_PRESS_COOL_DOWN_MS } from "./constants/canvasBackgroundTransition"
+import type { PaletteItem } from "../../types/colorPalette"
+import { SELECT_PALETTE_COLOR_COOL_DOWN_MS } from "./constants/colorPalette"
 
 const OPEN_VISIBLE_FRACTION = 0.7
 const OPEN_VISIBLE_MAX_PX = 280
@@ -302,7 +302,7 @@ export default function ColorPalette() {
                     if (i !== 0) {
                       reorderPalette(item)
                       requestPaletteChange(item.componentColors)
-                      startCooldown(NAVIGATE_PRESS_COOL_DOWN_MS)
+                      startCooldown(SELECT_PALETTE_COLOR_COOL_DOWN_MS)
                       navigate(`/${item.page}`)
                     }
                     setIsOpen(false)

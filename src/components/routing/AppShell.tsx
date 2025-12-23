@@ -1,4 +1,4 @@
-import { useColorPalette } from "../../features/painted-background/contexts/useColorPalette"
+import { useColorPalette } from "../../contexts/useColorPalette"
 import { useResponsiveDesign } from "../../contexts/useResponsiveDesign"
 import View from "../basic/View"
 

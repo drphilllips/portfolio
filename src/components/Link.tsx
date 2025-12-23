@@ -1,5 +1,5 @@
 import type { LinkType } from "../content/schemas/link.schema"
-import { useColorPalette } from "../features/painted-background/contexts/useColorPalette"
+import { useColorPalette } from "../contexts/useColorPalette"
 import Text from "./basic/Text"
 import { useSmoothScroll } from "../hooks/useSmoothScroll"
 import Button from "./basic/Button"

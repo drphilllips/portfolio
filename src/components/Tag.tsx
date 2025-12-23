@@ -1,4 +1,4 @@
-import { useColorPalette } from "../features/painted-background/contexts/useColorPalette"
+import { useColorPalette } from "../contexts/useColorPalette"
 import View from "./basic/View"
 import Text from "./basic/Text"
 

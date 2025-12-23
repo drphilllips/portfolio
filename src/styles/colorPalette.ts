@@ -1,5 +1,5 @@
+import type { CardColors, ColorId, ColorPrimary, ComponentColors, ContentColors, CtaColors, LinkColors, PageColors, PaletteItem, SectionColors, TagColors } from "../types/colorPalette";
 import { type SitePage } from "../types/pages";
-import { type LinkColors, type CardColors, type ColorId, type ColorPrimary, type ComponentColors, type ContentColors, type CtaColors, type PageColors, type PaletteItem, type SectionColors, type TagColors } from "../features/painted-background/types/colorPalette";
 
 // -----------
 // Component-based styling

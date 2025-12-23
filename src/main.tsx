@@ -10,7 +10,7 @@ import ExperiencePage from './pages/ExperiencePage.tsx'
 import ServicesPage from './pages/ServicesPage.tsx'
 import ContactPage from './pages/ContactPage.tsx'
 import NotFoundPage from './pages/NotFoundPage.tsx'
-import { ColorPaletteProvider } from './features/painted-background/contexts/ColorPaletteContext.tsx'
+import { ColorPaletteProvider } from './contexts/ColorPaletteContext.tsx'
 
 const router = createBrowserRouter([
   {

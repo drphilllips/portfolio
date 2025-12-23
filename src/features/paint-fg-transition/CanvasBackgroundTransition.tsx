@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react"
-import { useColorPalette } from "./contexts/useColorPalette"
+import { useColorPalette } from "../../contexts/useColorPalette"
 import { setThemeColor } from "../../utils/setThemeColor"
 import { DPR_CAP, PAINT_BG_DURATION_MS, NUM_BANDS, PAUSE_AFTER_PAINT_BG_MS } from "./constants/canvasBackgroundTransition"
 
