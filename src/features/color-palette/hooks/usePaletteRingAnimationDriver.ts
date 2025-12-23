@@ -80,7 +80,12 @@ export default function usePaletteRingAnimationDriver(
     items.map((item, i) => getRingDotColor(item, i, linkColors, atTopOfPage, isBoardOpen))
   ), [items, atTopOfPage, isBoardOpen, linkColors])
 
-  return { dotScale, paletteRingDotAnimations, paletteRingDotTransitions, paletteRingDotColors }
+  // dot rounding (to form solid arrow w/ rounded ends)
+  const paletteRingDotRoundings: string[] = useMemo(() => (
+    items.map((_, i) => getRingDotRounding(i, atTopOfPage))
+  ), [items, atTopOfPage])
+
+  return { dotScale, paletteRingDotAnimations, paletteRingDotTransitions, paletteRingDotColors, paletteRingDotRoundings }
 }
 
 // ----------
@@ -169,16 +174,29 @@ function getRingTarget(
 }
 
 // Scroll to top arrow targets (right triangle)
-function getArrowTarget(itemIndex: number): PalettePosition {
+function getArrowTarget(itemIndex: number): PalettePosition & { rotate?: number } {
   const arrowYOffset = BASE_RING_RADIUS*0.3
   switch (itemIndex) {
     case 0: return { x: 0, y: BASE_RING_RADIUS }
-    case 1: return { x: -BASE_RING_RADIUS, y: arrowYOffset }
-    case 2: return { x: -BASE_RING_RADIUS/2, y: -BASE_RING_RADIUS/2 + arrowYOffset }
-    case 3: return { x: 0, y: -BASE_RING_RADIUS + arrowYOffset }
-    case 4: return { x: BASE_RING_RADIUS/2, y: -BASE_RING_RADIUS/2 + arrowYOffset }
-    case 5: return { x: BASE_RING_RADIUS, y: arrowYOffset }
+    case 1: return { x: -BASE_RING_RADIUS, y: arrowYOffset, rotate: 45 }
+    case 2: return { x: -BASE_RING_RADIUS/2, y: -BASE_RING_RADIUS/2 + arrowYOffset, rotate: 45 }
+    case 3: return { x: 0, y: -BASE_RING_RADIUS + arrowYOffset, rotate: 45 }
+    case 4: return { x: BASE_RING_RADIUS/2, y: -BASE_RING_RADIUS/2 + arrowYOffset, rotate: 135 }
+    case 5: return { x: BASE_RING_RADIUS, y: arrowYOffset, rotate: 135 }
     default: return { x: 0, y: 0 }
+  }
+}
+
+function getRingDotRounding(itemIndex: number, atTopOfPage: boolean): string {
+  if (atTopOfPage) return "rounded-full"
+  switch (itemIndex) {
+    case 0: return "rounded-full"
+    case 1: return "rounded-b-full"
+    case 2: return ""
+    case 3: return "rounded-tl-full"
+    case 4: return ""
+    case 5: return "rounded-t-full"
+    default: return "rounded-full"
   }
 }
 
@@ -204,10 +222,8 @@ function getRingDotColor(item: PaletteItem, itemIndex: number, linkColors: LinkC
 
   const border =
     atTopOfPage
-      ? item.border
-      : itemIndex === 0
-        ? linkColors.blendBorder
-        : item.border
+      ? `border ${item.border}`
+      : linkColors.blendBorder
 
   return { bg, text, border }
 }

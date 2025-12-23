@@ -123,6 +123,7 @@ function PaletteRing({
   const {
     paletteRingDotAnimations,
     paletteRingDotTransitions,
+    paletteRingDotRoundings,
     paletteRingDotColors,
   } = usePaletteRingAnimationDriver(items, isBoardOpen)
 
@@ -133,6 +134,7 @@ function PaletteRing({
           key={item.page}
           item={item}
           colors={paletteRingDotColors[i]}
+          rounding={paletteRingDotRoundings[i]}
           itemIndex={i}
           isBoardOpen={isBoardOpen}
           animate={paletteRingDotAnimations[i]}
@@ -147,6 +149,7 @@ function PaletteRing({
 function PaletteDot({
   item,
   colors,
+  rounding,
   itemIndex,
   isBoardOpen,
   animate,
@@ -155,6 +158,7 @@ function PaletteDot({
 }: {
   item: PaletteItem
   colors: PaletteDotColors
+  rounding: string
   itemIndex: number
   isBoardOpen: boolean
   animate: TargetAndTransition
@@ -169,7 +173,7 @@ function PaletteDot({
       aria-label={`Select ${item.color} palette`}
       className={`
         absolute ${colors.bg}
-        rounded-full border ${colors.border}
+        ${rounding} ${colors.border}
         flex items-center justify-center
         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70
         ${isBoardOpen && "cursor-pointer"}
