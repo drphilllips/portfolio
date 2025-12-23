@@ -12,6 +12,7 @@ import useSelectPaletteColor from "./hooks/useSelectPaletteColor"
 import { useSmoothScroll } from "../../hooks/useSmoothScroll"
 import type { PaletteDotColors } from "./types/paletteAnimation"
 import { useColorPalette } from "../../contexts/useColorPalette"
+import useRouteTransition from "../../hooks/useRouteTransition"
 
 /**
  * ColorPalette
@@ -79,6 +80,8 @@ export default function ColorPalette() {
 
   const { atTopOfPage, smoothScrollTo } = useSmoothScroll()
 
+  const { phase: routeTransitionPhase } = useRouteTransition()
+
   function handleBoardClick() {
     if (atTopOfPage) {
       if (isCooldown && !isOpen) return
@@ -97,7 +100,10 @@ export default function ColorPalette() {
           relative rounded-full border-2
           ${(!atTopOfPage && highlight) ? linkColors.h3Border : boardColors.border}
           ${boardColors.bg} shadow-md
-          transition-colors ${isOpen ? "duration-400" : atTopOfPage ? "duration-400" : "duration-300"}
+          transition-colors
+          ${routeTransitionPhase === "pausing"
+            ? "duration-1800"
+            : isOpen ? "duration-400" : atTopOfPage ? "duration-400" : "duration-300"}
           flex items-center justify-center origin-bottom-right
           ${!(isOpen || isCooldown) && "cursor-pointer"}
         `}

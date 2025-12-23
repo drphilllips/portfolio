@@ -1,5 +1,6 @@
+import { HOLD_OLD_PAGE_MS } from "../../../constants/routeTransition"
 
-export const SELECT_PALETTE_COLOR_COOL_DOWN_MS = 1600
+export const SELECT_PALETTE_COLOR_COOL_DOWN_MS = HOLD_OLD_PAGE_MS
 
 // ----------
 // Sizing + Geometry
