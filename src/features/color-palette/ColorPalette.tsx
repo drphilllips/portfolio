@@ -1,18 +1,19 @@
 import { useEffect, useRef, useState } from "react"
-import { useReducedMotion } from "motion/react"
+import { type TargetAndTransition, type Transition } from "motion/react"
 import { useColorPalette } from "../../contexts/useColorPalette"
 import { PALETTE_ITEMS } from "../../styles/colorPalette"
 import View from "../../components/basic/View"
 import Text from "../../components/basic/Text"
 import { useLocation, useNavigate } from "react-router-dom"
 import type { SitePage } from "../../types/pages"
-import { useResponsiveDesign } from "../../contexts/useResponsiveDesign"
 import Button from "../../components/basic/Button"
 import type { PaletteItem } from "../../types/colorPalette"
 import { SELECT_PALETTE_COLOR_COOL_DOWN_MS } from "./constants/colorPalette"
+import useViewportScaledSizing from "./hooks/useViewportScaledSizing"
+import usePaletteBoardAnimationDriver from "./hooks/usePaletteBoardAnimationDriver"
+import usePaletteRingAnimationDriver from "./hooks/usePaletteRingAnimationDriver"
 
-const OPEN_VISIBLE_FRACTION = 0.7
-const OPEN_VISIBLE_MAX_PX = 280
+
 
 /**
  * ColorPalette
@@ -52,7 +53,6 @@ const OPEN_VISIBLE_MAX_PX = 280
  * - This component is intended to be mounted once at the application level.
  */
 export default function ColorPalette() {
-  const { viewport } = useResponsiveDesign()
   const { requestPaletteChange } = useColorPalette()
   const navigate = useNavigate()
   const { pathname } = useLocation()
@@ -97,60 +97,31 @@ export default function ColorPalette() {
     }
   }, [pathname, items])
 
-  // Ring geometry
-  const ringRadius = 18 // px (tuned for a 48px board)
+  const {
+      boardCenterShift,
+      boardOpenSizeScaled,
+  } = useViewportScaledSizing()
 
-  const shouldReduceMotion = useReducedMotion()
-
-  // Geometry + sizing (UNSCALED reference geometry)
-  const dotSizeOpen = 40 // px (matches h-10/w-10)
-  const gapBetweenArcs = 8 // px spacing between open dots
-  const desiredSpeckSize = 13
-
-  // Open layout geometry (nested arcs) - unscaled reference
-  const arcInnerRadius = gapBetweenArcs + dotSizeOpen
-  const arcOuterRadius = arcInnerRadius + dotSizeOpen + gapBetweenArcs
-  const outerArcStartAngle = -Math.PI * 0.92
-  const outerArcEndAngle = -Math.PI * 0.58
-  const innerArcStartAngle = -Math.PI * 0.9
-  const innerArcEndAngle = -Math.PI * 0.6
-
-  // Board sizing (outline should surround all open dots)
-  const boardClosedSize = 72 // px (h-19/w-19)
-  const boardOpenPadding = 12 // px extra breathing room around dots
-
-  // Target sizing: visible quadrant width ~= radius
-  const visibleWidthTarget = Math.min(
-    Math.min(viewport?.width || 0, viewport?.height || 0) * OPEN_VISIBLE_FRACTION,
-    OPEN_VISIBLE_MAX_PX
+  const {
+    boardTransition,
+    animateBoard,
+  } = usePaletteBoardAnimationDriver(
+    boardCenterShift,
+    boardOpenSizeScaled,
+    isOpen,
   )
-  const boardOpenDiameterTarget = 2 * visibleWidthTarget
 
-  // Current (unscaled) open diameter as reference
-  const boardOpenSizeUnscaled = Math.ceil((arcOuterRadius + dotSizeOpen / 2 + boardOpenPadding) * 2)
-
-  // Uniform scale applied to ALL open geometry
-  const openScale = boardOpenDiameterTarget / boardOpenSizeUnscaled
-
-  // Scaled open geometry
-  const dotSizeOpenScaled = dotSizeOpen * openScale
-  const arcInnerRadiusScaled = arcInnerRadius * openScale
-  const arcOuterRadiusScaled = arcOuterRadius * openScale
-  const boardOpenPaddingScaled = boardOpenPadding * openScale
-  const speckScale = desiredSpeckSize / dotSizeOpenScaled // closed-state size multiplier
-
-  const boardOpenSizeScaled = Math.ceil((arcOuterRadiusScaled + dotSizeOpenScaled / 2 + boardOpenPaddingScaled) * 2)
-  const boardCenterShift = (boardOpenSizeScaled - boardClosedSize) / 2
-
-  // Shared motion settings
-  const baseSpring = { type: "spring", stiffness: 500, damping: 36 } as const
-
-  const boardDelay = shouldReduceMotion
-  ? 0
-  : isOpen
-    ? 0
-    : 0.04
-  const boardTransition = shouldReduceMotion ? { duration: 0 } : {...baseSpring, delay: boardDelay }
+  function handleSelectPaletteColor(item: PaletteItem, itemIndex: number) {
+    if (!isOpen) return
+    if (isCooldown) return
+    if (itemIndex !== 0) {
+      reorderPalette(item)
+      requestPaletteChange(item.componentColors)
+      startCooldown(SELECT_PALETTE_COLOR_COOL_DOWN_MS)
+      navigate(`/${item.page}`)
+    }
+    setIsOpen(false)
+  }
 
   return (
     <View className="fixed bottom-4 right-4 z-50">
@@ -167,167 +138,119 @@ export default function ColorPalette() {
           if (isCooldown && !isOpen) return
           setIsOpen((v) => !v)
         }}
-        animate={{
-          width: isOpen ? boardOpenSizeScaled : boardClosedSize,
-          height: isOpen ? boardOpenSizeScaled : boardClosedSize,
-          x: isOpen ? boardCenterShift : 0,
-          y: isOpen ? boardCenterShift : 0,
-        }}
+        animate={animateBoard}
         transition={boardTransition} // Single dot layer (dots always exist exactly once)
         renderChildren={() => (
-          <View className="absolute inset-0">
-            {items.map((item, i) => {
-              // Closed ring targets
-              const angle = (2 * Math.PI * i) / items.length + Math.PI / 6
-              const xClosed = ringRadius * Math.cos(angle)
-              const yClosed = ringRadius * Math.sin(angle)
-
-              // Open targets (nested arcs)
-              const getArcTarget = (
-                j: number,
-                groupSize: number,
-                radius: number,
-                startAngle: number,
-                endAngle: number,
-                angleOffset = 0,
-              ) => {
-                const t = groupSize <= 1 ? 0.5 : j / (groupSize - 1)
-                const theta = startAngle + t * (endAngle - startAngle) + angleOffset
-                return {
-                  xOpen: radius * Math.cos(theta),
-                  yOpen: radius * Math.sin(theta),
-                }
-              }
-
-              let xOpen = 0
-              let yOpen = 0
-              let arcIndex = 0
-
-              // Open grouping/order (closed-ring order remains the same)
-              const innerArcIndices = [1, 5]
-              const outerArcIndicesBase = [2, 3, 4]
-
-              // If the palette grows beyond these indices, continue placing extras on the outer arc
-              const extraOuterIndices = items
-                .map((_, idx) => idx)
-                .filter((idx) => idx !== 0 && !innerArcIndices.includes(idx) && !outerArcIndicesBase.includes(idx))
-              const outerArcIndices = [...outerArcIndicesBase, ...extraOuterIndices]
-
-              if (i === 0) {
-                // Main dot centered on the board
-                xOpen = 0
-                yOpen = 0
-              } else {
-                const innerPos = innerArcIndices.indexOf(i)
-                if (innerPos !== -1) {
-                  // Inner arc: indices 1 and 5
-                  const { xOpen: xA, yOpen: yA } = getArcTarget(
-                    innerPos,
-                    innerArcIndices.length,
-                    arcInnerRadiusScaled,
-                    innerArcStartAngle,
-                    innerArcEndAngle,
-                  )
-                  xOpen = xA
-                  yOpen = yA
-                  arcIndex = 0
-                } else {
-                  // Outer arc: indices 2, 3, 4 (and any extras)
-                  const outerPos = outerArcIndices.indexOf(i)
-                  const j = outerPos === -1 ? 0 : outerPos
-                  const groupSize = Math.max(outerArcIndices.length, 1)
-                  const { xOpen: xA, yOpen: yA } = getArcTarget(
-                    j,
-                    groupSize,
-                    arcOuterRadiusScaled,
-                    outerArcStartAngle,
-                    outerArcEndAngle,
-                  )
-                  xOpen = xA
-                  yOpen = yA
-                  arcIndex = 1
-                }
-              }
-
-              const x = isOpen ? xOpen : xClosed
-              const y = isOpen ? yOpen : yClosed
-              const scale = isOpen ? 1 : speckScale
-
-              // Optional stagger (kept subtle). Disabled for reduced motion.
-              const delay = shouldReduceMotion || i === 0
-                ? 0
-                : isOpen
-                  ? arcIndex*0.04
-                  : arcIndex*0.01
-
-              // Reduced motion policy: jump instantly (no long travel)
-              const transition = shouldReduceMotion
-                ? { duration: 0 }
-                : { ...baseSpring, delay }
-
-              return (
-                <Button
-                  key={item.color}
-                  aria-label={`Select ${item.color} palette`}
-                  className={`
-                    absolute ${item.bg}
-                    rounded-full shadow-md border border-secondary/20
-                    flex items-center justify-center
-                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70
-                    ${isOpen && "cursor-pointer"}
-                  `}
-                  // Anchor at board center x/y are offsets from there
-                  style={{
-                    left: "50%",
-                    top: "50%",
-                    width: dotSizeOpenScaled,
-                    height: dotSizeOpenScaled,
-                    pointerEvents: isOpen ? "auto" : "none",
-                  }}
-                  transformTemplate={(_, generated) =>
-                    `translate(-50%, -50%) ${generated}`
-                  }
-                  // Drive motion purely via transforms (single element)
-                  animate={{ x, y, scale, opacity: 1 }}
-                  disableMotion={!isOpen}
-                  transition={transition}
-                  // Dots should not be focusable specks when closed
-                  tabIndex={isOpen ? 0 : -1}
-                  // Prevent Motion/DOM pointer events from bubbling to the board
-                  onPointerDownCapture={(e) => e.stopPropagation()}
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    if (!isOpen) return
-                    if (isCooldown) return
-                    if (i !== 0) {
-                      reorderPalette(item)
-                      requestPaletteChange(item.componentColors)
-                      startCooldown(SELECT_PALETTE_COLOR_COOL_DOWN_MS)
-                      navigate(`/${item.page}`)
-                    }
-                    setIsOpen(false)
-                  }}
-                  renderChildren={() => (
-                    <Text
-                      as="span"
-                      className={`
-                        ${isOpen && i !== 0
-                          ? item.text
-                          : item.blendText
-                        }
-                        m-0 leading-none font-semibold font-mono text-[12px]
-                        transition-colors duration-300
-                      `}
-                    >
-                      {item.name}
-                    </Text>
-                  )}
-                />
-              )
-            })}
-          </View>
+          <PaletteRing
+            items={items}
+            isBoardOpen={isOpen}
+            onSelectPaletteColor={handleSelectPaletteColor}
+          />
         )}
       />
     </View>
+  )
+}
+
+function PaletteRing({
+  items,
+  isBoardOpen,
+  onSelectPaletteColor,
+}: {
+  items: PaletteItem[]
+  isBoardOpen: boolean
+  onSelectPaletteColor: (item: PaletteItem, itemIndex: number) => void
+}) {
+  const {
+    paletteRingDotAnimations,
+    paletteRingDotTransitions,
+  } = usePaletteRingAnimationDriver(items, isBoardOpen)
+
+  return (
+    <View className="absolute inset-0">
+      {items.map((item, i) => (
+        <PaletteDot
+          key={item.page}
+          item={item}
+          itemIndex={i}
+          isBoardOpen={isBoardOpen}
+          animate={paletteRingDotAnimations[i]}
+          transition={paletteRingDotTransitions[i]}
+          onClick={onSelectPaletteColor}
+        />
+      ))}
+    </View>
+  )
+}
+
+function PaletteDot({
+  item,
+  itemIndex,
+  isBoardOpen,
+  animate,
+  transition,
+  onClick,
+}: {
+  item: PaletteItem
+  itemIndex: number
+  isBoardOpen: boolean
+  animate: TargetAndTransition
+  transition: Transition
+  onClick: (item: PaletteItem, itemIndex: number) => void
+}) {
+  const {
+    dotSizeOpenScaled,
+  } = useViewportScaledSizing()
+
+  return (
+    <Button
+      key={item.color}
+      aria-label={`Select ${item.color} palette`}
+      className={`
+        absolute ${item.bg}
+        rounded-full shadow-md border border-secondary/20
+        flex items-center justify-center
+        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70
+        ${isBoardOpen && "cursor-pointer"}
+      `}
+      // Anchor at board center x/y are offsets from there
+      style={{
+        left: "50%",
+        top: "50%",
+        width: dotSizeOpenScaled,
+        height: dotSizeOpenScaled,
+        pointerEvents: isBoardOpen ? "auto" : "none",
+      }}
+      transformTemplate={(_, generated) =>
+        `translate(-50%, -50%) ${generated}`
+      }
+      // Drive motion purely via transforms (single element)
+      animate={animate}
+      disableMotion={!isBoardOpen}
+      transition={transition}
+      // Dots should not be focusable specks when closed
+      tabIndex={isBoardOpen ? 0 : -1}
+      // Prevent Motion/DOM pointer events from bubbling to the board
+      onPointerDownCapture={(e) => e.stopPropagation()}
+      onClick={(e) => {
+        e.stopPropagation()
+        onClick(item, itemIndex)
+      }}
+      renderChildren={() => (
+        <Text
+          as="span"
+          className={`
+            ${isBoardOpen && itemIndex !== 0
+              ? item.text
+              : item.blendText
+            }
+            m-0 leading-none font-semibold font-mono text-[12px]
+            transition-colors duration-300
+          `}
+        >
+          {item.name}
+        </Text>
+      )}
+    />
   )
 }
