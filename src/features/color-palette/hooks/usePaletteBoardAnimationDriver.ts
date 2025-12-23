@@ -13,7 +13,7 @@ export default function usePaletteBoardAnimationDriver(
 ) {
   const shouldReduceMotion = useReducedMotion()
   const { atTopOfPage } = useSmoothScroll()
-  const { linkColors } = useColorPalette()
+  const { linkColors, pageColors } = useColorPalette()
 
   // define board transition style (base spring)
   const boardDelay = shouldReduceMotion
@@ -35,7 +35,9 @@ export default function usePaletteBoardAnimationDriver(
   const boardColors: PaletteBoardColors = useMemo(() => {
     const bg =
       atTopOfPage
-        ? "bg-secondary/10 backdrop-blur-sm"
+        ? isOpen
+          ? "bg-secondary/10 backdrop-blur-sm"
+          : pageColors.bg
         : linkColors.bg
 
     const border =
@@ -44,7 +46,7 @@ export default function usePaletteBoardAnimationDriver(
         : linkColors.border
 
     return { bg, border }
-  }, [atTopOfPage, linkColors])
+  }, [atTopOfPage, linkColors, pageColors, isOpen])
 
   return { boardTransition, animateBoard, boardColors }
 }

@@ -97,7 +97,7 @@ export default function ColorPalette() {
           relative rounded-full border
           ${(!atTopOfPage && highlight) ? linkColors.h3Border : boardColors.border}
           ${boardColors.bg} shadow-md
-          transition-colors duration-300
+          transition-colors duration-500
           flex items-center justify-center origin-bottom-right
           ${!(isOpen || isCooldown) && "cursor-pointer"}
         `}
@@ -186,7 +186,7 @@ function PaletteDot({
         flex items-center justify-center
         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70
         ${isBoardOpen && "cursor-pointer"}
-        transition-colors duration-300
+        transition-colors duration-500
       `}
       // Anchor at board center x/y are offsets from there
       style={{
@@ -217,7 +217,7 @@ function PaletteDot({
           className={`
             ${colors.text}
             m-0 leading-none font-semibold font-mono text-[12px]
-            transition-colors duration-300
+            transition-colors duration-500
           `}
         >
           {item.name}
