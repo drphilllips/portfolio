@@ -4,7 +4,7 @@ import Text from "./Text"
 import type { CardType } from "../content/schemas/card.schema"
 import Card from "./Card"
 // import Image from "./Image"
-import Button from "./Button"
+import Link from "./Link"
 import { useColorPalette } from "../features/painted-background/contexts/useColorPalette"
 import Tag from "./Tag"
 import { CalendarDays } from "lucide-react"
@@ -39,7 +39,7 @@ export default function Content({
           )}
         </View>
       )}
-      {link && <Button label={link.label} href={link.href} />}
+      {link && <Link label={link.label} href={link.href} />}
       {(date || desc) && (
         <View className="flex flex-col items-start gap-2">
           {date && (

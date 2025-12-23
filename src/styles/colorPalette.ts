@@ -1,5 +1,5 @@
 import { type SitePage } from "../types/pages";
-import { type ButtonColors, type CardColors, type ColorId, type ColorPrimary, type ComponentColors, type ContentColors, type CtaColors, type PageColors, type PaletteItem, type SectionColors, type TagColors } from "../features/painted-background/types/colorPalette";
+import { type LinkColors, type CardColors, type ColorId, type ColorPrimary, type ComponentColors, type ContentColors, type CtaColors, type PageColors, type PaletteItem, type SectionColors, type TagColors } from "../features/painted-background/types/colorPalette";
 
 export const NAVIGATE_PRESS_COOL_DOWN_MS = 2400
 
@@ -57,7 +57,7 @@ const componentColors = (pageColorId: ColorId): ComponentColors => ({
   sectionColors: sectionColors(pageColorId),
   contentColors: contentColors(pageColorId),
   cardColors: cardColors(pageColorId),
-  buttonColors: buttonColors(pageColorId),
+  linkColors: linkColors(pageColorId),
   tagColors: tagColors(pageColorId),
   ctaColors: ctaColors(pageColorId),
 })
@@ -130,21 +130,6 @@ const cardColors = (pageColorId: ColorId): CardColors => {
   }
 }
 
-const buttonColors = (pageColorId: ColorId): ButtonColors => {
-  const primary = COLOR_PRIMARIES[pageColorId]
-  return {
-    bg: primary === "ghost"
-      ? "bg-ghost"
-      : "bg-ashbl",
-    border: primary === "ghost"
-      ? "border-ashbl/30"
-      : "border-ghost/30",
-    label: primary === "ghost"
-      ? "text-ashbl/80"
-      : "text-ghost/80",
-  }
-}
-
 const tagColors = (pageColorId: ColorId): TagColors => {
   const primary = COLOR_PRIMARIES[pageColorId]
   return {
@@ -157,27 +142,30 @@ const tagColors = (pageColorId: ColorId): TagColors => {
   }
 }
 
-const ctaColors = (pageColorId: ColorId): CtaColors => {
+const linkColors = (pageColorId: ColorId): LinkColors => {
   const primary = COLOR_PRIMARIES[pageColorId]
   return {
     bg: primary === "ghost"
-      ? "bg-ghost/90"
-      : "bg-ashbl/90",
+      ? "bg-ghost"
+      : "bg-ashbl",
     border: primary === "ghost"
       ? "border-ashbl/30"
       : "border-ghost/30",
     h3: primary === "ghost"
       ? "text-ashbl-300"
       : "text-ghost-300",
+  }
+}
+
+const ctaColors = (pageColorId: ColorId): CtaColors => {
+  const primary = COLOR_PRIMARIES[pageColorId]
+  return {
     h4: primary === "ghost"
       ? "text-ashbl-400"
       : "text-ghost-400",
     h5: primary === "ghost"
       ? "text-ashbl-300/50"
       : "text-ghost-300/50",
-    sep: primary === "ghost"
-      ? "bg-ashbl/10"
-      : "bg-ghost/10",
   }
 }
 
@@ -219,7 +207,7 @@ export const INIT_COMPONENT_COLORS: ComponentColors = {
   sectionColors: sectionColors("ghost"),
   contentColors: contentColors("ghost"),
   cardColors: cardColors("ghost"),
-  buttonColors: buttonColors("ghost"),
+  linkColors: linkColors("ghost"),
   tagColors: tagColors("ghost"),
   ctaColors: ctaColors("ghost"),
 }

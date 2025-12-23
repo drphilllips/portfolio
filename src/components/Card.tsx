@@ -2,10 +2,10 @@ import type { CardType } from "../content/schemas/card.schema"
 import Text from "./Text"
 import Image from "./Image"
 import View from "./View"
-import Button from "./Button"
 import { useColorPalette } from "../features/painted-background/contexts/useColorPalette"
 import { Component } from "lucide-react"
 import Separator from "./Separator"
+import Link from "./Link"
 
 export default function Card({
   title,
@@ -50,11 +50,11 @@ export default function Card({
               ))}
             </View>
           )}
-          {link && <Button label={link.label} href={link.href} />}
+          {link && <Link label={link.label} href={link.href} />}
         </View>
       )}
       {(link && !(title || text || image || bullets)) && (
-        <Button label={link.label} href={link.href} />
+        <Link label={link.label} href={link.href} />
       )}
     </>
   )
