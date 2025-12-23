@@ -63,18 +63,18 @@ export default function ColorPalette() {
   } = useViewportScaledSizing()
 
   const {
-    boardColors,
-    animateBoard,
-    boardTransition,
-  } = usePaletteBoardAnimationDriver(
-    boardCenterShift, boardOpenSizeScaled, isOpen,
-  )
-
-  const {
     isCooldown,
     handleSelectPaletteColor
   } = useSelectPaletteColor(
     items, setItems, isOpen, setIsOpen,
+  )
+
+  const {
+    boardColors,
+    animateBoard,
+    boardTransition,
+  } = usePaletteBoardAnimationDriver(
+    boardCenterShift, boardOpenSizeScaled, isOpen, isCooldown,
   )
 
   const { atTopOfPage, smoothScrollTo } = useSmoothScroll()
@@ -94,10 +94,10 @@ export default function ColorPalette() {
       <Button
         aria-label={isOpen ? "Close color palette" : "Open color palette"}
         className={`
-          relative rounded-full border
+          relative rounded-full border-2
           ${(!atTopOfPage && highlight) ? linkColors.h3Border : boardColors.border}
           ${boardColors.bg} shadow-md
-          transition-colors duration-500
+          transition-colors ${isOpen ? "duration-400" : atTopOfPage ? "duration-400" : "duration-300"}
           flex items-center justify-center origin-bottom-right
           ${!(isOpen || isCooldown) && "cursor-pointer"}
         `}
@@ -186,7 +186,7 @@ function PaletteDot({
         flex items-center justify-center
         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70
         ${isBoardOpen && "cursor-pointer"}
-        transition-colors duration-500
+        transition-colors duration-300
       `}
       // Anchor at board center x/y are offsets from there
       style={{
@@ -217,7 +217,7 @@ function PaletteDot({
           className={`
             ${colors.text}
             m-0 leading-none font-semibold font-mono text-[12px]
-            transition-colors duration-500
+            transition-colors duration-300
           `}
         >
           {item.name}

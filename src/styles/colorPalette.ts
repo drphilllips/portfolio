@@ -13,8 +13,6 @@ const COLOR_BGS: Record<ColorId, string> = {
   ghost: "bg-ghost",
 }
 
-const COLOR_DOT_BORDER = "border-secondary/20 shadow-md"
-
 const COLOR_TEXTS: Record<ColorId, string> = {
   ashbl: "text-ashbl",
   roylp: "text-roylp",
@@ -78,6 +76,9 @@ const pageColors = (pageColorId: ColorId): PageColors => {
     title: primary === "ghost"
       ? "text-ghost"
       : "text-ashbl",
+    subBorder: primary === "ghost"
+      ? "border-ghost/40"
+      : "border-ashbl/40",
     sub: primary === "ghost"
       ? "text-ghost/40"
       : "text-ashbl/40",
@@ -194,6 +195,15 @@ const ctaColors = (pageColorId: ColorId): CtaColors => {
   }
 }
 
+const colorDotBorder = (pageColorId: ColorId): string => {
+  const primary = COLOR_PRIMARIES[pageColorId]
+  return (
+    primary === "ghost"
+      ? "border-ghost shadow-md"
+      : "border-ashbl shadow-md"
+  )
+}
+
 // ----------
 // Mass-export colors
 // --------
@@ -203,7 +213,7 @@ const pi = (
   { color, page, name,
     bg: COLOR_BGS[color],
     text: COLOR_PRIMARY_TEXTS[color],
-    border: COLOR_DOT_BORDER,
+    border: colorDotBorder(color),
     blendText: COLOR_TEXTS[color],
     componentColors: componentColors(color),
   }

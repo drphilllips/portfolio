@@ -10,6 +10,7 @@ export default function usePaletteBoardAnimationDriver(
   boardCenterShift: number,
   boardOpenSizeScaled: number,
   isOpen: boolean,
+  isCooldown: boolean,
 ) {
   const shouldReduceMotion = useReducedMotion()
   const { atTopOfPage } = useSmoothScroll()
@@ -35,18 +36,18 @@ export default function usePaletteBoardAnimationDriver(
   const boardColors: PaletteBoardColors = useMemo(() => {
     const bg =
       atTopOfPage
-        ? isOpen
+        ? isOpen || isCooldown
           ? "bg-secondary/10 backdrop-blur-sm"
           : pageColors.bg
         : linkColors.bg
 
     const border =
       atTopOfPage
-        ? "border-secondary/30"
+        ? pageColors.subBorder
         : linkColors.border
 
     return { bg, border }
-  }, [atTopOfPage, linkColors, pageColors, isOpen])
+  }, [atTopOfPage, linkColors, pageColors, isOpen, isCooldown])
 
   return { boardTransition, animateBoard, boardColors }
 }

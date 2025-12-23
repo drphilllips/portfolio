@@ -44,6 +44,7 @@ export type PageColors = {
   bg: string
   title: string
   sub: string
+  subBorder: string
   sep: string
 }
 

@@ -1,5 +1,5 @@
 
-export const SELECT_PALETTE_COLOR_COOL_DOWN_MS = 2400
+export const SELECT_PALETTE_COLOR_COOL_DOWN_MS = 1600
 
 // ----------
 // Sizing + Geometry

@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import type { LinkColors, PaletteItem } from "../../../types/colorPalette";
+import type { LinkColors, PageColors, PaletteItem } from "../../../types/colorPalette";
 import { BASE_RING_RADIUS, BASE_SPRING, INNER_ARC_END_ANGLE, INNER_ARC_INDICES, INNER_ARC_START_ANGLE, OUTER_ARC_END_ANGLE, OUTER_ARC_INDICES, OUTER_ARC_START_ANGLE } from "../constants/colorPalette";
 import type { PaletteDotColors, PalettePosition } from "../types/paletteAnimation";
 import useViewportScaledSizing from "./useViewportScaledSizing";
@@ -20,7 +20,7 @@ export default function usePaletteRingAnimationDriver(
   } = useViewportScaledSizing()
   const { atTopOfPage } = useSmoothScroll()
   const shouldReduceMotion = useReducedMotion()
-  const { linkColors } = useColorPalette()
+  const { linkColors, pageColors } = useColorPalette()
 
   // track which dependency changed
   const changedDeps = useChangedDeps({
@@ -77,8 +77,8 @@ export default function usePaletteRingAnimationDriver(
 
   // dot colors (white if forming scroll-to-top arrow)
   const paletteRingDotColors: PaletteDotColors[] = useMemo(() => (
-    items.map((item, i) => getRingDotColor(item, i, linkColors, atTopOfPage, isBoardOpen))
-  ), [items, atTopOfPage, isBoardOpen, linkColors])
+    items.map((item, i) => getRingDotColor(item, i, linkColors, pageColors, atTopOfPage, isBoardOpen))
+  ), [items, atTopOfPage, isBoardOpen, linkColors, pageColors])
 
   // dot rounding (to form solid arrow w/ rounded ends)
   const paletteRingDotRoundings: string[] = useMemo(() => (
@@ -201,7 +201,7 @@ function getRingDotRounding(itemIndex: number, atTopOfPage: boolean): string {
 }
 
 // Top arrow indices 1-5 are white, otherwise standard colors
-function getRingDotColor(item: PaletteItem, itemIndex: number, linkColors: LinkColors, atTopOfPage: boolean, isBoardOpen: boolean): PaletteDotColors {
+function getRingDotColor(item: PaletteItem, itemIndex: number, linkColors: LinkColors, pageColors: PageColors, atTopOfPage: boolean, isBoardOpen: boolean): PaletteDotColors {
   const bg =
     atTopOfPage
       ? item.bg
@@ -222,7 +222,9 @@ function getRingDotColor(item: PaletteItem, itemIndex: number, linkColors: LinkC
 
   const border =
     atTopOfPage
-      ? `border ${item.border}`
+      ? itemIndex === 0 && isBoardOpen
+        ? `border ${pageColors.subBorder}`
+        : `border ${item.border}`
       : linkColors.blendBorder
 
   return { bg, text, border }
