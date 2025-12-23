@@ -21,6 +21,7 @@ export type PaletteItem = {
   // palette dot styling
   bg: string
   text: string
+  border: string
   blendText: string
   // component-based-styling
   componentColors: ComponentColors
@@ -73,6 +74,9 @@ export type LinkColors = {
   bg: string
   border: string
   h3: string
+  h3Bg: string
+  blendText: string
+  blendBorder: string
 }
 
 export type TagColors = {

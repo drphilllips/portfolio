@@ -13,6 +13,8 @@ const COLOR_BGS: Record<ColorId, string> = {
   ghost: "bg-ghost",
 }
 
+const COLOR_DOT_BORDER = "border-secondary/20 shadow-md"
+
 const COLOR_TEXTS: Record<ColorId, string> = {
   ashbl: "text-ashbl",
   roylp: "text-roylp",
@@ -32,13 +34,22 @@ const COLOR_PRIMARIES: Record<ColorId, ColorPrimary> = {
 }
 
 // Procedurally map each page color -> its primary text class (e.g. "text-ghost")
-const COLOR_PRIMARY_TEXTS: Record<ColorId, string> = {
+export const COLOR_PRIMARY_TEXTS: Record<ColorId, string> = {
   ashbl: "text-ghost",
   roylp: "text-ghost",
   chrtr: "text-ashbl",
   orngc: "text-ashbl",
   palbr: "text-ghost",
   ghost: "text-ashbl",
+}
+
+export const COLOR_PRIMARY_BGS: Record<ColorId, string> = {
+  ashbl: "bg-ghost",
+  roylp: "bg-ghost",
+  chrtr: "bg-ashbl",
+  orngc: "bg-ashbl",
+  palbr: "bg-ghost",
+  ghost: "bg-ashbl",
 }
 
 const COLOR_TAG_BGS: Record<ColorId, string> = {
@@ -146,12 +157,21 @@ const linkColors = (pageColorId: ColorId): LinkColors => {
     bg: primary === "ghost"
       ? "bg-ghost"
       : "bg-ashbl",
+    blendText: primary === "ghost"
+      ? "text-ghost"
+      : "text-ashbl",
+    blendBorder: primary === "ghost"
+      ? "border-ghost"
+      : "border-ashbl",
     border: primary === "ghost"
       ? "border-ashbl/30"
       : "border-ghost/30",
     h3: primary === "ghost"
       ? "text-ashbl-300"
       : "text-ghost-300",
+    h3Bg: primary === "ghost"
+      ? "bg-ashbl-300"
+      : "bg-ghost-300",
   }
 }
 
@@ -176,6 +196,7 @@ const pi = (
   { color, page, name,
     bg: COLOR_BGS[color],
     text: COLOR_PRIMARY_TEXTS[color],
+    border: COLOR_DOT_BORDER,
     blendText: COLOR_TEXTS[color],
     componentColors: componentColors(color),
   }

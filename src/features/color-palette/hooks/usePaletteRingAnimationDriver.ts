@@ -1,11 +1,12 @@
 import { useMemo } from "react";
-import type { PaletteItem } from "../../../types/colorPalette";
+import type { LinkColors, PaletteItem } from "../../../types/colorPalette";
 import { BASE_RING_RADIUS, BASE_SPRING, INNER_ARC_END_ANGLE, INNER_ARC_INDICES, INNER_ARC_START_ANGLE, OUTER_ARC_END_ANGLE, OUTER_ARC_INDICES, OUTER_ARC_START_ANGLE } from "../constants/colorPalette";
-import type { PalettePosition } from "../types/paletteAnimation";
+import type { PaletteDotColors, PalettePosition } from "../types/paletteAnimation";
 import useViewportScaledSizing from "./useViewportScaledSizing";
 import { useReducedMotion, type TargetAndTransition, type Transition } from "motion/react";
 import { useSmoothScroll } from "../../../hooks/useSmoothScroll";
 import useChangedDeps from "../../../hooks/useChangedDeps";
+import { useColorPalette } from "../../../contexts/useColorPalette";
 
 
 export default function usePaletteRingAnimationDriver(
@@ -19,6 +20,7 @@ export default function usePaletteRingAnimationDriver(
   } = useViewportScaledSizing()
   const { atTopOfPage } = useSmoothScroll()
   const shouldReduceMotion = useReducedMotion()
+  const { linkColors } = useColorPalette()
 
   // track which dependency changed
   const changedDeps = useChangedDeps({
@@ -73,7 +75,12 @@ export default function usePaletteRingAnimationDriver(
     })
   }, [items, closedRingTargets, openArcTargets, scrollToTopArrowTargets, isBoardOpen, dotScale, atTopOfPage])
 
-  return { dotScale, paletteRingDotAnimations, paletteRingDotTransitions }
+  // dot colors (white if forming scroll-to-top arrow)
+  const paletteRingDotColors: PaletteDotColors[] = useMemo(() => (
+    items.map((item, i) => getRingDotColor(item, i, linkColors, atTopOfPage, isBoardOpen))
+  ), [items, atTopOfPage, isBoardOpen, linkColors])
+
+  return { dotScale, paletteRingDotAnimations, paletteRingDotTransitions, paletteRingDotColors }
 }
 
 // ----------
@@ -163,13 +170,44 @@ function getRingTarget(
 
 // Scroll to top arrow targets (right triangle)
 function getArrowTarget(itemIndex: number): PalettePosition {
+  const arrowYOffset = BASE_RING_RADIUS*0.3
   switch (itemIndex) {
     case 0: return { x: 0, y: BASE_RING_RADIUS }
-    case 1: return { x: -BASE_RING_RADIUS, y: 0 }
-    case 2: return { x: -BASE_RING_RADIUS/2, y: -BASE_RING_RADIUS/2 }
-    case 3: return { x: 0, y: -BASE_RING_RADIUS }
-    case 4: return { x: BASE_RING_RADIUS/2, y: -BASE_RING_RADIUS/2 }
-    case 5: return { x: BASE_RING_RADIUS, y: 0 }
+    case 1: return { x: -BASE_RING_RADIUS, y: arrowYOffset }
+    case 2: return { x: -BASE_RING_RADIUS/2, y: -BASE_RING_RADIUS/2 + arrowYOffset }
+    case 3: return { x: 0, y: -BASE_RING_RADIUS + arrowYOffset }
+    case 4: return { x: BASE_RING_RADIUS/2, y: -BASE_RING_RADIUS/2 + arrowYOffset }
+    case 5: return { x: BASE_RING_RADIUS, y: arrowYOffset }
     default: return { x: 0, y: 0 }
   }
+}
+
+// Top arrow indices 1-5 are white, otherwise standard colors
+function getRingDotColor(item: PaletteItem, itemIndex: number, linkColors: LinkColors, atTopOfPage: boolean, isBoardOpen: boolean): PaletteDotColors {
+  const bg =
+    atTopOfPage
+      ? item.bg
+      : itemIndex === 0
+        ? linkColors.bg
+        : linkColors.h3Bg
+
+  const text =
+    atTopOfPage
+      ? isBoardOpen
+        ? itemIndex === 0
+          ? item.blendText
+          : item.text
+        : item.blendText
+      : itemIndex === 0
+        ? linkColors.blendText
+        : linkColors.h3
+
+  const border =
+    atTopOfPage
+      ? item.border
+      : itemIndex === 0
+        ? linkColors.blendBorder
+        : item.border
+
+  return { bg, text, border }
 }

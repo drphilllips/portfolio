@@ -10,6 +10,7 @@ import usePaletteBoardAnimationDriver from "./hooks/usePaletteBoardAnimationDriv
 import usePaletteRingAnimationDriver from "./hooks/usePaletteRingAnimationDriver"
 import useSelectPaletteColor from "./hooks/useSelectPaletteColor"
 import { useSmoothScroll } from "../../hooks/useSmoothScroll"
+import type { PaletteDotColors } from "./types/paletteAnimation"
 
 /**
  * ColorPalette
@@ -58,8 +59,9 @@ export default function ColorPalette() {
   } = useViewportScaledSizing()
 
   const {
-    boardTransition,
+    boardColors,
     animateBoard,
+    boardTransition,
   } = usePaletteBoardAnimationDriver(
     boardCenterShift, boardOpenSizeScaled, isOpen,
   )
@@ -88,8 +90,9 @@ export default function ColorPalette() {
       <Button
         aria-label={isOpen ? "Close color palette" : "Open color palette"}
         className={`
-          relative rounded-full border border-secondary/30
-          bg-secondary/10 shadow-md backdrop-blur-sm
+          relative rounded-full border ${boardColors.border}
+          ${boardColors.bg} shadow-md
+          transition-colors duration-300
           flex items-center justify-center origin-bottom-right
           ${!(isOpen || isCooldown) && "cursor-pointer"}
         `}
@@ -120,6 +123,7 @@ function PaletteRing({
   const {
     paletteRingDotAnimations,
     paletteRingDotTransitions,
+    paletteRingDotColors,
   } = usePaletteRingAnimationDriver(items, isBoardOpen)
 
   return (
@@ -128,6 +132,7 @@ function PaletteRing({
         <PaletteDot
           key={item.page}
           item={item}
+          colors={paletteRingDotColors[i]}
           itemIndex={i}
           isBoardOpen={isBoardOpen}
           animate={paletteRingDotAnimations[i]}
@@ -141,6 +146,7 @@ function PaletteRing({
 
 function PaletteDot({
   item,
+  colors,
   itemIndex,
   isBoardOpen,
   animate,
@@ -148,6 +154,7 @@ function PaletteDot({
   onClick,
 }: {
   item: PaletteItem
+  colors: PaletteDotColors
   itemIndex: number
   isBoardOpen: boolean
   animate: TargetAndTransition
@@ -161,11 +168,12 @@ function PaletteDot({
       key={item.color}
       aria-label={`Select ${item.color} palette`}
       className={`
-        absolute ${item.bg}
-        rounded-full shadow-md border border-secondary/20
+        absolute ${colors.bg}
+        rounded-full border ${colors.border}
         flex items-center justify-center
         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70
         ${isBoardOpen && "cursor-pointer"}
+        transition-colors duration-300
       `}
       // Anchor at board center x/y are offsets from there
       style={{
@@ -194,10 +202,7 @@ function PaletteDot({
         <Text
           as="span"
           className={`
-            ${isBoardOpen && itemIndex !== 0
-              ? item.text
-              : item.blendText
-            }
+            ${colors.text}
             m-0 leading-none font-semibold font-mono text-[12px]
             transition-colors duration-300
           `}
