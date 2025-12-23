@@ -101,12 +101,26 @@ export default function ColorPalette() {
           ${(!atTopOfPage && highlight) ? linkColors.h3Border : boardColors.border}
           ${boardColors.bg} shadow-md
           transition-colors
-          ${routeTransitionPhase === "pausing"
-            ? "duration-1800"
-            : isOpen ? "duration-400" : atTopOfPage ? "duration-400" : "duration-300"}
           flex items-center justify-center origin-bottom-right
           ${!(isOpen || isCooldown) && "cursor-pointer"}
         `}
+        /**
+          ${routeTransitionPhase === "pausing"
+            ? "duration-1800"
+            : isOpen ? "duration-400" : atTopOfPage ? "duration-400" : "duration-300"}
+         */
+        style={{
+          transitionProperty: "background-color, border-color",
+          transitionDuration:
+            atTopOfPage
+              ? isOpen
+                ? "400ms, 400ms"
+                : routeTransitionPhase === "pausing"
+                  ? "0ms, 1800ms"
+                  : "300ms, 300ms"
+              : "300ms, 300ms",
+          transitionTimingFunction: "var(--default-transition-timing-function), var(--default-transition-timing-function)",
+        }}
         onClick={handleBoardClick}
         animate={animateBoard}
         transition={boardTransition} // Single dot layer (dots always exist exactly once)
