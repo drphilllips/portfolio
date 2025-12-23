@@ -15,3 +15,10 @@ export type PaletteDotColors = {
   text: string
   border: string
 }
+
+export type PaletteDotBorderRadius = {
+  borderTopLeftRadius: number
+  borderTopRightRadius: number
+  borderBottomRightRadius: number
+  borderBottomLeftRadius: number
+}

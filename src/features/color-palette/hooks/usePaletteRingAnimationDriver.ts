@@ -1,12 +1,13 @@
 import { useMemo } from "react";
 import type { LinkColors, PageColors, PaletteItem } from "../../../types/colorPalette";
 import { BASE_RING_RADIUS, BASE_SPRING, INNER_ARC_END_ANGLE, INNER_ARC_INDICES, INNER_ARC_START_ANGLE, OUTER_ARC_END_ANGLE, OUTER_ARC_INDICES, OUTER_ARC_START_ANGLE } from "../constants/colorPalette";
-import type { PaletteDotColors, PalettePosition } from "../types/paletteAnimation";
+import type { PaletteDotBorderRadius, PaletteDotColors, PalettePosition } from "../types/paletteAnimation";
 import useViewportScaledSizing from "./useViewportScaledSizing";
 import { useReducedMotion, type TargetAndTransition, type Transition } from "motion/react";
 import { useSmoothScroll } from "../../../hooks/useSmoothScroll";
 import useChangedDeps from "../../../hooks/useChangedDeps";
 import { useColorPalette } from "../../../contexts/useColorPalette";
+import { ROUNDED_B, ROUNDED_FULL, ROUNDED_NONE, ROUNDED_T, ROUNDED_TL } from "../constants/paletteAnimation";
 
 
 export default function usePaletteRingAnimationDriver(
@@ -81,11 +82,11 @@ export default function usePaletteRingAnimationDriver(
   ), [items, atTopOfPage, isBoardOpen, linkColors, pageColors])
 
   // dot rounding (to form solid arrow w/ rounded ends)
-  const paletteRingDotRoundings: string[] = useMemo(() => (
-    items.map((_, i) => getRingDotRounding(i, atTopOfPage))
+  const paletteRingDotBorderRadii: PaletteDotBorderRadius[] = useMemo(() => (
+    items.map((_, i) => getRingDotBorderRadius(i, atTopOfPage))
   ), [items, atTopOfPage])
 
-  return { dotScale, paletteRingDotAnimations, paletteRingDotTransitions, paletteRingDotColors, paletteRingDotRoundings }
+  return { dotScale, paletteRingDotAnimations, paletteRingDotTransitions, paletteRingDotColors, paletteRingDotBorderRadii }
 }
 
 // ----------
@@ -187,16 +188,16 @@ function getArrowTarget(itemIndex: number): PalettePosition & { rotate?: number 
   }
 }
 
-function getRingDotRounding(itemIndex: number, atTopOfPage: boolean): string {
-  if (atTopOfPage) return "rounded-full"
+function getRingDotBorderRadius(itemIndex: number, atTopOfPage: boolean): PaletteDotBorderRadius {
+  if (atTopOfPage) return ROUNDED_FULL
   switch (itemIndex) {
-    case 0: return "rounded-full"
-    case 1: return "rounded-b-full"
-    case 2: return ""
-    case 3: return "rounded-tl-full"
-    case 4: return ""
-    case 5: return "rounded-t-full"
-    default: return "rounded-full"
+    case 0: return ROUNDED_FULL
+    case 1: return ROUNDED_B
+    case 2: return ROUNDED_NONE
+    case 3: return ROUNDED_TL
+    case 4: return ROUNDED_NONE
+    case 5: return ROUNDED_T
+    default: return ROUNDED_FULL
   }
 }
 

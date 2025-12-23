@@ -10,7 +10,7 @@ import usePaletteBoardAnimationDriver from "./hooks/usePaletteBoardAnimationDriv
 import usePaletteRingAnimationDriver from "./hooks/usePaletteRingAnimationDriver"
 import useSelectPaletteColor from "./hooks/useSelectPaletteColor"
 import { useSmoothScroll } from "../../hooks/useSmoothScroll"
-import type { PaletteDotColors } from "./types/paletteAnimation"
+import type { PaletteDotBorderRadius, PaletteDotColors } from "./types/paletteAnimation"
 import { useColorPalette } from "../../contexts/useColorPalette"
 import useRouteTransition from "../../hooks/useRouteTransition"
 
@@ -152,7 +152,7 @@ function PaletteRing({
   const {
     paletteRingDotAnimations,
     paletteRingDotTransitions,
-    paletteRingDotRoundings,
+    paletteRingDotBorderRadii,
     paletteRingDotColors,
   } = usePaletteRingAnimationDriver(items, isBoardOpen)
 
@@ -163,7 +163,7 @@ function PaletteRing({
           key={item.page}
           item={item}
           colors={paletteRingDotColors[i]}
-          rounding={paletteRingDotRoundings[i]}
+          borderRadius={paletteRingDotBorderRadii[i]}
           itemIndex={i}
           isBoardOpen={isBoardOpen}
           animate={paletteRingDotAnimations[i]}
@@ -178,7 +178,7 @@ function PaletteRing({
 function PaletteDot({
   item,
   colors,
-  rounding,
+  borderRadius,
   itemIndex,
   isBoardOpen,
   animate,
@@ -187,7 +187,7 @@ function PaletteDot({
 }: {
   item: PaletteItem
   colors: PaletteDotColors
-  rounding: string
+  borderRadius: PaletteDotBorderRadius
   itemIndex: number
   isBoardOpen: boolean
   animate: TargetAndTransition
@@ -202,11 +202,11 @@ function PaletteDot({
       aria-label={`Select ${item.color} palette`}
       className={`
         absolute ${colors.bg}
-        ${rounding} ${colors.border}
+        ${colors.border}
         flex items-center justify-center
         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70
         ${isBoardOpen && "cursor-pointer"}
-        transition-colors duration-300
+        transition-[background-color,border-color,border-width,color,border-radius] duration-300
       `}
       // Anchor at board center x/y are offsets from there
       style={{
@@ -215,6 +215,7 @@ function PaletteDot({
         width: dotSizeOpenScaled,
         height: dotSizeOpenScaled,
         pointerEvents: isBoardOpen ? "auto" : "none",
+        ...borderRadius
       }}
       transformTemplate={(_, generated) =>
         `translate(-50%, -50%) ${generated}`
