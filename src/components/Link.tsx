@@ -1,9 +1,9 @@
 import type { LinkType } from "../content/schemas/link.schema"
 import { useColorPalette } from "../features/painted-background/contexts/useColorPalette"
-import Text from "./Text"
+import Text from "./basic/Text"
 import { useSmoothScroll } from "../hooks/useSmoothScroll"
-import MotionButton from "./MotionButton"
-import View from "./View"
+import Button from "./basic/Button"
+import View from "./basic/View"
 import { Link as LinkIcon } from "lucide-react"
 
 export default function Link({
@@ -19,7 +19,7 @@ export default function Link({
   const { scrollOnClickLink } = useSmoothScroll(href)
 
   return (
-    <MotionButton
+    <Button
       activeScaleVariance={0.02}
       aria-label={label}
       onClick={scrollOnClickLink}

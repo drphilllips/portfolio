@@ -2,13 +2,14 @@ import { useEffect, useRef, useState } from "react"
 import { useReducedMotion } from "motion/react"
 import { useColorPalette } from "./contexts/useColorPalette"
 import type { PaletteItem } from "./types/colorPalette"
-import { PALETTE_ITEMS, NAVIGATE_PRESS_COOL_DOWN_MS } from "../../styles/colorPalette"
-import View from "../../components/View"
-import Text from "../../components/Text"
+import { PALETTE_ITEMS } from "../../styles/colorPalette"
+import View from "../../components/basic/View"
+import Text from "../../components/basic/Text"
 import { useLocation, useNavigate } from "react-router-dom"
 import type { SitePage } from "../../types/pages"
 import { useResponsiveDesign } from "../../contexts/useResponsiveDesign"
-import MotionButton from "../../components/MotionButton"
+import Button from "../../components/basic/Button"
+import { NAVIGATE_PRESS_COOL_DOWN_MS } from "./constants/canvasBackgroundTransition"
 
 const OPEN_VISIBLE_FRACTION = 0.7
 const OPEN_VISIBLE_MAX_PX = 280
@@ -154,7 +155,7 @@ export default function ColorPalette() {
   return (
     <View className="fixed bottom-4 right-4 z-50">
       {/* Board (always mounted) */}
-      <MotionButton
+      <Button
         aria-label={isOpen ? "Close color palette" : "Open color palette"}
         className={`
           relative rounded-full border border-secondary/30
@@ -265,7 +266,7 @@ export default function ColorPalette() {
                 : { ...baseSpring, delay }
 
               return (
-                <MotionButton
+                <Button
                   key={item.color}
                   aria-label={`Select ${item.color} palette`}
                   className={`

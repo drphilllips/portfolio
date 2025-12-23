@@ -1,7 +1,7 @@
 import { motion, useReducedMotion } from "motion/react"
 import { useState, type ComponentProps, type MouseEventHandler } from "react"
 
-type MotionButtonProps = Omit<ComponentProps<typeof motion.div>, "onClick"> & {
+type ButtonProps = Omit<ComponentProps<typeof motion.div>, "onClick"> & {
   disableMotion?: boolean
   activeScaleVariance?: number
   existingScale?: number
@@ -11,7 +11,7 @@ type MotionButtonProps = Omit<ComponentProps<typeof motion.div>, "onClick"> & {
 }
 
 /**
- * MotionButton
+ * Button
  * ----
  * A reusable motion-enhanced button component built on top of `motion.div`.
  *
@@ -27,14 +27,14 @@ type MotionButtonProps = Omit<ComponentProps<typeof motion.div>, "onClick"> & {
  * making this a drop-in replacement for a normal button with polished,
  * accessible interaction feedback.
  */
-export default function MotionButton({
+export default function Button({
   disableMotion = false,
   activeScaleVariance = 0.05,
   className = "",
   onClick,
   renderChildren,
   ...rest
-}: MotionButtonProps) {
+}: ButtonProps) {
   const shouldReduceMotion = useReducedMotion()
 
   const [isHovering, setIsHovering] = useState(false)

@@ -1,4 +1,4 @@
-import type { ImageType } from "../content/schemas/image.schema";
+import type { ImageType } from "../../content/schemas/image.schema";
 
 
 export default function Image({

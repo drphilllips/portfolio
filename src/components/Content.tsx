@@ -1,6 +1,6 @@
 import type { ContentType } from "../content/schemas/content.schema"
-import View from "./View"
-import Text from "./Text"
+import View from "./basic/View"
+import Text from "./basic/Text"
 import type { CardType } from "../content/schemas/card.schema"
 import Card from "./Card"
 // import Image from "./Image"
@@ -8,7 +8,7 @@ import Link from "./Link"
 import { useColorPalette } from "../features/painted-background/contexts/useColorPalette"
 import Tag from "./Tag"
 import { CalendarDays } from "lucide-react"
-import Separator from "./Separator"
+import Separator from "./basic/Separator"
 
 export default function Content({
   title,

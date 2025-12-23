@@ -1,15 +1,15 @@
 import { useMemo } from "react"
 import type { PageType } from "../content/schemas/page.schema"
-import View from "./View"
-import Text from "./Text"
+import View from "./basic/View"
+import Text from "./basic/Text"
 import Section from "./Section"
 import type { SectionType } from "../content/schemas/section.schema"
-import Separator from "./Separator"
 import { useColorPalette } from "../features/painted-background/contexts/useColorPalette"
 import { useSmoothScroll } from "../hooks/useSmoothScroll"
 import { useScrollSpyHash } from "../hooks/useScrollSpyHash"
 import type { CtaType } from "../content/schemas/cta.schema"
 import Cta from "./Cta"
+import Separator from "./basic/Separator"
 
 export default function Page({
   title,

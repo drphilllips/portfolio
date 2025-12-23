@@ -1,8 +1,8 @@
 import type { CtaType } from "../content/schemas/cta.schema"
 import { useColorPalette } from "../features/painted-background/contexts/useColorPalette"
 import Link from "./Link"
-import Text from "./Text"
-import View from "./View"
+import Text from "./basic/Text"
+import View from "./basic/View"
 
 export default function Cta({
   title,

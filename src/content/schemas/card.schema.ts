@@ -7,15 +7,15 @@ export const CardSchema = z
     title: z.string().min(1).max(50).optional(),
     text: z.string().min(1).max(400).optional(),
     image: ImageSchema.optional(),
+    bullets: z.array(z.string().min(1).max(100)).max(3).optional(),
     link: LinkSchema.optional(),
-    bullets: z.array(z.string().min(1).max(100)).max(3).optional()
   })
   .refine(
     (obj) =>
-      Object.values(obj).some((value) =>
+      [obj.title, obj.text, obj.image, obj.bullets].some((value) =>
         Array.isArray(value) ? value.length > 0 : value !== undefined
       ),
-    { message: "At least one card field must be provided" }
+    { message: "At least one of title, text, image, or bullets must be provided" }
   )
 
 export type CardType = z.infer<typeof CardSchema>

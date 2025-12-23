@@ -1,6 +1,6 @@
 import { useColorPalette } from "../../features/painted-background/contexts/useColorPalette"
 import { useResponsiveDesign } from "../../contexts/useResponsiveDesign"
-import View from "../View"
+import View from "../basic/View"
 
 type AppShellProps = {
   children?: React.ReactNode

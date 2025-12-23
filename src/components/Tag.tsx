@@ -1,6 +1,6 @@
 import { useColorPalette } from "../features/painted-background/contexts/useColorPalette"
-import View from "./View"
-import Text from "./Text"
+import View from "./basic/View"
+import Text from "./basic/Text"
 
 export default function Tag({
   tag,

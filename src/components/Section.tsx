@@ -1,10 +1,10 @@
 import type { SectionType } from "../content/schemas/section.schema";
-import Text from "./Text";
+import Text from "./basic/Text";
 import type { ContentType } from "../content/schemas/content.schema";
-import Content from "./Content";
-import View from "./View";
+import View from "./basic/View";
 import { useColorPalette } from "../features/painted-background/contexts/useColorPalette";
 import { PAGE_LAST_SECTION_MIN_HEIGHT } from "../constants/pageSections";
+import Content from "./Content";
 
 export default function Section({
   id,

@@ -1,8 +1,6 @@
 import { type SitePage } from "../types/pages";
 import { type LinkColors, type CardColors, type ColorId, type ColorPrimary, type ComponentColors, type ContentColors, type CtaColors, type PageColors, type PaletteItem, type SectionColors, type TagColors } from "../features/painted-background/types/colorPalette";
 
-export const NAVIGATE_PRESS_COOL_DOWN_MS = 2400
-
 // -----------
 // Component-based styling
 // --------
