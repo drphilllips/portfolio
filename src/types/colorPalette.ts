@@ -73,10 +73,11 @@ export type CardColors = {
 export type LinkColors = {
   bg: string
   border: string
-  h3: string
-  h3Bg: string
   blendText: string
   blendBorder: string
+  h3: string
+  h3Bg: string
+  h3Border: string
 }
 
 export type TagColors = {

@@ -5,6 +5,10 @@ type ButtonProps = Omit<ComponentProps<typeof motion.div>, "onClick"> & {
   disableMotion?: boolean
   activeScaleVariance?: number
   existingScale?: number
+  onMouseIn?: () => void
+  onMouseOut?: () => void
+  onPressIn?: () => void
+  onPressOut?: () => void
   onClick?: (e: MouseEvent | React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void
   renderChildren?:
     (isHovering?: boolean, isPressing?: boolean) => React.ReactNode
@@ -31,6 +35,10 @@ export default function Button({
   disableMotion = false,
   activeScaleVariance = 0.05,
   className = "",
+  onMouseIn,
+  onMouseOut,
+  onPressIn,
+  onPressOut,
   onClick,
   renderChildren,
   ...rest
@@ -46,11 +54,13 @@ export default function Button({
       whileHover={!disableMotion && !shouldReduceMotion ? { scale: 1 + activeScaleVariance } : undefined}
       whileTap={!disableMotion && !shouldReduceMotion ? { scale: 1 - activeScaleVariance } : undefined}
       onClick={onClick as MouseEventHandler}
-      onHoverStart={() => setIsHovering(true)}
-      onHoverEnd={() => setIsHovering(false)}
-      onTapStart={() => setIsPressing(true)}
-      onTouchEnd={() => setIsPressing(false)}
-      onMouseLeave={() => { setIsHovering(false); setIsPressing(false) }}
+      onHoverStart={() => { setIsHovering(true); onMouseIn?.() }}
+      onHoverEnd={() => { setIsHovering(false); onMouseOut?.() }}
+      onTapStart={() => { setIsPressing(true); onPressIn?.() }}
+      onTouchEnd={() => { setIsPressing(false); onPressOut?.() }}
+      onMouseLeave={() => {
+        setIsHovering(false); setIsPressing(false); onMouseOut?.(); onPressOut?.()
+      }}
       {...rest}
     >
       {renderChildren?.(isHovering, isPressing)}

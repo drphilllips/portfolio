@@ -11,6 +11,7 @@ import usePaletteRingAnimationDriver from "./hooks/usePaletteRingAnimationDriver
 import useSelectPaletteColor from "./hooks/useSelectPaletteColor"
 import { useSmoothScroll } from "../../hooks/useSmoothScroll"
 import type { PaletteDotColors } from "./types/paletteAnimation"
+import { useColorPalette } from "../../contexts/useColorPalette"
 
 /**
  * ColorPalette
@@ -50,8 +51,11 @@ import type { PaletteDotColors } from "./types/paletteAnimation"
  * - This component is intended to be mounted once at the application level.
  */
 export default function ColorPalette() {
+  const { linkColors } = useColorPalette()
+
   const [items, setItems] = useState<PaletteItem[]>(PALETTE_ITEMS)
   const [isOpen, setIsOpen] = useState(false)
+  const [highlight, setHighlight] = useState(false)
 
   const {
       boardCenterShift,
@@ -90,7 +94,8 @@ export default function ColorPalette() {
       <Button
         aria-label={isOpen ? "Close color palette" : "Open color palette"}
         className={`
-          relative rounded-full border ${boardColors.border}
+          relative rounded-full border
+          ${(!atTopOfPage && highlight) ? linkColors.h3Border : boardColors.border}
           ${boardColors.bg} shadow-md
           transition-colors duration-300
           flex items-center justify-center origin-bottom-right
@@ -99,6 +104,10 @@ export default function ColorPalette() {
         onClick={handleBoardClick}
         animate={animateBoard}
         transition={boardTransition} // Single dot layer (dots always exist exactly once)
+        onMouseIn={() => setHighlight(true)}
+        onMouseOut={() => setHighlight(false)}
+        onPressIn={() => setHighlight(true)}
+        onPressOut={() => setHighlight(false)}
         renderChildren={() => (
           <PaletteRing
             items={items}

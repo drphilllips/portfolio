@@ -172,6 +172,9 @@ const linkColors = (pageColorId: ColorId): LinkColors => {
     h3Bg: primary === "ghost"
       ? "bg-ashbl-300"
       : "bg-ghost-300",
+    h3Border: primary === "ghost"
+      ? "border-ashbl-300"
+      : "border-ghost-300",
   }
 }
 
