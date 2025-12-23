@@ -5,6 +5,7 @@ export const ExperiencePageContent: PageType = PageSchema.parse({
   sectIcon: "@",
   heroSection: {
     id: "hero",
+    title: "My recent ventures...",
     content: [
       {
         title: "Building full-stack products from UI to API",

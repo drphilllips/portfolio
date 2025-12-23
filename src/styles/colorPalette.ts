@@ -122,7 +122,9 @@ const cardColors = (pageColorId: ColorId): CardColors => {
     bg: primary === "ghost"
      ? "bg-ashbl/30"
      : "bg-ghost/30",
-    border: "border-ghost/30",
+    border: primary === "ghost"
+      ? "border-ghost/30"
+      : "border-ashbl/20",
     shadow: "shadow-ashbl/20",
     h3: primary === "ghost"
       ? "text-ghost-400"
@@ -143,7 +145,9 @@ const tagColors = (pageColorId: ColorId): TagColors => {
   const primary = COLOR_PRIMARIES[pageColorId]
   return {
     bg: COLOR_TAG_BGS[pageColorId],
-    border: "border-ghost/30",
+    border: primary === "ghost"
+      ? "border-ghost/30"
+      : "border-ashbl/20",
     shadow: "shadow-ashbl/10",
     label: primary === "ghost"
       ? "text-ghost"
@@ -182,8 +186,8 @@ const ctaColors = (pageColorId: ColorId): CtaColors => {
   const primary = COLOR_PRIMARIES[pageColorId]
   return {
     h4: primary === "ghost"
-      ? "text-ashbl-400"
-      : "text-ghost-400",
+      ? "text-ashbl-300/80"
+      : "text-ghost-300/80",
     h5: primary === "ghost"
       ? "text-ashbl-300/50"
       : "text-ghost-300/50",

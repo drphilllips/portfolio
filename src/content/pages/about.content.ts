@@ -5,7 +5,7 @@ export const AboutPageContent: PageType = PageSchema.parse({
   sectIcon: "#",
   heroSection: {
     id: "hero",
-    title: "Hi — I'm Dylan Phillips",
+    title: "Hi — I'm Dylan Phillips,",
     content: [
       {
         title: "Computer Science & Data Science Graduate (BS/MS)",
