@@ -1,5 +1,17 @@
-import Text from "../components/basic/Text"
+import Page from "../components/Page"
+import { ContactPageContent } from "../content/pages/contact.content"
+import type { PageType } from "../content/schemas/page.schema"
 
 export default function ContactPage() {
-  return <Text className="text-2xl font-semibold">Contact</Text>
+  const { title, sectIcon, heroSection, ctas, sections }: PageType = ContactPageContent
+
+  return (
+    <Page
+      title={title}
+      sectIcon={sectIcon}
+      heroSection={heroSection}
+      ctas={ctas}
+      sections={sections}
+    />
+  )
 }
