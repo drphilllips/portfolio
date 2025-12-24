@@ -51,7 +51,7 @@ export const ExperiencePageContent: PageType = PageSchema.parse({
           links: [
             {
               internalLink: "/projects#monkey-wrench",
-              subtitle: "See Projects Page...",
+              subtitle: "#monkey-wrench",
               title: "MonkeyWrench Auto Shop App",
             },
           ],
