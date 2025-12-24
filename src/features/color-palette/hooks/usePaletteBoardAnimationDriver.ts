@@ -37,7 +37,7 @@ export default function usePaletteBoardAnimationDriver(
     const bg =
       atTopOfPage
         ? isOpen || isCooldown
-          ? "bg-secondary/10 backdrop-blur-sm"
+          ? "bg-secondary/10"
           : pageColors.bg
         : linkColors.bg
 

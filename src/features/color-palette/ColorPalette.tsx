@@ -95,7 +95,7 @@ export default function ColorPalette() {
         className={`
           relative rounded-full border-2 ${boardColors.border}
           ${boardColors.bg} shadow-md
-          transition-colors
+          transition-colors backdrop-blur-sm
           flex items-center justify-center origin-bottom-right
           ${!(isOpen || isCooldown) && "cursor-pointer"}
         `}
