@@ -5,24 +5,21 @@ export const LinkSchema = z
     label: z.string().min(1).max(50).optional(),
     title: z.string().min(1).max(50).optional(),
     subtitle: z.string().min(1).max(50).optional(),
-    hash: z.string().regex(/^#[^\s]+$/).optional(),
-    href: z.union([
+    sectionHash: z.string().regex(/^#[^\s]+$/).optional(),
+    internalLink: z.string().regex(/^\/[\s\S]*$/).optional(),
+    externalLink: z.union([
       // Any WHATWG-compatible URL (includes e.g. mailto: per Zod docs)
       z.url(),
-
-      // Internal absolute path on your site
-      z.string().regex(/^\/[\s\S]*$/),
-
       // Explicitly allow tel: links (some runtimes can be picky)
       z.string().regex(/^tel:\+?[0-9().\-\s]+$/i),
     ]).optional(),
   })
   .refine(
     (obj) =>
-      [obj.hash, obj.href].some((value) =>
+      [obj.sectionHash, obj.externalLink, obj.internalLink].filter((value) =>
         value !== undefined
-      ),
-    { message: "At least one of hash or href must be provided" }
+      ).length === 1,
+    { message: "Exactly one of sectionHash, internalLink, or externalLink must be provided" }
   )
   .refine(
     (obj) =>

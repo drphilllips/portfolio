@@ -20,17 +20,17 @@ export const ContactPageContent: PageType = PageSchema.parse({
   },
   ctas: [
     {
-      href: "https://www.linkedin.com/in/dylan-phillips-17b3001b5/",
+      externalLink: "https://www.linkedin.com/in/dylan-phillips-17b3001b5/",
       subtitle: "Network",
       label: "LinkedIn",
     },
     {
-      href: "mailto:dphillips072402@gmail.com",
+      externalLink: "mailto:dphillips072402@gmail.com",
       subtitle: "Email",
       label: "dphillips072402@gmail.com",
     },
     {
-      href: "tel:+14089665319",
+      externalLink: "tel:+14089665319",
       subtitle: "Phone",
       label: "(408) 966-5319",
     },

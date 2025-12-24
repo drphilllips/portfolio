@@ -10,7 +10,7 @@ export const ServicesPageContent: PageType = PageSchema.parse({
       {
         title: "Web & mobile app development",
         desc:
-          "I build modern web and mobile experiences that feel great to use — responsive across devices, intuitive to navigate, and designed with accessibility in mind. I’m comfortable owning the full stack: UI/UX, APIs, data models, and deployment.",
+          "I build modern web and mobile experiences that feel great to use — responsive across devices, intuitive to navigate, and designed with accessibility in mind. I'm comfortable owning the full stack: UI/UX, APIs, data models, and deployment.",
         tags: ["React", "TypeScript", "Python", "UX", "Deployment"],
       },
     ],
@@ -19,22 +19,22 @@ export const ServicesPageContent: PageType = PageSchema.parse({
     {
       label: "Web Apps",
       subtitle: "Responsive + accessible",
-      hash: "#web-apps",
+      sectionHash: "#web-apps",
     },
     {
       label: "Mobile Apps",
       subtitle: "iOS + Android",
-      hash: "#mobile-apps",
+      sectionHash: "#mobile-apps",
     },
     {
       label: "Employment",
       subtitle: "Contract → full‑time",
-      hash: "#engagement",
+      sectionHash: "#employment",
     },
     {
-      title: "Get in touch",
-      subtitle: "Contact",
-      href: "/contact",
+      sectionHash: "#contact",
+      subtitle: "Want to collaborate?",
+      label: "Contact Me"
     },
   ],
   sections: [
@@ -97,19 +97,20 @@ export const ServicesPageContent: PageType = PageSchema.parse({
       ],
     },
     {
-      id: "engagement",
+      id: "employment",
       title: "Engagement options",
       content: [
         {
-          title: "Remote or in-person",
+          title: "Open to Any Location-Type",
           desc:
-            "I’m open to working remotely or in person depending on your team and project needs.",
+            "I'm open to working remotely or in person depending on your team and project needs.",
           tags: ["Remote", "In-person"],
         },
         {
-          title: "Contract, part-time, or full-time",
+          title: "All Engagement Styles",
           desc:
-            "I’m flexible on engagement style — contract work, part-time, or full-time roles are all on the table.",
+            "I'm flexible on engagement style — contract work, part-time, or full-time roles are all on the table.",
+          tags: ["Contract", "Part-Time", "Full-Time"],
           cards: [
             {
               title: "Good fit for",
@@ -120,17 +121,11 @@ export const ServicesPageContent: PageType = PageSchema.parse({
             {
               title: "Start the conversation",
               text:
-                "If you have a project or role in mind, reach out and I’ll respond as quickly as I can.",
+                "If you have a project or role in mind, reach out and I'll respond as quickly as I can.",
               link: {
                 label: "Go to Contact",
-                href: "/contact",
+                internalLink: "/contact",
               },
-            },
-          ],
-          links: [
-            {
-              label: "Contact section",
-              href: "/contact",
             },
           ],
         },
@@ -143,11 +138,11 @@ export const ServicesPageContent: PageType = PageSchema.parse({
         {
           title: "Ready to build?",
           desc:
-            "Send me a quick note with what you’re building (or hiring for), your timeline, and any helpful links — and we’ll go from there.",
+            "Send me a quick note with what you're building (or hiring for), your timeline, and any helpful links — and we'll go from there.",
           links: [
             {
               label: "Contact me",
-              href: "/contact",
+              internalLink: "/contact",
             },
           ],
         },

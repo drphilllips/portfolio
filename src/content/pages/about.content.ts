@@ -20,19 +20,19 @@ export const AboutPageContent: PageType = PageSchema.parse({
   },
   ctas: [
     {
-      hash: "#background",
+      sectionHash: "#background",
       label: "Background",
     },
     {
-      hash: "#what-i-build",
+      sectionHash: "#what-i-build",
       label: "What I build",
     },
     {
-      hash: "#skills",
+      sectionHash: "#skills",
       label: "Skills",
     },
     {
-      hash: "#how-i-work",
+      sectionHash: "#how-i-work",
       label: "How I work",
     },
   ],

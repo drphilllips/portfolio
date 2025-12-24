@@ -48,7 +48,15 @@ export default function Card({
           ))}
         </View>
       )}
-      {link && <Link label={link.label} externalLink={link.externalLink} />}
+      {link && (
+        <Link
+          label={link.label}
+          title={link.title}
+          internalLink={link.internalLink}
+          externalLink={link.externalLink}
+          sectionHash={link.sectionHash}
+        />
+      )}
     </View>
   )
 }

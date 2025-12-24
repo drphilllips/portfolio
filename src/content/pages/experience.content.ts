@@ -16,19 +16,19 @@ export const ExperiencePageContent: PageType = PageSchema.parse({
   },
   ctas: [
     {
-      hash: "#5280",
+      sectionHash: "#5280",
       subtitle: "2025",
       title: "Contract App Developer",
       label: "@ 5280 Auto Body Shop",
     },
     {
-      hash: "#socotec",
+      sectionHash: "#socotec",
       subtitle: "2024 – 2025",
       title: "UX Lead & AI Engineer",
       label: "@ Socotec",
     },
     {
-      hash: "#taarcom",
+      sectionHash: "#taarcom",
       subtitle: "2022 – 2024",
       title: "Python Automation Engineer",
       label: "@ Taarcom",

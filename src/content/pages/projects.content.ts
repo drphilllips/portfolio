@@ -10,26 +10,26 @@ export const ProjectsPageContent: PageType = PageSchema.parse({
       {
         title: "Product-driven, full-stack builds",
         desc:
-          "A selection of recent work that reflects how I like to build: clear data models, thoughtful UX, and systems that ship cleanly. These projects span front-end interactions, backend APIs, and pragmatic deployment choices.",
+          "A selection of recent work that reflects how I like to build: clear data models, thoughtful UX, and systems that ship cleanly.",
         tags: ["React", "TypeScript", "Python", "UX", "Deployment"],
       },
     ],
   },
   ctas: [
     {
-      hash: "#portfolio",
+      sectionHash: "#portfolio",
       subtitle: "2025",
       title: "React, UI/UX, Framer Motion",
       label: "My Online Portfolio",
     },
     {
-      hash: "#mc-playground",
+      sectionHash: "#mc-playground",
       subtitle: "2025",
       title: "React, Vercel, Algorithms",
       label: "Minecraft Playground",
     },
     {
-      hash: "#monkey-wrench",
+      sectionHash: "#monkey-wrench",
       subtitle: "2025",
       title: "React Native, Django, Contract Work",
       label: "MonkeyWrench Auto Shop App",
@@ -44,6 +44,13 @@ export const ProjectsPageContent: PageType = PageSchema.parse({
           title: "A content-driven site designed for clarity",
           desc:
             "This portfolio is built to be easy to navigate and fast to maintain. I use a schema-first content layer so each page is consistent, type-safe, and easy to evolve over time.",
+          links: [
+            {
+              internalLink: "/",
+              subtitle: "dylan-phillips.vercel.app",
+              title: "Dylan Phillips Web Portfolio",
+            },
+          ],
           cards: [
             {
               title: "Schema-first content",
@@ -76,7 +83,7 @@ export const ProjectsPageContent: PageType = PageSchema.parse({
             "A creative coding playground for generating Minecraft-style circle and dome layouts, plus utilities for mapping and summarizing blocks. Built with a TypeScript-first approach and interactive controls.",
           links: [
             {
-              href: "https://minecraft-playground.vercel.app",
+              externalLink: "https://minecraft-playground.vercel.app",
               subtitle: "minecraft-playground.vercel.app",
               title: "Minecraft Playground",
             },
@@ -111,6 +118,13 @@ export const ProjectsPageContent: PageType = PageSchema.parse({
           title: "Mobile app for 5280 Auto Body Shop",
           desc:
             "A mobile-first platform for auto repair operations. The goal is to make shop workflows easier to manage with role-based views, clear status tracking, and a UI that stays fast even as data grows.",
+          links: [
+            {
+              externalLink: "https://frontend-web-production.onrender.com",
+              subtitle: "frontend-web-production.onrender.com",
+              title: "The 5280 App",
+            },
+          ],
           cards: [
             {
               title: "Full-stack foundation",
