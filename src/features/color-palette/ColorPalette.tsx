@@ -1,7 +1,6 @@
 import { useState } from "react"
-import { type TargetAndTransition, type Transition } from "motion/react"
+import { motion, type TargetAndTransition, type Transition } from "motion/react"
 import { PALETTE_ITEMS } from "../../styles/colorPalette"
-import View from "../../components/basic/View"
 import Text from "../../components/basic/Text"
 import Button from "../../components/basic/Button"
 import type { PaletteItem } from "../../types/colorPalette"
@@ -12,6 +11,7 @@ import useSelectPaletteColor from "./hooks/useSelectPaletteColor"
 import { useSmoothScroll } from "../../hooks/useSmoothScroll"
 import type { PaletteDotBorderRadius, PaletteDotColors } from "./types/paletteAnimation"
 import useRouteTransition from "../../hooks/useRouteTransition"
+import { BASE_SPRING } from "./constants/colorPalette"
 
 /**
  * ColorPalette
@@ -70,6 +70,7 @@ export default function ColorPalette() {
     boardColors,
     animateBoard,
     boardTransition,
+    boardScaleAnimate,
   } = usePaletteBoardAnimationDriver(
     boardCenterShift, boardOpenSizeScaled, isOpen, isCooldown,
   )
@@ -88,7 +89,11 @@ export default function ColorPalette() {
   }
 
   return (
-    <View className="fixed bottom-4 right-4 z-50">
+    <motion.div
+      className="fixed bottom-4 right-4 z-50"
+      animate={boardScaleAnimate}
+      transition={BASE_SPRING}
+    >
       {/* Board (always mounted) */}
       <Button
         aria-label={isOpen ? "Close color palette" : "Open color palette"}
@@ -123,7 +128,7 @@ export default function ColorPalette() {
           />
         )}
       />
-    </View>
+    </motion.div>
   )
 }
 
@@ -141,10 +146,15 @@ function PaletteRing({
     paletteRingDotTransitions,
     paletteRingDotBorderRadii,
     paletteRingDotColors,
+    paletteRingScaleAnimate,
   } = usePaletteRingAnimationDriver(items, isBoardOpen)
 
   return (
-    <View className="absolute inset-0">
+    <motion.div
+      className="absolute inset-0"
+      animate={paletteRingScaleAnimate}
+      transition={BASE_SPRING}
+    >
       {items.map((item, i) => (
         <PaletteDot
           key={item.page}
@@ -158,7 +168,7 @@ function PaletteRing({
           onClick={onSelectPaletteColor}
         />
       ))}
-    </View>
+    </motion.div>
   )
 }
 

@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { BASE_SPRING, BOARD_CLOSED_SIZE } from "../constants/colorPalette";
+import { BASE_SPRING, BOARD_CLOSED_SIZE, PALETTE_BOARD_SHRINK_SCALE } from "../constants/colorPalette";
 import { useReducedMotion } from "motion/react";
 import { useSmoothScroll } from "../../../hooks/useSmoothScroll";
 import { useColorPalette } from "../../../contexts/useColorPalette";
@@ -49,5 +49,12 @@ export default function usePaletteBoardAnimationDriver(
     return { bg, border }
   }, [atTopOfPage, linkColors, pageColors, isOpen, isCooldown])
 
-  return { boardTransition, animateBoard, boardColors }
+  // board scaling
+  const boardScaleAnimate = useMemo(() => (
+    atTopOfPage
+      ? { scale: 1 }
+      : { scale: PALETTE_BOARD_SHRINK_SCALE }
+  ), [atTopOfPage])
+
+  return { boardTransition, animateBoard, boardColors, boardScaleAnimate }
 }

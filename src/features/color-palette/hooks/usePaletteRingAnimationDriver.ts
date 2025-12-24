@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import type { LinkColors, PageColors, PaletteItem } from "../../../types/colorPalette";
-import { BASE_RING_RADIUS, BASE_SLIDER, BASE_SPRING, INNER_ARC_END_ANGLE, INNER_ARC_INDICES, INNER_ARC_START_ANGLE, OUTER_ARC_END_ANGLE, OUTER_ARC_INDICES, OUTER_ARC_START_ANGLE } from "../constants/colorPalette";
+import { BASE_RING_RADIUS, BASE_SLIDER, BASE_SPRING, INNER_ARC_END_ANGLE, INNER_ARC_INDICES, INNER_ARC_START_ANGLE, OUTER_ARC_END_ANGLE, OUTER_ARC_INDICES, OUTER_ARC_START_ANGLE, PALETTE_RING_ARROW_SHRINK_SCALE } from "../constants/colorPalette";
 import type { PaletteDotBorderRadius, PaletteDotColors, PalettePosition } from "../types/paletteAnimation";
 import useViewportScaledSizing from "./useViewportScaledSizing";
 import { useReducedMotion, type TargetAndTransition, type Transition } from "motion/react";
@@ -21,6 +21,13 @@ export default function usePaletteRingAnimationDriver(
   const { atTopOfPage } = useSmoothScroll()
   const shouldReduceMotion = useReducedMotion()
   const { linkColors, pageColors } = useColorPalette()
+
+  // palette ring scaling
+  const paletteRingScaleAnimate = useMemo(() => (
+    atTopOfPage
+      ? { scale: 1 }
+      : { scale: PALETTE_RING_ARROW_SHRINK_SCALE }
+  ), [atTopOfPage])
 
   // dot scaling
   const dotScale = useMemo(() => (
@@ -64,7 +71,7 @@ export default function usePaletteRingAnimationDriver(
         atTopOfPage
           ? isBoardOpen ? openArcTargets[i] : closedRingTargets[i]
           : scrollToTopArrowTargets[i]
-      return { ...target, scale: dotScale, opacity: 1 }
+      return { ...target, scale: dotScale }
     })
   }, [items, closedRingTargets, openArcTargets, scrollToTopArrowTargets, isBoardOpen, dotScale, atTopOfPage])
 
@@ -78,7 +85,14 @@ export default function usePaletteRingAnimationDriver(
     items.map((_, i) => getRingDotBorderRadius(i, atTopOfPage))
   ), [items, atTopOfPage])
 
-  return { dotScale, paletteRingDotAnimations, paletteRingDotTransitions, paletteRingDotColors, paletteRingDotBorderRadii }
+  return {
+    dotScale,
+    paletteRingDotAnimations,
+    paletteRingDotTransitions,
+    paletteRingDotColors,
+    paletteRingDotBorderRadii,
+    paletteRingScaleAnimate,
+  }
 }
 
 // ----------

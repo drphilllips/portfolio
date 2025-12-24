@@ -37,3 +37,6 @@ export const BASE_SLIDER = { type: "spring", duration: 0.4, bounce: 0 } as const
 // nested arc positioning
 export const INNER_ARC_INDICES = [1, 5]
 export const OUTER_ARC_INDICES = [2, 3, 4]
+// palette ring -> arrow scaling (for scroll to top button)
+export const PALETTE_BOARD_SHRINK_SCALE = 0.9
+export const PALETTE_RING_ARROW_SHRINK_SCALE = 0.6
