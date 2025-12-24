@@ -20,7 +20,7 @@ export const ProjectsPageContent: PageType = PageSchema.parse({
       sectionHash: "#portfolio",
       subtitle: "2025",
       title: "React, UI/UX, Framer Motion",
-      label: "My Online Portfolio",
+      label: "Dylan Phillips Web Portfolio",
     },
     {
       sectionHash: "#mc-playground",

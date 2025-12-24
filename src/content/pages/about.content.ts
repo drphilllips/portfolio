@@ -61,18 +61,24 @@ export const AboutPageContent: PageType = PageSchema.parse({
           title: "Product-focused full-stack work",
           desc:
             "I love building systems where data, UX, and deployment all matter: clean schemas, reliable APIs, intuitive interfaces, and smooth releases.",
+        },
+        {
+          title: "Check out my projects...",
           links: [
             {
               internalLink: "/projects#portfolio",
-              label: "Portfolio Website",
+              subtitle: "#portfolio",
+              label: "Dylan Phillips Web Portfolio",
             },
             {
               internalLink: "/projects#mc-playground",
+              subtitle: "#mc-playground",
               label: "Minecraft Playground",
             },
             {
               internalLink: "/projects#monkey-wrench",
-              label: "MonkeyWrench",
+              subtitle: "#monkey-wrench",
+              label: "MonkeyWrench Auto Shop App",
             },
           ],
         },

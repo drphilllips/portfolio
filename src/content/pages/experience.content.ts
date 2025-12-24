@@ -48,6 +48,13 @@ export const ExperiencePageContent: PageType = PageSchema.parse({
           desc:
             "Building a full-stack internal + customer-facing application to streamline repair operations.\n\nI’ve focused on mobile UX, reliable backend APIs, and the data model needed to support quoting, scheduling, and repair task tracking across departments.",
           tags: ["React Native", "Django", "REST APIs", "CI/CD"],
+          links: [
+            {
+              internalLink: "/projects#monkey-wrench",
+              subtitle: "See Projects Page...",
+              title: "MonkeyWrench Auto Shop App",
+            },
+          ],
           cards: [
             {
               title: "Highlights",
@@ -57,14 +64,14 @@ export const ExperiencePageContent: PageType = PageSchema.parse({
                 "Built CI/CD pipelines for repair scheduling and quoting",
               ],
             },
-            {
-              title: "Screenshots to collect",
-              bullets: [
-                "Quote flow (create/edit, line items, approvals)",
-                "Scheduling view (calendar / timeline / assignments)",
-                "Admin/employee dashboards (task groups, departments, workload)",
-              ],
-            },
+            // {
+            //   title: "Screenshots to collect",
+            //   bullets: [
+            //     "Quote flow (create/edit, line items, approvals)",
+            //     "Scheduling view (calendar / timeline / assignments)",
+            //     "Admin/employee dashboards (task groups, departments, workload)",
+            //   ],
+            // },
           ],
         },
       ],
@@ -92,14 +99,14 @@ export const ExperiencePageContent: PageType = PageSchema.parse({
                 "Improved efficiency across business operations",
               ],
             },
-            {
-              title: "Diagrams to collect",
-              bullets: [
-                "Agent graph (nodes, tools, memory, routing)",
-                "Integration diagram (services + auth boundaries)",
-                "Workflow automation flowchart (trigger → agent → actions → logging / observability)",
-              ],
-            },
+            // {
+            //   title: "Diagrams to collect",
+            //   bullets: [
+            //     "Agent graph (nodes, tools, memory, routing)",
+            //     "Integration diagram (services + auth boundaries)",
+            //     "Workflow automation flowchart (trigger → agent → actions → logging / observability)",
+            //   ],
+            // },
           ],
         },
       ],
@@ -127,14 +134,14 @@ export const ExperiencePageContent: PageType = PageSchema.parse({
                 "Improved sales pipeline with analytics-driven tools",
               ],
             },
-            {
-              title: "Screenshots to collect",
-              bullets: [
-                "GUI screenshots (main flows + edge cases)",
-                "Report export view (inputs → generated outputs)",
-                "Before/after workflow comparison (manual steps eliminated)",
-              ],
-            },
+            // {
+            //   title: "Screenshots to collect",
+            //   bullets: [
+            //     "GUI screenshots (main flows + edge cases)",
+            //     "Report export view (inputs → generated outputs)",
+            //     "Before/after workflow comparison (manual steps eliminated)",
+            //   ],
+            // },
           ],
         },
       ],
