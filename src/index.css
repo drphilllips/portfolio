@@ -11,6 +11,8 @@ html,
 body {
   background-color: var(--app-bg);
   min-height: 100%;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 /* React root */

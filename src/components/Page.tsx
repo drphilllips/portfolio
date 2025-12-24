@@ -10,6 +10,7 @@ import { useScrollSpyHash } from "../hooks/useScrollSpyHash"
 import type { CtaType } from "../content/schemas/cta.schema"
 import Cta from "./Cta"
 import Separator from "./basic/Separator"
+import { useResponsiveDesign } from "../contexts/useResponsiveDesign"
 
 export default function Page({
   title,
@@ -18,19 +19,30 @@ export default function Page({
   ctas,
   sections,
 }: PageType) {
+  const { onMobileSideways } = useResponsiveDesign()
   const { pageColors } = useColorPalette()
   const { atTopOfPage } = useSmoothScroll()
   const sectionIds = useMemo(() => sections.map((s) => s.id), [sections])
   const { visibleSection } = useScrollSpyHash([heroSection.id, ...sectionIds], atTopOfPage, "hero")
 
+  const responsivePadding = useMemo(() => (
+    onMobileSideways ? "px-12" : "lg:px-40 px-4"
+  ), [onMobileSideways])
+
   return (
-    <View className="relative flex flex-col items-start w-full pt-20 lg:pb-28 pb-20 lg:gap-12 gap-6">
+    <View
+      className={`
+        relative flex flex-col items-start w-full
+        ${onMobileSideways ? "pt-18" : "pt-20"}
+        lg:pb-28 pb-20 lg:gap-12 gap-6
+      `}
+    >
       {title && (
         <View
           className={`
             ${pageColors.bg}
-            fixed top-0 z-30
-            lg:px-40 px-4 h-20
+            fixed top-0 z-30 ${responsivePadding}
+            ${onMobileSideways ? "h-16" : "h-20"}
             flex flex-row w-full items-center
             ${!atTopOfPage && "shadow-sm"}
           `}
@@ -47,7 +59,7 @@ export default function Page({
           </View>
         </View>
       )}
-      <View className="flex lg:px-40 px-4 flex-col gap-4">
+      <View className={`flex flex-col gap-4 ${responsivePadding}`}>
         <Section id={heroSection.id} title={heroSection.title} content={heroSection.content} />
         <View className="flex flex-row w-full flex-wrap justify-start gap-3">
           {ctas.map(({ title, subtitle, link }: CtaType, i) => (
@@ -55,10 +67,10 @@ export default function Page({
           ))}
         </View>
       </View>
-      <View className="flex flex-row w-full lg:px-40 px-4">
+      <View className={`flex flex-row w-full ${responsivePadding}`}>
         <Separator color={pageColors.sep} />
       </View>
-      <View className="flex flex-col lg:gap-12 gap-6 lg:px-40 px-4">
+      <View className={`flex flex-col lg:gap-12 gap-6 ${responsivePadding}`}>
         {sections.map(({ id, title, content }: SectionType, i) => (
           <>
             {i > 0 && <Separator key={`sep-${i}`} color={pageColors.sep} />}
