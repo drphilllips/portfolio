@@ -1,6 +1,5 @@
-import { useColorPalette } from "../../features/painted-background/contexts/useColorPalette"
-import { useResponsiveDesign } from "../../contexts/useResponsiveDesign"
-import View from "../View"
+import { useColorPalette } from "../../contexts/useColorPalette"
+import View from "./View"
 
 type AppShellProps = {
   children?: React.ReactNode
@@ -54,15 +53,13 @@ export default function AppShell({
   className="",
   style,
 }: AppShellProps) {
-  const { onMobileSideways } = useResponsiveDesign()
-  const { colorPalette } = useColorPalette()
+  const { pageColors } = useColorPalette()
 
   return (
     <View
       className={`
-        min-h-dvh w-dvw
-        ${onMobileSideways && "px-12"}
-        ${colorPalette.pageColor} ${colorPalette.textColor}
+        min-h-dvh w-dvw overflow-y-auto scroll-smooth
+        ${pageColors.bg} ${pageColors.title}
         flex flex-col items-center justify-center text-center
         ${className}
       `}

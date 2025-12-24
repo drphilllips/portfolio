@@ -1,24 +1,19 @@
 import { createContext, useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useLocation } from "react-router-dom"
-import type { ColorPalette } from "../../../types/colorPalette"
-import type { SitePage } from "../../../types/pages"
-import { PAGE_COLORS } from "../constants/colorPalette"
+import type { ComponentColors } from "../types/colorPalette"
+import { INIT_COMPONENT_COLORS, PAGE_COMPONENT_COLORS } from "../styles/colorPalette"
+import type { SitePage } from "../types/pages"
 
-type PalettePair = {
-  pageColor: string
-  textColor: string
-}
-
-type PendingPaletteChange = PalettePair & {
+type PendingPaletteChange = {
   requestId: number
+  componentColors: ComponentColors
 }
 
-type ColorPaletteContextType = {
+type ColorPaletteContextType = ComponentColors & {
   /**
    * The committed palette that the DOM should currently be using.
    * `Page` consumes this value.
    */
-  colorPalette: ColorPalette
 
   /**
    * Request a palette change. This does NOT immediately change the committed
@@ -27,7 +22,7 @@ type ColorPaletteContextType = {
    * The background is committed only when the canvas transition reports
    * completion.
    */
-  requestPaletteChange: (pageColor: string, textColor: string) => void
+  requestPaletteChange: (componentColors: ComponentColors) => void
 
   /** True while a canvas transition is running. */
   isTransitioning: boolean
@@ -59,10 +54,7 @@ export function ColorPaletteProvider({ children }: { children: React.ReactNode }
   const { pathname } = useLocation()
 
   // Committed palette (what the DOM uses)
-  const [colorPalette, setColorPaletteState] = useState<ColorPalette>({
-    pageColor: "bg-secondary",
-    textColor: "text-primary",
-  })
+  const [colorPalette, setColorPaletteState] = useState<ComponentColors>(INIT_COMPONENT_COLORS)
 
   // Pending change requested by the user (used by the canvas overlay)
   const [pendingPaletteChange, setPendingPaletteChange] = useState<PendingPaletteChange | null>(
@@ -74,12 +66,14 @@ export function ColorPaletteProvider({ children }: { children: React.ReactNode }
   // Monotonic request id so the canvas can ignore stale completions.
   const requestIdRef = useRef(0)
 
-  const requestPaletteChange = useCallback((pageColor: string, textColor: string) => {
-    const nextId = ++requestIdRef.current
+  const requestPaletteChange = useCallback(
+    (componentColors: ComponentColors) => {
+      const nextId = ++requestIdRef.current
 
-    setIsTransitioning(true)
-    setPendingPaletteChange({ requestId: nextId, pageColor, textColor })
-  }, [])
+      setIsTransitioning(true)
+      setPendingPaletteChange({ requestId: nextId, componentColors })
+    }, []
+  )
 
   const commitPendingPaletteChange = useCallback(
     (requestId: number) => {
@@ -88,7 +82,7 @@ export function ColorPaletteProvider({ children }: { children: React.ReactNode }
         if (!prev || prev.requestId !== requestId) return prev
 
         // Commit the DOM palette.
-        setColorPaletteState(() => ({ pageColor: prev.pageColor, textColor: prev.textColor }))
+        setColorPaletteState(() => prev.componentColors)
 
         setIsTransitioning(false)
         return null
@@ -99,7 +93,7 @@ export function ColorPaletteProvider({ children }: { children: React.ReactNode }
 
   const value = useMemo(
     () => ({
-      colorPalette,
+      ...colorPalette,
       requestPaletteChange,
       isTransitioning,
       pendingPaletteChange,
@@ -110,8 +104,10 @@ export function ColorPaletteProvider({ children }: { children: React.ReactNode }
 
   useEffect(() => {
     const sitePage = pathname.split("/")[1] as SitePage
-    const palette = PAGE_COLORS[sitePage]
-    setTimeout(() => requestPaletteChange(palette.pageColor, palette.textColor),0)
+    const palette = PAGE_COMPONENT_COLORS[sitePage]
+    setTimeout(() => (
+      requestPaletteChange(palette)
+    ),0)
   }, [pathname, requestPaletteChange])
 
   return <ColorPaletteContext.Provider value={value}>{children}</ColorPaletteContext.Provider>

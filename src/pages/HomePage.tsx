@@ -1,5 +1,5 @@
-import Text from "../components/Text"
-import View from "../components/View"
+import Text from "../components/basic/Text"
+import View from "../components/basic/View"
 import { useResponsiveDesign } from "../contexts/useResponsiveDesign"
 
 export default function HomePage() {

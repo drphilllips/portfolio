@@ -1,7 +1,7 @@
-import AppShell from "./components/routing/AppShell"
-import ColorPalette from "./features/painted-background/ColorPalette"
-import CanvasBackgroundTransition from "./features/painted-background/CanvasBackgroundTransition"
-import RouteTransitionOutlet from "./components/routing/RouteTransitionOutlet"
+import AppShell from "./components/basic/AppShell"
+import CanvasBackgroundTransition from "./features/paint-fg-transition/CanvasBackgroundTransition"
+import RouteTransitionOutlet from "./features/paint-fg-transition/RouteTransitionOutlet"
+import ColorPalette from "./features/color-palette/ColorPalette"
 
 export default function App() {
   return (

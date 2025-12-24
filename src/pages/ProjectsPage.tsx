@@ -1,5 +1,17 @@
-import Text from "../components/Text"
+import Page from "../components/Page"
+import { ProjectsPageContent } from "../content/pages/projects.content"
+import type { PageType } from "../content/schemas/page.schema"
 
 export default function ProjectsPage() {
-  return <Text className="text-2xl font-semibold">Projects</Text>
+  const { title, sectIcon, heroSection, ctas, sections }: PageType = ProjectsPageContent
+
+  return (
+    <Page
+      title={title}
+      sectIcon={sectIcon}
+      heroSection={heroSection}
+      ctas={ctas}
+      sections={sections}
+    />
+  )
 }

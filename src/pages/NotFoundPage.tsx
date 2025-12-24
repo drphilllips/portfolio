@@ -1,4 +1,4 @@
-import Text from "../components/Text"
+import Text from "../components/basic/Text"
 
 export default function NotFoundPage() {
   return (

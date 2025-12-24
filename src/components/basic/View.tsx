@@ -1,10 +1,11 @@
-
 type ViewProps = {
   children?: React.ReactNode
   className?: string
   style?: React.CSSProperties
   as?: "div" | "span"
   onClick?: React.MouseEventHandler<HTMLElement>
+  onPressIn?: () => void
+  onPressOut?: () => void
 }
 
 /**
@@ -49,6 +50,8 @@ export default function View({
   className="",
   style,
   onClick,
+  onPressIn,
+  onPressOut,
   as: Component="div",
 }: ViewProps) {
   return (
@@ -56,6 +59,12 @@ export default function View({
       className={className}
       style={style}
       onClick={onClick}
+      onMouseDown={onPressIn}
+      onMouseUp={onPressOut}
+      onMouseLeave={onPressOut}
+      onTouchStart={onPressIn}
+      onTouchEnd={onPressOut}
+      onTouchCancel={onPressOut}
     >
       {children}
     </Component>
