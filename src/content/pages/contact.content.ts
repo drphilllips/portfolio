@@ -13,9 +13,17 @@ export const ContactPageContent: PageType = PageSchema.parse({
           "The fastest way to reach me is email. If a phone call is easier, I'm generally available weekdays during business hours (Pacific).",
         tags: ["Email", "Phone", "Pacific Time", "Cupertino"],
       },
+      {
+        desc: "And I'm always happy to connect on LinkedIn!"
+      },
     ],
   },
   ctas: [
+    {
+      href: "https://www.linkedin.com/in/dylan-phillips-17b3001b5/",
+      subtitle: "Network",
+      label: "LinkedIn",
+    },
     {
       href: "mailto:dphillips072402@gmail.com",
       subtitle: "Email",
@@ -25,11 +33,6 @@ export const ContactPageContent: PageType = PageSchema.parse({
       href: "tel:+14089665319",
       subtitle: "Phone",
       label: "(408) 966-5319",
-    },
-    {
-      href: "https://www.google.com/maps/search/?api=1&query=Cupertino%2C%20CA",
-      subtitle: "Location",
-      label: "Cupertino, CA",
     },
   ],
 })

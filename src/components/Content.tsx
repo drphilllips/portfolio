@@ -26,7 +26,7 @@ export default function Content({
       {(tags || title) && (
         <View className="flex flex-col gap-3 items-start">
           {title && (
-            <Text className={`${contentColors.h2} text-start text-2xl leading-tight font-bold`}>
+            <Text className={`${contentColors.h2} text-start text-2xl leading-tight font-bold pt-2`}>
               {title}
             </Text>
           )}

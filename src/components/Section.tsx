@@ -21,7 +21,7 @@ export default function Section({
       id={id}
       className={`
         ${lastSection && PAGE_LAST_SECTION_MIN_HEIGHT}
-        ${sectionColors.bg} flex flex-col w-full items-start gap-6
+        ${sectionColors.bg} flex flex-col w-full items-start gap-4
       `}
     >
       {title && (
@@ -29,7 +29,7 @@ export default function Section({
           {title}
         </Text>
       )}
-      <View className="w-full flex flex-col items-start gap-6">
+      <View className="w-full flex flex-col items-start gap-4">
         {content.map(({ title, date: shortText, desc: longText, image, link, cards, tags }: ContentType) => (
           <Content
             title={title}
