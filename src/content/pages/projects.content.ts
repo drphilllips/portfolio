@@ -11,7 +11,7 @@ export const ProjectsPageContent: PageType = PageSchema.parse({
         title: "Product-driven, full-stack builds",
         desc:
           "A selection of recent work that reflects how I like to build: clear data models, thoughtful UX, and systems that ship cleanly.",
-        tags: ["React", "TypeScript", "Python", "UX", "Deployment"],
+        tags: ["React", "Python", "UX", "Deployment"],
       },
     ],
   },
