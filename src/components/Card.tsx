@@ -48,7 +48,7 @@ export default function Card({
           ))}
         </View>
       )}
-      {link && <Link label={link.label} href={link.href} />}
+      {link && <Link label={link.label} externalLink={link.externalLink} />}
     </View>
   )
 }

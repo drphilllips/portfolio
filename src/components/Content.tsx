@@ -42,8 +42,8 @@ export default function Content({
       )}
       {links && (
         <View>
-          {links.map(({label, title, subtitle, hash, href}: LinkType, i) => (
-            <Link key={i} label={label} title={title} subtitle={subtitle} hash={hash} href={href} />
+          {links.map(({label, title, subtitle, sectionHash: hash, externalLink: href}: LinkType, i) => (
+            <Link key={i} label={label} title={title} subtitle={subtitle} sectionHash={hash} externalLink={href} />
           ))}
         </View>
       )}

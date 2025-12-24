@@ -8,8 +8,8 @@ import { SquareArrowOutUpRight } from "lucide-react"
 import useExternalLink from "../hooks/useExternalLink"
 
 export default function Link({
-  hash,
-  href,
+  sectionHash: hash,
+  externalLink: href,
   label,
   title,
   subtitle,
@@ -31,7 +31,7 @@ export default function Link({
       `}
       renderChildren={() => (
         <>
-          <View className="flex flex-col gap-3">
+          <View className={`flex flex-col ${label && title ? "gap-3" : "gap-1"}`}>
             {(subtitle || title) && (
               <View className="flex flex-col gap-1">
                 {subtitle && (

@@ -63,8 +63,8 @@ export default function Page({
         <Section id={heroSection.id} title={heroSection.title} content={heroSection.content} />
         {ctas && (
           <View className="flex flex-row w-full flex-wrap justify-start gap-3">
-            {ctas.map(({ label, title, subtitle, hash, href }: LinkType, i) => (
-              <Link key={i} label={label} title={title} subtitle={subtitle} hash={hash} href={href} />
+            {ctas.map(({ label, title, subtitle, sectionHash: hash, externalLink: href }: LinkType, i) => (
+              <Link key={i} label={label} title={title} subtitle={subtitle} sectionHash={hash} externalLink={href} />
             ))}
           </View>
         )}
