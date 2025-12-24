@@ -17,19 +17,22 @@ export const ProjectsPageContent: PageType = PageSchema.parse({
   },
   ctas: [
     {
+      hash: "#portfolio",
       subtitle: "2025",
       title: "React, UI/UX, Complex Animations",
-      link: { label: "My Online Portfolio", href: "#portfolio" },
+      label: "My Online Portfolio",
     },
     {
+      hash: "#mc-playground",
       subtitle: "2025",
       title: "React, Vercel, Novel Algorithms",
-      link: { label: "Minecraft Playground", href: "#mc-playground" },
+      label: "Minecraft Playground",
     },
     {
+      hash: "#the-5280-app",
       subtitle: "2025",
       title: "React-Native, Django, Contract Work",
-      link: { label: "The 5280 App", href: "#the-5280-app" },
+      label: "The 5280 App",
     },
   ],
   sections: [

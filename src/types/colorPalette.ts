@@ -37,7 +37,6 @@ export type ComponentColors = {
   cardColors: CardColors
   linkColors: LinkColors
   tagColors: TagColors
-  ctaColors: CtaColors
 }
 
 export type PageColors = {
@@ -79,6 +78,8 @@ export type LinkColors = {
   h3: string
   h3Bg: string
   h3Border: string
+  h4: string
+  h5: string
 }
 
 export type TagColors = {
@@ -86,9 +87,4 @@ export type TagColors = {
   border: string
   shadow: string
   label: string
-}
-
-export type CtaColors = {
-  h4: string
-  h5: string
 }

@@ -20,24 +20,20 @@ export const AboutPageContent: PageType = PageSchema.parse({
   },
   ctas: [
     {
+      hash: "#background",
       label: "Background",
-      href: "#background",
-      link: { label: "Background", href: "#background" },
     },
     {
+      hash: "#what-i-build",
       label: "What I build",
-      href: "#what-i-build",
-      link: { label: "What I build", href: "#what-i-build" },
     },
     {
+      hash: "#skills",
       label: "Skills",
-      href: "#skills",
-      link: { label: "Skills", href: "#skills" },
     },
     {
+      hash: "#how-i-work",
       label: "How I work",
-      href: "#how-i-work",
-      link: { label: "How I work", href: "#how-i-work" },
     },
   ],
   sections: [

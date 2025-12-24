@@ -1,4 +1,4 @@
-import type { CardColors, ColorId, ColorPrimary, ComponentColors, ContentColors, CtaColors, LinkColors, PageColors, PaletteItem, SectionColors, TagColors } from "../types/colorPalette";
+import type { CardColors, ColorId, ColorPrimary, ComponentColors, ContentColors, LinkColors, PageColors, PaletteItem, SectionColors, TagColors } from "../types/colorPalette";
 import { type SitePage } from "../types/pages";
 
 // -----------
@@ -66,7 +66,6 @@ const componentColors = (pageColorId: ColorId): ComponentColors => ({
   cardColors: cardColors(pageColorId),
   linkColors: linkColors(pageColorId),
   tagColors: tagColors(pageColorId),
-  ctaColors: ctaColors(pageColorId),
 })
 
 const pageColors = (pageColorId: ColorId): PageColors => {
@@ -180,12 +179,6 @@ const linkColors = (pageColorId: ColorId): LinkColors => {
     h3Border: primary === "ghost"
       ? "border-ashbl-300"
       : "border-ghost-300",
-  }
-}
-
-const ctaColors = (pageColorId: ColorId): CtaColors => {
-  const primary = COLOR_PRIMARIES[pageColorId]
-  return {
     h4: primary === "ghost"
       ? "text-ashbl-300/80"
       : "text-ghost-300/80",
@@ -245,5 +238,4 @@ export const INIT_COMPONENT_COLORS: ComponentColors = {
   cardColors: cardColors("ghost"),
   linkColors: linkColors("ghost"),
   tagColors: tagColors("ghost"),
-  ctaColors: ctaColors("ghost"),
 }

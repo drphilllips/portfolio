@@ -16,34 +16,22 @@ export const ExperiencePageContent: PageType = PageSchema.parse({
   },
   ctas: [
     {
-      title:
-        "Mobile App Developer (Contract)",
-      subtitle:
-        "2025",
-      link: {
-        label: "@ 5280 Auto Body Shop",
-        href: "#5280",
-      },
+      hash: "#5280",
+      subtitle: "2025",
+      title: "Mobile App Developer (Contract)",
+      label: "@ 5280 Auto Body Shop",
     },
     {
-      title:
-        "Full-Stack Chatbot Engineer",
-      subtitle:
-        "2024 – 2025",
-      link: {
-        label: "@ Socotec",
-        href: "#socotec",
-      },
+      hash: "#socotec",
+      subtitle: "2024 – 2025",
+      title: "Full-Stack Chatbot Engineer",
+      label: "@ Socotec",
     },
     {
-      title:
-        "Sales Ops Intern & Python App Developer",
-      subtitle:
-        "2022 – 2024",
-      link: {
-        label: "@ Taarcom",
-        href: "#taarcom",
-      },
+      hash: "#taarcom",
+      subtitle: "2022 – 2024",
+      title: "Sales Ops Intern & Python App Developer",
+      label: "@ Taarcom",
     },
   ],
   sections: [
