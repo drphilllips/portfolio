@@ -20,23 +20,25 @@ export default function Link({
 
   return (
     <Button
-      activeScaleVariance={0.02}
+      activeScaleVariance={0.03}
       aria-label={label}
       onClick={scrollOnClickLink}
       className={`
-        ${linkColors.bg} border-2 ${linkColors.border}
+        ${linkColors.bg}
+        border-2 ${linkColors.border}
         ${children ? "px-3 pt-3 pb-4" : "p-2"}
         flex flex-row items-start gap-3 rounded-lg
         ${className}
       `}
-      renderChildren={(isHovering, isPressing) => (
+      renderChildren={() => (
         <>
           <View className="flex flex-col gap-3">
             {children}
             <Text
               className={`
-                ${(isHovering || isPressing) && "underline underline-offset-2"}
-                ${linkColors.h3} text-start text-xl font-bold leading-none
+                relative inline-block
+                ${linkColors.h3}
+                text-start text-xl font-bold leading-none
               `}
             >
               {label}

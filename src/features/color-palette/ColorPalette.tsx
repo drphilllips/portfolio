@@ -11,7 +11,6 @@ import usePaletteRingAnimationDriver from "./hooks/usePaletteRingAnimationDriver
 import useSelectPaletteColor from "./hooks/useSelectPaletteColor"
 import { useSmoothScroll } from "../../hooks/useSmoothScroll"
 import type { PaletteDotBorderRadius, PaletteDotColors } from "./types/paletteAnimation"
-import { useColorPalette } from "../../contexts/useColorPalette"
 import useRouteTransition from "../../hooks/useRouteTransition"
 
 /**
@@ -52,11 +51,8 @@ import useRouteTransition from "../../hooks/useRouteTransition"
  * - This component is intended to be mounted once at the application level.
  */
 export default function ColorPalette() {
-  const { linkColors } = useColorPalette()
-
   const [items, setItems] = useState<PaletteItem[]>(PALETTE_ITEMS)
   const [isOpen, setIsOpen] = useState(false)
-  const [highlight, setHighlight] = useState(false)
 
   const {
       boardCenterShift,
@@ -97,18 +93,12 @@ export default function ColorPalette() {
       <Button
         aria-label={isOpen ? "Close color palette" : "Open color palette"}
         className={`
-          relative rounded-full border-2
-          ${(!atTopOfPage && highlight) ? linkColors.h3Border : boardColors.border}
+          relative rounded-full border-2 ${boardColors.border}
           ${boardColors.bg} shadow-md
           transition-colors
           flex items-center justify-center origin-bottom-right
           ${!(isOpen || isCooldown) && "cursor-pointer"}
         `}
-        /**
-          ${routeTransitionPhase === "pausing"
-            ? "duration-1800"
-            : isOpen ? "duration-400" : atTopOfPage ? "duration-400" : "duration-300"}
-         */
         style={{
           transitionProperty: "background-color, border-color",
           transitionDuration:
@@ -121,13 +111,10 @@ export default function ColorPalette() {
               : "300ms, 300ms",
           transitionTimingFunction: "var(--default-transition-timing-function), var(--default-transition-timing-function)",
         }}
+        disableMotion={isOpen}
         onClick={handleBoardClick}
         animate={animateBoard}
         transition={boardTransition} // Single dot layer (dots always exist exactly once)
-        onMouseIn={() => setHighlight(true)}
-        onMouseOut={() => setHighlight(false)}
-        onPressIn={() => setHighlight(true)}
-        onPressOut={() => setHighlight(false)}
         renderChildren={() => (
           <PaletteRing
             items={items}

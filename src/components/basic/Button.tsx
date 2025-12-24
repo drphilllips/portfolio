@@ -1,14 +1,14 @@
 import { motion, useReducedMotion } from "motion/react"
-import { useState, type ComponentProps, type MouseEventHandler } from "react"
+import { useMemo, useState, type ComponentProps, type MouseEventHandler } from "react"
+import { useColorPalette } from "../../contexts/useColorPalette"
+import { twMerge } from "tailwind-merge"
 
 type ButtonProps = Omit<ComponentProps<typeof motion.div>, "onClick"> & {
   disableMotion?: boolean
+  disableHighlight?: boolean
   activeScaleVariance?: number
+  highlightColor?: string
   existingScale?: number
-  onMouseIn?: () => void
-  onMouseOut?: () => void
-  onPressIn?: () => void
-  onPressOut?: () => void
   onClick?: (e: MouseEvent | React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void
   renderChildren?:
     (isHovering?: boolean, isPressing?: boolean) => React.ReactNode
@@ -33,34 +33,43 @@ type ButtonProps = Omit<ComponentProps<typeof motion.div>, "onClick"> & {
  */
 export default function Button({
   disableMotion = false,
+  disableHighlight = false,
   activeScaleVariance = 0.05,
+  highlightColor,
   className = "",
-  onMouseIn,
-  onMouseOut,
-  onPressIn,
-  onPressOut,
   onClick,
   renderChildren,
   ...rest
 }: ButtonProps) {
   const shouldReduceMotion = useReducedMotion()
+  const { linkColors } = useColorPalette()
 
   const [isHovering, setIsHovering] = useState(false)
   const [isPressing, setIsPressing] = useState(false)
 
+  const highlightBorder = useMemo(() => (
+    !disableHighlight && (isHovering || isPressing)
+      ? highlightColor || linkColors.h3Border
+      : ""
+  ), [isHovering, isPressing, highlightColor, linkColors, disableHighlight])
+
   return (
     <motion.div
-      className={`${!disableMotion && "cursor-pointer"} select-none ${className}`}
-      whileHover={!disableMotion && !shouldReduceMotion ? { scale: 1 + activeScaleVariance } : undefined}
+      className={twMerge(
+        "cursor-pointer",
+        "select-none transition-colors",
+        className,
+        highlightBorder
+      )}
+      whileHover={!disableMotion && !shouldReduceMotion ? { scale: 1 + activeScaleVariance  } : undefined}
       whileTap={!disableMotion && !shouldReduceMotion ? { scale: 1 - activeScaleVariance } : undefined}
       onClick={onClick as MouseEventHandler}
-      onHoverStart={() => { setIsHovering(true); onMouseIn?.() }}
-      onHoverEnd={() => { setIsHovering(false); onMouseOut?.() }}
-      onTapStart={() => { setIsPressing(true); onPressIn?.() }}
-      onTouchEnd={() => { setIsPressing(false); onPressOut?.() }}
-      onMouseLeave={() => {
-        setIsHovering(false); setIsPressing(false); onMouseOut?.(); onPressOut?.()
-      }}
+      onHoverStart={() => setIsHovering(true)}
+      onHoverEnd={() => setIsHovering(false)}
+      onTapStart={() => setIsPressing(true)}
+      onTouchEnd={() => setIsPressing(false)}
+      onMouseLeave={() => { setIsHovering(false); setIsPressing(false) }}
+      onPointerLeave={() => { setIsHovering(false); setIsPressing(false) }}
       {...rest}
     >
       {renderChildren?.(isHovering, isPressing)}
