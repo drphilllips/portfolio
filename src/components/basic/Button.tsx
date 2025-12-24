@@ -1,7 +1,14 @@
 import { motion, useReducedMotion } from "motion/react"
-import { useMemo, useState, type ComponentProps, type MouseEventHandler } from "react"
+import {
+  useMemo,
+  useRef,
+  useState,
+  type ComponentProps,
+  type MouseEventHandler,
+} from "react"
 import { useColorPalette } from "../../contexts/useColorPalette"
 import { twMerge } from "tailwind-merge"
+import useSyncHoverState from "../../hooks/useSyncHoverState"
 
 type ButtonProps = Omit<ComponentProps<typeof motion.div>, "onClick"> & {
   disableMotion?: boolean
@@ -44,7 +51,8 @@ export default function Button({
   const shouldReduceMotion = useReducedMotion()
   const { linkColors } = useColorPalette()
 
-  const [isHovering, setIsHovering] = useState(false)
+  const rootRef = useRef<HTMLDivElement | null>(null)
+  const { isHovering, setIsHovering } = useSyncHoverState(false)
   const [isPressing, setIsPressing] = useState(false)
 
   const highlightBorder = useMemo(() => (
@@ -55,8 +63,9 @@ export default function Button({
 
   return (
     <motion.div
+      ref={rootRef}
       className={twMerge(
-        "cursor-pointer",
+        !disableHighlight && isHovering && "cursor-pointer",
         "select-none transition-colors",
         className,
         highlightBorder
@@ -64,12 +73,14 @@ export default function Button({
       whileHover={!disableMotion && !shouldReduceMotion ? { scale: 1 + activeScaleVariance  } : undefined}
       whileTap={!disableMotion && !shouldReduceMotion ? { scale: 1 - activeScaleVariance } : undefined}
       onClick={onClick as MouseEventHandler}
-      onHoverStart={() => setIsHovering(true)}
-      onHoverEnd={() => setIsHovering(false)}
+      onPointerEnter={() => setIsHovering(true)}
+      onPointerLeave={() => {
+        setIsHovering(false)
+        setIsPressing(false)
+      }}
       onTapStart={() => setIsPressing(true)}
-      onTouchEnd={() => setIsPressing(false)}
-      onMouseLeave={() => { setIsHovering(false); setIsPressing(false) }}
-      onPointerLeave={() => { setIsHovering(false); setIsPressing(false) }}
+      onTapCancel={() => setIsPressing(false)}
+      onTap={() => setIsPressing(false)}
       {...rest}
     >
       {renderChildren?.(isHovering, isPressing)}
