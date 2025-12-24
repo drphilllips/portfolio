@@ -57,7 +57,7 @@ export function useSmoothScroll(href?: string) {
     []
   )
 
-  const scrollOnClickLink = (e: MouseEvent | React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+  const scrollToSection = () => {
     // only navigate if we have a href provided
     if (!href) return
     // Only handle hash navigation
@@ -72,8 +72,6 @@ export function useSmoothScroll(href?: string) {
     // let the router navigate normally (or handle as a separate case).
     const pathPart = href.slice(0, hashIndex)
     if (pathPart && pathPart !== location.pathname) return
-
-    e.preventDefault()
 
     const el = document.getElementById(id)
     if (!el) {
@@ -93,7 +91,12 @@ export function useSmoothScroll(href?: string) {
     navigate({ hash }, { replace: true })
   }
 
-  return { scrollOnClickLink, smoothScrollTo, atTopOfPage, atEndOfPage }
+  const scrollOnClickLink = (e: MouseEvent | React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    e.preventDefault()
+    scrollToSection()
+  }
+
+  return { scrollOnClickLink, smoothScrollTo, scrollToSection, atTopOfPage, atEndOfPage }
 }
 
 // ----------

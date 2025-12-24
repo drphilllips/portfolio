@@ -6,7 +6,7 @@ import Button from "./basic/Button"
 import View from "./basic/View"
 import { SquareArrowOutUpRight, Link as LinkIcon } from "lucide-react"
 import useExternalLink from "../hooks/useExternalLink"
-import { useNavigate } from "react-router-dom"
+import useInternalLink from "../hooks/useInternalLink"
 
 export default function Link({
   sectionHash,
@@ -19,16 +19,16 @@ export default function Link({
   const { linkColors } = useColorPalette()
   const { scrollOnClickLink } = useSmoothScroll(sectionHash)
   const { openLinkInNewTab } = useExternalLink(externalLink)
-  const navigate = useNavigate()
+  const { navigateToPageSection } = useInternalLink(internalLink)
 
   const type: "sec" | "ext" | "int" | null =
     sectionHash ? "sec" : externalLink ? "ext" : internalLink ? "int" : null
 
-  function handleClickLink(e: MouseEvent | React.MouseEvent<HTMLAnchorElement, MouseEvent> ) {
+  function handleClickLink(e: MouseEvent | React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
     switch (type) {
       case "sec": scrollOnClickLink(e); break;
-      case "ext": openLinkInNewTab(); break;
-      case "int": navigate(`${internalLink}`); break;
+      case "ext": openLinkInNewTab(e); break;
+      case "int": navigateToPageSection(e); break;
     }
   }
 
