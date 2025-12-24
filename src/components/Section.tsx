@@ -30,8 +30,9 @@ export default function Section({
         </Text>
       )}
       <View className="w-full flex flex-col items-start gap-4">
-        {content.map(({ title, date: shortText, desc: longText, image, links, cards, tags }: ContentType) => (
+        {content.map(({ title, date: shortText, desc: longText, image, links, cards, tags }: ContentType, i) => (
           <Content
+            key={i}
             title={title}
             date={shortText}
             desc={longText}

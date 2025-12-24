@@ -1,4 +1,4 @@
-import { useMemo } from "react"
+import { Fragment, useMemo } from "react"
 import type { PageType } from "../content/schemas/page.schema"
 import View from "./basic/View"
 import Text from "./basic/Text"
@@ -76,10 +76,15 @@ export default function Page({
           </View>
           <View className={`flex flex-col lg:gap-12 gap-6 ${responsivePadding}`}>
             {sections.map(({ id, title, content }: SectionType, i) => (
-              <>
-                {i > 0 && <Separator key={`sep-${i}`} color={pageColors.sep} />}
-                <Section key={id} id={id} title={title} content={content} lastSection={i === sections.length-1} />
-              </>
+              <Fragment key={id}>
+                {i > 0 && <Separator color={pageColors.sep} />}
+                <Section
+                  id={id}
+                  title={title}
+                  content={content}
+                  lastSection={i === sections.length - 1}
+                />
+              </Fragment>
             ))}
           </View>
         </>
