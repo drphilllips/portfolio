@@ -4,7 +4,7 @@ import Text from "./basic/Text"
 import { useSmoothScroll } from "../hooks/useSmoothScroll"
 import Button from "./basic/Button"
 import View from "./basic/View"
-import { Link as LinkIcon } from "lucide-react"
+import { SquareArrowOutUpRight } from "lucide-react"
 import useExternalLink from "../hooks/useExternalLink"
 
 export default function Link({
@@ -13,12 +13,7 @@ export default function Link({
   label,
   title,
   subtitle,
-  children,
-  className = "",
-}: LinkType & {
-  children?: React.ReactNode
-  className?: string
-}) {
+}: LinkType) {
   const { linkColors } = useColorPalette()
   const { scrollOnClickLink } = useSmoothScroll(hash)
   const { openLinkInNewTab } = useExternalLink(href)
@@ -31,9 +26,8 @@ export default function Link({
       className={`
         ${linkColors.bg}
         border-2 ${linkColors.border}
-        ${children ? "px-3 pt-3 pb-4" : "p-2"}
+        ${label && (title || subtitle) ? "pl-3 pr-4 pt-3 pb-4" : "py-2 pl-2 pr-3"}
         flex flex-row items-start gap-3 rounded-lg
-        ${className}
       `}
       renderChildren={() => (
         <>
@@ -52,17 +46,21 @@ export default function Link({
                 )}
               </View>
             )}
-            <Text
-              className={`
-                relative inline-block
-                ${linkColors.h3}
-                text-start text-xl font-bold leading-none
-              `}
-            >
-              {label}
-            </Text>
+            {label && (
+              <Text
+                className={`
+                  relative inline-block
+                  ${linkColors.h3}
+                  text-start text-xl font-bold leading-none
+                `}
+              >
+                {label}
+              </Text>
+            )}
           </View>
-          <LinkIcon className={linkColors.h3} size={16} />
+          {href && (
+            <SquareArrowOutUpRight className={linkColors.h3} size={16} />
+          )}
         </>
       )}
     />

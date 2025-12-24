@@ -74,6 +74,13 @@ export const ProjectsPageContent: PageType = PageSchema.parse({
           title: "Procedural tools for Minecraft builders",
           desc:
             "A creative coding playground for generating Minecraft-style circle and dome layouts, plus utilities for mapping and summarizing blocks. Built with a TypeScript-first approach and interactive controls.",
+          links: [
+            {
+              href: "https://minecraft-playground.vercel.app",
+              subtitle: "minecraft-playground.vercel.app",
+              title: "Minecraft Playground",
+            },
+          ],
           cards: [
             {
               title: "Procedural generation",

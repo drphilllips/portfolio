@@ -9,7 +9,7 @@ export const ContentSchema = z
     date: z.string().min(1).max(100).optional(),
     desc: z.string().min(1).max(2000).optional(),
     image: ImageSchema.optional(),
-    link: LinkSchema.optional(),
+    links: z.array(LinkSchema).min(1).optional(),
     cards: z.array(CardSchema).optional(),
     tags: z.array(z.string().min(1).max(20)).max(5).optional()
   })

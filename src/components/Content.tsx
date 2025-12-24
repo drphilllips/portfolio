@@ -9,13 +9,14 @@ import { useColorPalette } from "../contexts/useColorPalette"
 import Tag from "./Tag"
 import { CalendarDays } from "lucide-react"
 import Separator from "./basic/Separator"
+import type { LinkType } from "../content/schemas/link.schema"
 
 export default function Content({
   title,
   date,
   desc,
   // image,
-  link,
+  links,
   cards,
   tags,
 }: ContentType) {
@@ -39,7 +40,13 @@ export default function Content({
           )}
         </View>
       )}
-      {link && <Link label={link.label} href={link.href} />}
+      {links && (
+        <View>
+          {links.map(({label, title, subtitle, hash, href}: LinkType, i) => (
+            <Link key={i} label={label} title={title} subtitle={subtitle} hash={hash} href={href} />
+          ))}
+        </View>
+      )}
       {(date || desc) && (
         <View className="flex flex-col items-start gap-2">
           {date && (
