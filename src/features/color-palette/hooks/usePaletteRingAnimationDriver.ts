@@ -1,11 +1,10 @@
 import { useMemo } from "react";
 import type { LinkColors, PageColors, PaletteItem } from "../../../types/colorPalette";
-import { BASE_RING_RADIUS, BASE_SPRING, INNER_ARC_END_ANGLE, INNER_ARC_INDICES, INNER_ARC_START_ANGLE, OUTER_ARC_END_ANGLE, OUTER_ARC_INDICES, OUTER_ARC_START_ANGLE } from "../constants/colorPalette";
+import { BASE_RING_RADIUS, BASE_SLIDER, BASE_SPRING, INNER_ARC_END_ANGLE, INNER_ARC_INDICES, INNER_ARC_START_ANGLE, OUTER_ARC_END_ANGLE, OUTER_ARC_INDICES, OUTER_ARC_START_ANGLE } from "../constants/colorPalette";
 import type { PaletteDotBorderRadius, PaletteDotColors, PalettePosition } from "../types/paletteAnimation";
 import useViewportScaledSizing from "./useViewportScaledSizing";
 import { useReducedMotion, type TargetAndTransition, type Transition } from "motion/react";
 import { useSmoothScroll } from "../../../hooks/useSmoothScroll";
-import useChangedDeps from "../../../hooks/useChangedDeps";
 import { useColorPalette } from "../../../contexts/useColorPalette";
 import { ROUNDED_B, ROUNDED_FULL, ROUNDED_NONE, ROUNDED_T, ROUNDED_TL } from "../constants/paletteAnimation";
 
@@ -23,30 +22,23 @@ export default function usePaletteRingAnimationDriver(
   const shouldReduceMotion = useReducedMotion()
   const { linkColors, pageColors } = useColorPalette()
 
-  // track which dependency changed
-  const changedDeps = useChangedDeps({
-    items, isBoardOpen, shouldReduceMotion, atTopOfPage
-  })
-
   // dot scaling
   const dotScale = useMemo(() => (
     isBoardOpen ? 1 : speckScale
   ), [isBoardOpen, speckScale])
 
   // ring dot transitions (delayed based on level)
-  const paletteRingDotTransitions: Transition[] = useMemo(() => {
-    // if at-top changed, there is no transition delays
-    const didAtTopChange = changedDeps?.includes("atTopOfPage")
-    return items.map((_, i) => (
+  const paletteRingDotTransitions: Transition[] = useMemo(() => (
+    items.map((_, i) => (
       shouldReduceMotion
         ? { duration: 0 }
-        : didAtTopChange
-          ? BASE_SPRING
-          : {...BASE_SPRING,
+        : atTopOfPage
+          ? {...BASE_SPRING,
               delay: getDotRingArcTransitionDelay(i, isBoardOpen, shouldReduceMotion)
             }
+          : BASE_SLIDER
     ))
-  }, [items, isBoardOpen, shouldReduceMotion, changedDeps])
+  ), [items, isBoardOpen, shouldReduceMotion, atTopOfPage])
 
   // ----------
   // Dot arc <-> ring positioning

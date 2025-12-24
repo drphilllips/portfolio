@@ -33,6 +33,7 @@ export const BOARD_OPEN_SIZE_UNSCALED =
 // Palette Animation
 // --------
 export const BASE_SPRING = { type: "spring", stiffness: 500, damping: 36 } as const
+export const BASE_SLIDER = { type: "spring", duration: 0.4, bounce: 0 } as const
 // nested arc positioning
 export const INNER_ARC_INDICES = [1, 5]
 export const OUTER_ARC_INDICES = [2, 3, 4]
