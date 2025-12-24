@@ -60,37 +60,19 @@ export const AboutPageContent: PageType = PageSchema.parse({
         {
           title: "Product-focused full-stack work",
           desc:
-            "I like building systems where data, UX, and deployment all matter: clean schemas, reliable APIs, intuitive interfaces, and smooth releases.",
-          cards: [
+            "I love building systems where data, UX, and deployment all matter: clean schemas, reliable APIs, intuitive interfaces, and smooth releases.",
+          links: [
             {
-              title: "The-5280-App",
-              text:
-                "A mobile/web platform for an auto repair operation — built with React Native + Django + Supabase. Focused on role-based flows, operations visibility, and a fast, usable UI.",
-              bullets: [
-                "React Native (Expo Router) + modern UI patterns",
-                "Django/DRF models & APIs",
-                "Postgres/Supabase storage + auth",
-              ],
+              internalLink: "/projects#portfolio",
+              label: "Portfolio Website",
             },
             {
-              title: "Minecraft Playground",
-              text:
-                "A creative coding playground that generates Minecraft-style circle/dome pixel art and block-mapping utilities — built with Vite + React + TypeScript.",
-              bullets: [
-                "Algorithmic grid generation",
-                "Interactive UI controls",
-                "TypeScript-first architecture",
-              ],
+              internalLink: "/projects#mc-playground",
+              label: "Minecraft Playground",
             },
             {
-              title: "Dylan's Dog-Walking & Pet-Sitting",
-              text:
-                "A lightweight marketing site with clean UX and scheduling integration.",
-              bullets: [
-                "Single-page, responsive design",
-                "Calendly integration",
-                "Brand/visual asset iteration",
-              ],
+              internalLink: "/projects#monkey-wrench",
+              label: "MonkeyWrench",
             },
           ],
         },

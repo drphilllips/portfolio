@@ -40,21 +40,6 @@ export default function Content({
           )}
         </View>
       )}
-      {links && (
-        <View>
-          {links.map(({label, title, subtitle, sectionHash, externalLink, internalLink}: LinkType, i) => (
-            <Link
-              key={i}
-              label={label}
-              title={title}
-              subtitle={subtitle}
-              sectionHash={sectionHash}
-              externalLink={externalLink}
-              internalLink={internalLink}
-            />
-          ))}
-        </View>
-      )}
       {(date || desc) && (
         <View className="flex flex-col items-start gap-2">
           {date && (
@@ -73,6 +58,21 @@ export default function Content({
               {desc}
             </Text>
           )}
+        </View>
+      )}
+      {links && (
+        <View className="flex flex-row w-full flex-wrap justify-start gap-3">
+          {links.map(({label, title, subtitle, sectionHash, externalLink, internalLink}: LinkType, i) => (
+            <Link
+              key={i}
+              label={label}
+              title={title}
+              subtitle={subtitle}
+              sectionHash={sectionHash}
+              externalLink={externalLink}
+              internalLink={internalLink}
+            />
+          ))}
         </View>
       )}
       {cards && (
