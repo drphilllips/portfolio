@@ -29,11 +29,14 @@ export default function Separator({
 
   return (
     <View
-      className={
-        orientation === "horizontal"
+      className={`
+        select-none
+        ${orientation === "horizontal"
           ? `w-full flex ${justifyClass}`
           : `h-full flex ${justifyClass}`
-      }
+        }
+      `}
+      aria-hidden="true"
     >
       {level === "section" ? (
         <View

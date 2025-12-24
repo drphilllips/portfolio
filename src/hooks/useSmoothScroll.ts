@@ -1,13 +1,16 @@
 import { useCallback, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { END_OF_PAGE_PX, START_OF_PAGE_PX } from "../constants/pageSections"
+import { useResponsiveDesign } from "../contexts/useResponsiveDesign"
 
 type EasingFn = (t: number) => number
 
 export function useSmoothScroll(href?: string) {
+  const navigate = useNavigate()
+  const { onMobileSideways } = useResponsiveDesign()
+
   const [atTopOfPage, setAtTopOfPage] = useState(false)
   const [atEndOfPage, setAtEndOfPage] = useState(false)
-  const navigate = useNavigate()
 
   useEffect(() => {
     const onScroll = () => {
@@ -26,6 +29,7 @@ export function useSmoothScroll(href?: string) {
 
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
+
   const smoothScrollTo = useCallback(
     (
       targetY: number,
@@ -78,11 +82,12 @@ export function useSmoothScroll(href?: string) {
       return
     }
 
-    const y =
+    const targetY =
       el.getBoundingClientRect().top +
-      window.scrollY
+      window.scrollY +
+      (onMobileSideways ? -16 : -32)
 
-    smoothScrollTo(y-32, 800) // 👈 slower & more relaxed
+    smoothScrollTo(targetY, 800) // 👈 slower & more relaxed
 
     // Update URL hash without causing a remount (your RouteTransitionOutlet ignores hash)
     navigate({ hash }, { replace: true })
@@ -91,6 +96,9 @@ export function useSmoothScroll(href?: string) {
   return { scrollOnClickLink, smoothScrollTo, atTopOfPage, atEndOfPage }
 }
 
+// ----------
+// Animation util
+// --------
 function easeInOutCubic(t: number) {
   return t < 0.5
     ? 4 * t * t * t

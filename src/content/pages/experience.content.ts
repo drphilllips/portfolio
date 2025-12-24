@@ -18,19 +18,19 @@ export const ExperiencePageContent: PageType = PageSchema.parse({
     {
       hash: "#5280",
       subtitle: "2025",
-      title: "Mobile App Developer (Contract)",
+      title: "Contract App Developer",
       label: "@ 5280 Auto Body Shop",
     },
     {
       hash: "#socotec",
       subtitle: "2024 – 2025",
-      title: "Full-Stack Chatbot Engineer",
+      title: "UX Lead & AI Engineer",
       label: "@ Socotec",
     },
     {
       hash: "#taarcom",
       subtitle: "2022 – 2024",
-      title: "Sales Ops Intern & Python App Developer",
+      title: "Python Automation Engineer",
       label: "@ Taarcom",
     },
   ],
@@ -43,7 +43,7 @@ export const ExperiencePageContent: PageType = PageSchema.parse({
       title: "5280 Auto Hail Repair",
       content: [
         {
-          title: "Mobile App Developer (Contract)",
+          title: "Contract App Developer",
           date: "Jun 2025 – Present",
           desc:
             "Building a full-stack internal + customer-facing application to streamline repair operations.\n\nI’ve focused on mobile UX, reliable backend APIs, and the data model needed to support quoting, scheduling, and repair task tracking across departments.",
@@ -78,7 +78,7 @@ export const ExperiencePageContent: PageType = PageSchema.parse({
       title: "Socotec",
       content: [
         {
-          title: "Full-Stack Chatbot Engineer",
+          title: "UX Lead & AI Engineer",
           date: "Oct 2024 – Jun 2025",
           desc:
             "Developed AI-powered assistant experiences and supporting web/backend tooling.\n\nThe work emphasized reliable integrations, maintainable workflows, and productizing agent behavior so it could scale to enterprise usage.",
@@ -113,7 +113,7 @@ export const ExperiencePageContent: PageType = PageSchema.parse({
       title: "TAARCOM, Inc.",
       content: [
         {
-          title: "Sales Ops Intern & Python App Developer",
+          title: "Python Automation Engineer",
           date: "2022 – 2024",
           desc:
             "Built internal tools to streamline sales operations and reduce manual Excel-heavy workflows.\n\nThis included designing Python desktop apps and analytics-driven utilities that made reporting faster and more consistent for day-to-day pipeline work.",

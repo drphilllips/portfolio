@@ -19,20 +19,20 @@ export const ProjectsPageContent: PageType = PageSchema.parse({
     {
       hash: "#portfolio",
       subtitle: "2025",
-      title: "React, UI/UX, Complex Animations",
+      title: "React, UI/UX, Framer Motion",
       label: "My Online Portfolio",
     },
     {
       hash: "#mc-playground",
       subtitle: "2025",
-      title: "React, Vercel, Novel Algorithms",
+      title: "React, Vercel, Algorithms",
       label: "Minecraft Playground",
     },
     {
-      hash: "#the-5280-app",
+      hash: "#monkey-wrench",
       subtitle: "2025",
-      title: "React-Native, Django, Contract Work",
-      label: "The 5280 App",
+      title: "React Native, Django, Contract Work",
+      label: "MonkeyWrench Auto Shop App",
     },
   ],
   sections: [
@@ -97,11 +97,11 @@ export const ProjectsPageContent: PageType = PageSchema.parse({
       ],
     },
     {
-      id: "the-5280-app",
-      title: "The 5280 App",
+      id: "monkey-wrench",
+      title: "MonkeyWrench",
       content: [
         {
-          title: "Mobile app for 5280 Auto Hail Repair",
+          title: "Mobile app for 5280 Auto Body Shop",
           desc:
             "A mobile-first platform for auto repair operations. The goal is to make shop workflows easier to manage with role-based views, clear status tracking, and a UI that stays fast even as data grows.",
           cards: [
