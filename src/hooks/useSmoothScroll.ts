@@ -97,13 +97,7 @@ export function useSmoothScroll(href?: string) {
     navigate({ hash }, { replace: true })
   }
 
-  // For handling mouse events
-  const scrollOnClickLink = (e: MouseEvent | React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-    e.preventDefault()
-    scrollToSection()
-  }
-
-  return { scrollOnClickLink, smoothScrollTo, scrollToSection, atTopOfPage, atEndOfPage }
+  return { smoothScrollTo, scrollToSection, atTopOfPage, atEndOfPage }
 }
 
 // ----------

@@ -7,10 +7,8 @@ export default function useInternalLink(href?: string) {
   const { scrollToSection } = useSmoothScroll(href)
   const navigate = useNavigate()
 
-  const navigateToPageSection = (e: MouseEvent | React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+  const navigateToPageSection = () => {
     if (!href) return
-
-    e.preventDefault()
 
     const page = href.split("#")[0]
 
