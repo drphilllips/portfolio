@@ -4,6 +4,8 @@ import { useColorPalette } from "../../../contexts/useColorPalette"
 import { useLocation, useNavigate } from "react-router-dom"
 import type { SitePage } from "../../../types/pages"
 import { SELECT_PALETTE_COLOR_COOL_DOWN_MS } from "../constants/colorPalette"
+import { useSmoothScroll } from "../../../hooks/useSmoothScroll"
+import useLayeredClick from "../../../hooks/useLayeredClick"
 
 
 export default function useSelectPaletteColor(
@@ -15,9 +17,30 @@ export default function useSelectPaletteColor(
   const { requestPaletteChange } = useColorPalette()
   const navigate = useNavigate()
   const { pathname } = useLocation()
+  const { smoothScrollTo, atTopOfPage } = useSmoothScroll()
+  const { clickThrough } = useLayeredClick()
 
   const [isCooldown, setIsCooldown] = useState(false)
   const cooldownTimerRef = useRef<number | null>(null)
+
+  // handle board click
+  const handleBoardClick = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    if (atTopOfPage) {
+      if (isCooldown && !isOpen) return
+      if (isOpen && !isCooldown) {
+        clickThrough(e as React.MouseEvent)
+      }
+      if (!isOpen) {
+        setIsOpen(true)
+        setIsCooldown(true)
+        setTimeout(() => setIsCooldown(false), 500)
+      }
+    } else {
+      smoothScrollTo(0)
+    }
+  }
 
   useEffect(() => {
     const timerId = cooldownTimerRef.current
@@ -50,7 +73,7 @@ export default function useSelectPaletteColor(
     setIsOpen(false)
   }
 
-  return { isCooldown, handleSelectPaletteColor }
+  return { isCooldown, handleSelectPaletteColor, handleBoardClick }
 }
 
 function startCooldown (

@@ -18,20 +18,20 @@ export const ExperiencePageContent: PageType = PageSchema.parse({
     {
       sectionHash: "#5280",
       subtitle: "2025",
-      title: "Contract App Developer",
-      label: "@ 5280 Auto Body Shop",
+      title: "5280 Auto Body Shop",
+      label: "Contract App Developer",
     },
     {
       sectionHash: "#socotec",
       subtitle: "2024 – 2025",
-      title: "UX Lead & AI Engineer",
-      label: "@ Socotec",
+      title: "Socotec",
+      label: "UX Lead & AI Engineer",
     },
     {
       sectionHash: "#taarcom",
       subtitle: "2022 – 2024",
-      title: "Python Automation Engineer",
-      label: "@ Taarcom",
+      title: "Taarcom",
+      label: "Python Automation Engineer",
     },
   ],
   sections: [

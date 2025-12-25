@@ -229,7 +229,7 @@ function getRingDotColor(item: PaletteItem, itemIndex: number, linkColors: LinkC
 
   const border =
     atTopOfPage
-      ? itemIndex === 0 && isBoardOpen
+      ? itemIndex === 0 || isBoardOpen
         ? `border ${pageColors.subBorder}`
         : `border ${item.border}`
       : linkColors.blendBorder

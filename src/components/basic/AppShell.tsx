@@ -58,7 +58,7 @@ export default function AppShell({
   return (
     <View
       className={`
-        min-h-dvh w-dvw overflow-y-auto scroll-smooth
+        w-dvw min-h-dvh overflow-y-auto scroll-smooth overscroll-y-auto
         ${pageColors.bg} ${pageColors.title}
         flex flex-col items-center justify-center text-center
         ${className}

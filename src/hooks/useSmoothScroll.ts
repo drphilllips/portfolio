@@ -12,6 +12,10 @@ export function useSmoothScroll(href?: string) {
   const [atTopOfPage, setAtTopOfPage] = useState(false)
   const [atEndOfPage, setAtEndOfPage] = useState(false)
 
+  // ----------
+  // Scroll animation stuff
+  // --------
+  // Set scroll listeners
   useEffect(() => {
     const onScroll = () => {
       const scrollTop = window.scrollY
@@ -30,6 +34,7 @@ export function useSmoothScroll(href?: string) {
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
 
+  // Smooth scroll to a target Y
   const smoothScrollTo = useCallback(
     (
       targetY: number,
@@ -57,6 +62,7 @@ export function useSmoothScroll(href?: string) {
     []
   )
 
+  // Smooth scroll to a specific section
   const scrollToSection = () => {
     // only navigate if we have a href provided
     if (!href) return
@@ -91,12 +97,7 @@ export function useSmoothScroll(href?: string) {
     navigate({ hash }, { replace: true })
   }
 
-  const scrollOnClickLink = (e: MouseEvent | React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-    e.preventDefault()
-    scrollToSection()
-  }
-
-  return { scrollOnClickLink, smoothScrollTo, scrollToSection, atTopOfPage, atEndOfPage }
+  return { smoothScrollTo, scrollToSection, atTopOfPage, atEndOfPage }
 }
 
 // ----------

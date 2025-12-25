@@ -9,11 +9,9 @@ import { useCallback } from "react"
 export default function useExternalLink(href?: string) {
   const isSpecialScheme = (value: string) => /^(mailto:|tel:)/i.test(value)
 
-  const openLinkInThisTab = useCallback((e: MouseEvent | React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+  const openLinkInThisTab = useCallback(() => {
     if (!href) return
     if (typeof window === "undefined") return
-
-    e.preventDefault()
 
     // mailto:/tel: should be handled by the OS / browser handler
     if (isSpecialScheme(href)) {
@@ -25,11 +23,9 @@ export default function useExternalLink(href?: string) {
     window.location.assign(href)
   }, [href])
 
-  const openLinkInNewTab = useCallback((e: MouseEvent | React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+  const openLinkInNewTab = useCallback(() => {
     if (!href) return
     if (typeof window === "undefined") return
-
-    e.preventDefault()
 
     // Opening mailto:/tel: "in a new tab" isn't really a thing; just trigger the handler.
     if (isSpecialScheme(href)) {

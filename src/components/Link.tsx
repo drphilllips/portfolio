@@ -17,18 +17,19 @@ export default function Link({
   subtitle,
 }: LinkType) {
   const { linkColors } = useColorPalette()
-  const { scrollOnClickLink } = useSmoothScroll(sectionHash)
+  const { scrollToSection } = useSmoothScroll(sectionHash)
   const { openLinkInNewTab } = useExternalLink(externalLink)
   const { navigateToPageSection } = useInternalLink(internalLink)
 
   const type: "sec" | "ext" | "int" | null =
     sectionHash ? "sec" : externalLink ? "ext" : internalLink ? "int" : null
 
-  function handleClickLink(e: MouseEvent | React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
+  function handleClickLink(e: MouseEvent | React.MouseEvent<HTMLDivElement, MouseEvent>) {
+    e.preventDefault()
     switch (type) {
-      case "sec": scrollOnClickLink(e); break;
-      case "ext": openLinkInNewTab(e); break;
-      case "int": navigateToPageSection(e); break;
+      case "sec": scrollToSection(); break;
+      case "ext": openLinkInNewTab(); break;
+      case "int": navigateToPageSection(); break;
     }
   }
 
