@@ -171,14 +171,14 @@ const linkColors = (pageColorId: ColorId): LinkColors => {
       ? "border-ashbl/30"
       : "border-ghost/30",
     h3: primary === "ghost"
-      ? "text-ashbl-300"
-      : "text-ghost-300",
+      ? "text-ashbl-100"
+      : "text-ghost-100",
     h3Bg: primary === "ghost"
-      ? "bg-ashbl-300"
-      : "bg-ghost-300",
+      ? "bg-ashbl-100"
+      : "bg-ghost-100",
     h3Border: primary === "ghost"
-      ? "border-ashbl-300"
-      : "border-ghost-300",
+      ? "border-ashbl-100"
+      : "border-ghost-100",
     h4: primary === "ghost"
       ? "text-ashbl-300/80"
       : "text-ghost-300/80",
