@@ -32,7 +32,7 @@ export default function Page({
   return (
     <View
       className={`
-        relative flex flex-col items-start w-full
+        relative flex flex-col min-h-dvh justify-start items-start w-full
         ${onMobileSideways ? "pt-18" : "pt-20"}
         lg:pb-28 pb-20 lg:gap-12 gap-6
       `}
