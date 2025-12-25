@@ -11,7 +11,8 @@ import useSelectPaletteColor from "./hooks/useSelectPaletteColor"
 import { useSmoothScroll } from "../../hooks/useSmoothScroll"
 import type { PaletteDotBorderRadius, PaletteDotColors } from "./types/paletteAnimation"
 import useRouteTransition from "../../hooks/useRouteTransition"
-import { BASE_SPRING } from "./constants/colorPalette"
+import { BASE_SLIDER, BASE_SPRING } from "./constants/colorPalette"
+import BodyPortal from "../../components/basic/BodyPortal"
 
 /**
  * ColorPalette
@@ -61,7 +62,8 @@ export default function ColorPalette() {
 
   const {
     isCooldown,
-    handleSelectPaletteColor
+    handleSelectPaletteColor,
+    handleBoardClick,
   } = useSelectPaletteColor(
     items, setItems, isOpen, setIsOpen,
   )
@@ -71,64 +73,69 @@ export default function ColorPalette() {
     animateBoard,
     boardTransition,
     boardScaleAnimate,
+    boardOffClickAnimate,
+    boardOffClickColor,
   } = usePaletteBoardAnimationDriver(
     boardCenterShift, boardOpenSizeScaled, isOpen, isCooldown,
   )
 
-  const { atTopOfPage, smoothScrollTo } = useSmoothScroll()
-
+  const { atTopOfPage } = useSmoothScroll()
   const { phase: routeTransitionPhase } = useRouteTransition()
 
-  function handleBoardClick() {
-    if (atTopOfPage) {
-      if (isCooldown && !isOpen) return
-      setIsOpen((v) => !v)
-    } else {
-      smoothScrollTo(0)
-    }
-  }
-
   return (
-    <motion.div
-      className="fixed bottom-4 right-4 z-50"
-      animate={boardScaleAnimate}
-      transition={BASE_SPRING}
-    >
-      {/* Board (always mounted) */}
-      <Button
-        aria-label={isOpen ? "Close color palette" : "Open color palette"}
+    <BodyPortal>
+      <motion.div
         className={`
-          relative rounded-full border-2 ${boardColors.border}
-          ${boardColors.bg} shadow-md
-          transition-colors backdrop-blur-sm
-          flex items-center justify-center origin-bottom-right
-          ${!(isOpen || isCooldown) && "cursor-pointer"}
+          fixed inset-0 z-9997
+          ${boardOffClickColor} transition-colors
         `}
-        style={{
-          transitionProperty: "background-color, border-color",
-          transitionDuration:
-            atTopOfPage
-              ? isOpen
-                ? "400ms, 400ms"
-                : routeTransitionPhase === "pausing"
-                  ? "0ms, 1800ms"
-                  : "300ms, 300ms"
-              : "300ms, 300ms",
-          transitionTimingFunction: "var(--default-transition-timing-function), var(--default-transition-timing-function)",
-        }}
-        disableMotion={isOpen}
-        onClick={handleBoardClick}
-        animate={animateBoard}
-        transition={boardTransition} // Single dot layer (dots always exist exactly once)
-        renderChildren={() => (
-          <PaletteRing
-            items={items}
-            isBoardOpen={isOpen}
-            onSelectPaletteColor={handleSelectPaletteColor}
-          />
-        )}
+        style={{ pointerEvents: isOpen ? "auto" : "none" }}
+        onClick={() => setIsOpen(false)}
+        animate={boardOffClickAnimate}
+        transition={BASE_SLIDER}
       />
-    </motion.div>
+      <motion.div
+        className="fixed bottom-4 right-4 z-9998"
+        animate={boardScaleAnimate}
+        transition={BASE_SPRING}
+        onClick={handleBoardClick}
+      >
+        {/* Board (always mounted) */}
+        <Button
+          aria-label={isOpen ? "Close color palette" : "Open color palette"}
+          className={`
+            relative rounded-full border-2 ${boardColors.border}
+            ${boardColors.bg} shadow-md
+            transition-colors backdrop-blur-sm
+            flex items-center justify-center origin-bottom-right
+            ${!(isOpen || isCooldown) && "cursor-pointer"}
+          `}
+          style={{
+            transitionProperty: "background-color, border-color",
+            transitionDuration:
+              atTopOfPage
+                ? isOpen
+                  ? "400ms, 400ms"
+                  : routeTransitionPhase === "pausing"
+                    ? "0ms, 1800ms"
+                    : "300ms, 300ms"
+                : "300ms, 300ms",
+            transitionTimingFunction: "var(--default-transition-timing-function), var(--default-transition-timing-function)",
+          }}
+          disableMotion={isOpen}
+          onClick={(e) => handleBoardClick(e as React.MouseEvent<HTMLDivElement, MouseEvent>)}
+          animate={animateBoard}
+          transition={boardTransition} // Single dot layer (dots always exist exactly once)
+          renderChildren={() => (
+            <PaletteRing
+              items={items}
+              isBoardOpen={isOpen}
+              onSelectPaletteColor={handleSelectPaletteColor}
+            />
+          )}
+        />
+      </motion.div>
+    </BodyPortal>
   )
 }
 

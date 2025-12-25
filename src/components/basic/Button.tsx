@@ -16,7 +16,7 @@ type ButtonProps = Omit<ComponentProps<typeof motion.div>, "onClick"> & {
   activeScaleVariance?: number
   highlightColor?: string
   existingScale?: number
-  onClick?: (e: MouseEvent | React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void
+  onClick?: (e: MouseEvent | React.MouseEvent<HTMLDivElement, MouseEvent>) => void
   renderChildren?:
     (isHovering?: boolean, isPressing?: boolean) => React.ReactNode
 }

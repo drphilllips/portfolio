@@ -37,6 +37,7 @@ export type ComponentColors = {
   cardColors: CardColors
   linkColors: LinkColors
   tagColors: TagColors
+  offClickColors: OffClickColors
 }
 
 export type PageColors = {
@@ -87,4 +88,8 @@ export type TagColors = {
   border: string
   shadow: string
   label: string
+}
+
+export type OffClickColors = {
+  bg: string
 }

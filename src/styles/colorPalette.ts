@@ -1,4 +1,4 @@
-import type { CardColors, ColorId, ColorPrimary, ComponentColors, ContentColors, LinkColors, PageColors, PaletteItem, SectionColors, TagColors } from "../types/colorPalette";
+import type { CardColors, ColorId, ColorPrimary, ComponentColors, ContentColors, LinkColors, OffClickColors, PageColors, PaletteItem, SectionColors, TagColors } from "../types/colorPalette";
 import { type SitePage } from "../types/pages";
 
 // -----------
@@ -11,6 +11,15 @@ const COLOR_BGS: Record<ColorId, string> = {
   orngc: "bg-orngc",
   palbr: "bg-palbr",
   ghost: "bg-ghost",
+}
+
+export const COLOR_OFF_CLICK_BGS: Record<ColorId, string> = {
+  ashbl: "bg-ashbl/20",
+  roylp: "bg-roylp/20",
+  chrtr: "bg-chrtr/20",
+  orngc: "bg-orngc/20",
+  palbr: "bg-palbr/20",
+  ghost: "bg-ghost/20",
 }
 
 const COLOR_TEXTS: Record<ColorId, string> = {
@@ -66,6 +75,7 @@ const componentColors = (pageColorId: ColorId): ComponentColors => ({
   cardColors: cardColors(pageColorId),
   linkColors: linkColors(pageColorId),
   tagColors: tagColors(pageColorId),
+  offClickColors: offClickColors(pageColorId),
 })
 
 const pageColors = (pageColorId: ColorId): PageColors => {
@@ -197,6 +207,12 @@ const colorDotBorder = (pageColorId: ColorId): string => {
   )
 }
 
+const offClickColors = (pageColorId: ColorId): OffClickColors => {
+  return {
+    bg: COLOR_OFF_CLICK_BGS[pageColorId]
+  }
+}
+
 // ----------
 // Mass-export colors
 // --------
@@ -238,4 +254,5 @@ export const INIT_COMPONENT_COLORS: ComponentColors = {
   cardColors: cardColors("ghost"),
   linkColors: linkColors("ghost"),
   tagColors: tagColors("ghost"),
+  offClickColors: offClickColors("ghost"),
 }
