@@ -11,7 +11,6 @@ export function useSmoothScroll(href?: string) {
 
   const [atTopOfPage, setAtTopOfPage] = useState(false)
   const [atEndOfPage, setAtEndOfPage] = useState(false)
-  const [scrollEnabled, setScrollEnabled] = useState(true)
 
   // ----------
   // Scroll animation stuff
@@ -104,7 +103,7 @@ export function useSmoothScroll(href?: string) {
     scrollToSection()
   }
 
-  return { scrollEnabled, setScrollEnabled, scrollOnClickLink, smoothScrollTo, scrollToSection, atTopOfPage, atEndOfPage }
+  return { scrollOnClickLink, smoothScrollTo, scrollToSection, atTopOfPage, atEndOfPage }
 }
 
 // ----------

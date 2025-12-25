@@ -1,5 +1,4 @@
 import { useColorPalette } from "../../contexts/useColorPalette"
-import { useSmoothScroll } from "../../hooks/useSmoothScroll"
 import View from "./View"
 
 type AppShellProps = {
@@ -55,12 +54,11 @@ export default function AppShell({
   style,
 }: AppShellProps) {
   const { pageColors } = useColorPalette()
-  const { scrollEnabled } = useSmoothScroll()
 
   return (
     <View
       className={`
-        min-h-dvh w-dvw ${scrollEnabled && "overflow-y-auto scroll-smooth"}
+        w-dvw min-h-dvh overflow-y-auto scroll-smooth overscroll-y-auto
         ${pageColors.bg} ${pageColors.title}
         flex flex-col items-center justify-center text-center
         ${className}

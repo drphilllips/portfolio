@@ -13,15 +13,21 @@ export default function usePaletteBoardAnimationDriver(
   isCooldown: boolean,
 ) {
   const shouldReduceMotion = useReducedMotion()
-  const { atTopOfPage, setScrollEnabled } = useSmoothScroll()
+  const { atTopOfPage } = useSmoothScroll()
   const { linkColors, offClickColors, pageColors } = useColorPalette()
 
   // ----------
   // While board is open, lock scrolling
   // --------
   useEffect(() => {
-    setScrollEnabled(!isOpen)
-  }, [isOpen, setScrollEnabled])
+    if (isOpen) {
+      document.documentElement.style.overflow = "hidden";
+      document.body.style.overflow = "hidden";
+    } else {
+      document.documentElement.style.overflow = "visible";
+      document.body.style.overflow = "visible";
+    }
+  }, [isOpen])
 
   // ----------
   // Animation goodies
