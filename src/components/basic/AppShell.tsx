@@ -60,7 +60,7 @@ export default function AppShell({
       className={`
         w-dvw min-h-dvh overflow-y-auto scroll-smooth overscroll-y-auto
         ${pageColors.bg} ${pageColors.title}
-        flex flex-col items-center justify-start text-center
+        flex flex-col items-center justify-center text-center
         ${className}
       `}
       style={style}
