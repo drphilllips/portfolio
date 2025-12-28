@@ -8,7 +8,7 @@ export const AboutPageContent: PageType = PageSchema.parse({
     id: "hero",
     title: "Hi — I'm Dylan Phillips,",
     image: {
-      src: "src/assets/dhillion.png",
+      src: "/images/dhillion.png",
       label: "About Me Picture",
     },
     content: [
