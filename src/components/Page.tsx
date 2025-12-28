@@ -52,11 +52,16 @@ export default function Page({
             <Text className={`${pageColors.title} text-start text-4xl font-semibold`}>
               {title}
             </Text>
-            {visibleSection && (
+            <View className="flex flex-row gap-1">
               <Text className={`${pageColors.sub} text-2xl mb-px`}>
-                {sectIcon} {visibleSection}
+                {sectIcon}
               </Text>
-            )}
+              {visibleSection && (
+                <Text className={`${pageColors.sub} text-2xl mb-px`}>
+                  {visibleSection}
+                </Text>
+              )}
+            </View>
           </View>
         </View>
       )}

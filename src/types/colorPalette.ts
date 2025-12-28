@@ -1,4 +1,4 @@
-import type { SitePage } from "./pages"
+import type { SitePage } from "../content/schemas/site-page.schema"
 
 export const COLOR_IDS = [
   "ashbl",

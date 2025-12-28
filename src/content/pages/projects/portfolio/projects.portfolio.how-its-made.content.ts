@@ -1,8 +1,9 @@
+import { PAGE_EMOJIS, PAGE_NAMES } from "../../../../constants/page";
 import { PageSchema, type PageType } from "../../../schemas/page.schema";
 
 export const ProjectsPortfolioHowItsMadePageContent: PageType = PageSchema.parse({
-  title: "How It’s Made",
-  sectIcon: "🎨",
+  title: PAGE_NAMES["projects/portfolio/how-its-made"],
+  sectIcon: PAGE_EMOJIS["projects/portfolio/how-its-made"],
   heroSection: {
     id: "hero",
     title: "How this portfolio site is made",

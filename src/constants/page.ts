@@ -1,4 +1,4 @@
-import type { SitePage } from "../types/pages"
+import type { SitePage } from "../content/schemas/site-page.schema"
 
 export const START_OF_PAGE_PX = 10
 export const END_OF_PAGE_PX = 60
@@ -12,13 +12,15 @@ export const PAGE_NAMES: Record<SitePage, string> = {
   experience: "Experience",
   services: "Services",
   contact: "Contact",
+  "projects/portfolio/how-its-made": "How It's Made",
 }
 
 export const PAGE_EMOJIS: Record<SitePage, string> = {
   "": "🏠",
   about: "👋",
-  projects: "⚡",
+  projects: "🚀",
   experience: "🛠️",
   services: "🧰",
   contact: "✉️",
+  "projects/portfolio/how-its-made": "🎨",
 }

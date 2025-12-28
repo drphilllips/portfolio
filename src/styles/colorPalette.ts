@@ -1,6 +1,6 @@
 import { PAGE_EMOJIS, PAGE_NAMES } from "../constants/page";
+import type { SitePage } from "../content/schemas/site-page.schema";
 import type { CardColors, ColorId, ColorPrimary, ComponentColors, ContentColors, LinkColors, OffClickColors, PageColors, PaletteItem, SectionColors, TagColors } from "../types/colorPalette";
-import { type SitePage } from "../types/pages";
 
 // -----------
 // Component-based styling
