@@ -7,6 +7,10 @@ export const AboutPageContent: PageType = PageSchema.parse({
   heroSection: {
     id: "hero",
     title: "Hi — I'm Dylan Phillips,",
+    image: {
+      src: "src/assets/dhillion.png",
+      label: "About Me Picture",
+    },
     content: [
       {
         title: "Computer Science & Data Science Graduate (BS/MS)",

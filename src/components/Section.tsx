@@ -9,6 +9,7 @@ import Content from "./Content";
 export default function Section({
   id,
   title,
+  image,
   content,
   lastSection = false,
 }: SectionType & {
@@ -28,6 +29,13 @@ export default function Section({
         <Text className={`${sectionColors.h1} text-3xl text-start`}>
           {title}
         </Text>
+      )}
+      {image && (
+        <img
+          src={image.src}
+          alt={image.label}
+          className="w-72 h-72 object-contain"
+        />
       )}
       <View className="w-full flex flex-col items-start gap-4">
         {content.map(({ title, date: shortText, desc: longText, image, links, cards, tags }: ContentType, i) => (
