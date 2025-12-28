@@ -66,7 +66,7 @@ export default function Page({
         </View>
       )}
       <View className={`flex flex-col gap-4 ${responsivePadding}`}>
-        <Section id={heroSection.id} title={heroSection.title} content={heroSection.content} />
+        <Section id={heroSection.id} title={heroSection.title} image={heroSection.image} content={heroSection.content} />
         {ctas && (
           <View className="flex flex-row w-full flex-wrap justify-start gap-3">
             {ctas.map(({ label, title, subtitle, sectionHash, externalLink, internalLink }: LinkType, i) => (
@@ -81,7 +81,7 @@ export default function Page({
             <Separator color={pageColors.sep} />
           </View>
           <View className={`flex flex-col lg:gap-12 gap-6 ${responsivePadding}`}>
-            {sections.map(({ id, title, content }: SectionType, i) => {
+            {sections.map(({ id, title, image, content }: SectionType, i) => {
               const nextSection = i < sections.length-1 ? sections[i+1] : undefined
               return (
                 <Fragment key={id}>
@@ -89,6 +89,7 @@ export default function Page({
                   <Section
                     id={id}
                     title={title}
+                    image={image}
                     content={content}
                     lastSection={(
                       i === sections.length - 1
