@@ -1,8 +1,9 @@
+import { PAGE_EMOJIS } from "../../constants/page";
 import { PageSchema, type PageType } from "../schemas/page.schema";
 
 export const ServicesPageContent: PageType = PageSchema.parse({
   title: "Services",
-  sectIcon: "🛠",
+  sectIcon: PAGE_EMOJIS["services"],
   heroSection: {
     id: "hero",
     title: "How I can help",

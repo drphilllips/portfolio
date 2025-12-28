@@ -18,6 +18,7 @@ export type PaletteItem = {
   color: ColorId
   page: SitePage
   name: string
+  emoji: string
   // palette dot styling
   bg: string
   text: string

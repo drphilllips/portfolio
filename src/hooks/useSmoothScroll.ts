@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { END_OF_PAGE_PX, START_OF_PAGE_PX } from "../constants/pageSections"
+import { END_OF_PAGE_PX, START_OF_PAGE_PX } from "../constants/page"
 import { useResponsiveDesign } from "../contexts/useResponsiveDesign"
 
 type EasingFn = (t: number) => number

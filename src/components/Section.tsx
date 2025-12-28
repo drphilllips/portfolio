@@ -3,7 +3,7 @@ import Text from "./basic/Text";
 import type { ContentType } from "../content/schemas/content.schema";
 import View from "./basic/View";
 import { useColorPalette } from "../contexts/useColorPalette";
-import { PAGE_LAST_SECTION_MIN_HEIGHT } from "../constants/pageSections";
+import { PAGE_LAST_SECTION_MIN_HEIGHT } from "../constants/page";
 import Content from "./Content";
 
 export default function Section({

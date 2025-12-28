@@ -1,3 +1,4 @@
+import { PAGE_EMOJIS, PAGE_NAMES } from "../constants/page";
 import type { CardColors, ColorId, ColorPrimary, ComponentColors, ContentColors, LinkColors, OffClickColors, PageColors, PaletteItem, SectionColors, TagColors } from "../types/colorPalette";
 import { type SitePage } from "../types/pages";
 
@@ -217,9 +218,11 @@ const offClickColors = (pageColorId: ColorId): OffClickColors => {
 // Mass-export colors
 // --------
 const pi = (
-  color: ColorId, page: SitePage, name: string,
+  color: ColorId, page: SitePage,
 ): PaletteItem => (
-  { color, page, name,
+  { color, page,
+    name: PAGE_NAMES[page],
+    emoji: PAGE_EMOJIS[page],
     bg: COLOR_BGS[color],
     text: COLOR_PRIMARY_TEXTS[color],
     border: colorDotBorder(color),
@@ -229,12 +232,12 @@ const pi = (
 )
 
 export const PALETTE_ITEMS: PaletteItem[] = [
-  pi("ashbl", "", "Home"),
-  pi("roylp", "about", "About"),
-  pi("chrtr", "projects", "Projects"),
-  pi("orngc", "experience", "Experience"),
-  pi("palbr", "services", "Services"),
-  pi("ghost", "contact", "Contact"),
+  pi("ashbl", ""),
+  pi("roylp", "about"),
+  pi("chrtr", "projects"),
+  pi("orngc", "experience"),
+  pi("palbr", "services"),
+  pi("ghost", "contact"),
 ]
 
 export const PAGE_COMPONENT_COLORS: Record<SitePage, ComponentColors> = (
