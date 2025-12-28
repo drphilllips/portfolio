@@ -43,7 +43,7 @@ export default function Link({
         ${linkColors.bg}
         border-2 ${linkColors.border}
         ${label && title && subtitle ? "pl-3 pr-4 pt-2 pb-4" : "pb-2 pt-1 px-2"}
-        flex flex-row items-center gap-2 rounded-lg
+        flex flex-row items-start gap-2 rounded-lg
       `}
       renderChildren={() => (
         <>
