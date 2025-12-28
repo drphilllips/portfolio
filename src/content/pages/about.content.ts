@@ -67,17 +67,26 @@ export const AboutPageContent: PageType = PageSchema.parse({
           title: "Check out my projects...",
           links: [
             {
-              internalLink: "/projects#portfolio",
+              internalLink: {
+                page: "projects",
+                sectionHash: "#portfolio",
+              },
               subtitle: "#portfolio",
               label: "Dylan Phillips Web Portfolio",
             },
             {
-              internalLink: "/projects#mc-playground",
+              internalLink: {
+                page: "projects",
+                sectionHash: "#mc-playground",
+              },
               subtitle: "#mc-playground",
               label: "Minecraft Playground",
             },
             {
-              internalLink: "/projects#monkey-wrench",
+              internalLink: {
+                page: "projects",
+                sectionHash: "#monkey-wrench",
+              },
               subtitle: "#monkey-wrench",
               label: "MonkeyWrench Auto Shop App",
             },

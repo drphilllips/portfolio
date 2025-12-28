@@ -125,7 +125,9 @@ export const ServicesPageContent: PageType = PageSchema.parse({
                 "If you have a project or role in mind, reach out and I'll respond as quickly as I can.",
               link: {
                 label: "Go to Contact",
-                internalLink: "/contact",
+                internalLink: {
+                  page: "contact",
+                },
               },
             },
           ],
@@ -143,7 +145,9 @@ export const ServicesPageContent: PageType = PageSchema.parse({
           links: [
             {
               label: "Contact me",
-              internalLink: "/contact",
+              internalLink: {
+                page: "contact",
+              },
             },
           ],
         },

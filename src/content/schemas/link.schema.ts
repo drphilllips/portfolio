@@ -1,4 +1,5 @@
 import * as z from "zod"
+import { InternalLinkSchema } from "./internal-link.schema"
 
 export const LinkSchema = z
   .object({
@@ -6,7 +7,7 @@ export const LinkSchema = z
     title: z.string().min(1).max(50).optional(),
     subtitle: z.string().min(1).max(100).optional(),
     sectionHash: z.string().regex(/^#[^\s]+$/).optional(),
-    internalLink: z.string().regex(/^\/[\s\S]*$/).optional(),
+    internalLink: InternalLinkSchema.optional(),
     externalLink: z.union([
       // Any WHATWG-compatible URL (includes e.g. mailto: per Zod docs)
       z.url(),

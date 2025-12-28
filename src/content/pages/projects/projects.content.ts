@@ -47,7 +47,9 @@ export const ProjectsPageContent: PageType = PageSchema.parse({
             "This portfolio is built to be easy to navigate and fast to maintain. I use a schema-first content layer so each page is consistent, type-safe, and easy to evolve over time.",
           links: [
             {
-              internalLink: "/projects/portfolio/how-its-made",
+              internalLink: {
+                page: "projects/portfolio/how-its-made",
+              },
               subtitle: "portfolio/how-its-made",
               title: "How It's Made",
             },

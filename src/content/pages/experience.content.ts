@@ -51,7 +51,10 @@ export const ExperiencePageContent: PageType = PageSchema.parse({
           tags: ["React Native", "Django", "REST APIs", "CI/CD"],
           links: [
             {
-              internalLink: "/projects#monkey-wrench",
+              internalLink: {
+                page: "projects",
+                sectionHash: "#monkey-wrench",
+              },
               subtitle: "#monkey-wrench",
               title: "MonkeyWrench Auto Shop App",
             },

@@ -16,7 +16,9 @@ export const ProjectsPortfolioHowItsMadePageContent: PageType = PageSchema.parse
         links: [
           {
             label: "Back to Projects",
-            internalLink: "/projects",
+            internalLink: {
+              page: "projects",
+            },
           },
         ],
       },
@@ -149,7 +151,9 @@ export const ProjectsPortfolioHowItsMadePageContent: PageType = PageSchema.parse
           links: [
             {
               label: "Back to Projects",
-              internalLink: "/projects",
+              internalLink: {
+                page: "projects",
+              },
             },
           ],
         },
