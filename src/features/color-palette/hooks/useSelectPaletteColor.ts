@@ -2,10 +2,10 @@ import { useEffect, useRef, useState, type Dispatch, type SetStateAction } from 
 import type { PaletteItem } from "../../../types/colorPalette"
 import { useColorPalette } from "../../../contexts/useColorPalette"
 import { useLocation, useNavigate } from "react-router-dom"
-import type { SitePage } from "../../../types/pages"
 import { SELECT_PALETTE_COLOR_COOL_DOWN_MS } from "../constants/colorPalette"
 import { useSmoothScroll } from "../../../hooks/useSmoothScroll"
 import useLayeredClick from "../../../hooks/useLayeredClick"
+import type { SitePage } from "../../../content/schemas/site-page.schema"
 
 
 export default function useSelectPaletteColor(

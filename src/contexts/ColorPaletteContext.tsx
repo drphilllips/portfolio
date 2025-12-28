@@ -2,7 +2,7 @@ import { createContext, useCallback, useEffect, useMemo, useRef, useState } from
 import { useLocation } from "react-router-dom"
 import type { ComponentColors } from "../types/colorPalette"
 import { INIT_COMPONENT_COLORS, PAGE_COMPONENT_COLORS } from "../styles/colorPalette"
-import type { SitePage } from "../types/pages"
+import type { SitePage } from "../content/schemas/site-page.schema"
 
 type PendingPaletteChange = {
   requestId: number
