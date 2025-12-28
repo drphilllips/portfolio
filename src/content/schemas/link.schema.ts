@@ -4,7 +4,7 @@ export const LinkSchema = z
   .object({
     label: z.string().min(1).max(50).optional(),
     title: z.string().min(1).max(50).optional(),
-    subtitle: z.string().min(1).max(50).optional(),
+    subtitle: z.string().min(1).max(100).optional(),
     sectionHash: z.string().regex(/^#[^\s]+$/).optional(),
     internalLink: z.string().regex(/^\/[\s\S]*$/).optional(),
     externalLink: z.union([

@@ -32,7 +32,8 @@ export default function Page({
   return (
     <View
       className={`
-        relative flex flex-col min-h-dvh justify-start items-start w-full
+        ${title && "min-h-dvh"}
+        relative flex flex-col justify-start items-start w-full
         ${onMobileSideways ? "pt-18" : "pt-20"}
         lg:pb-28 pb-20 lg:gap-12 gap-6
       `}
@@ -75,17 +76,23 @@ export default function Page({
             <Separator color={pageColors.sep} />
           </View>
           <View className={`flex flex-col lg:gap-12 gap-6 ${responsivePadding}`}>
-            {sections.map(({ id, title, content }: SectionType, i) => (
-              <Fragment key={id}>
-                {i > 0 && <Separator color={pageColors.sep} />}
-                <Section
-                  id={id}
-                  title={title}
-                  content={content}
-                  lastSection={i === sections.length - 1}
-                />
-              </Fragment>
-            ))}
+            {sections.map(({ id, title, content }: SectionType, i) => {
+              const nextSection = i < sections.length-1 ? sections[i+1] : undefined
+              return (
+                <Fragment key={id}>
+                  {i > 0 && <Separator color={pageColors.sep} />}
+                  <Section
+                    id={id}
+                    title={title}
+                    content={content}
+                    lastSection={(
+                      i === sections.length - 1
+                      || nextSection && !nextSection.title
+                    )}
+                  />
+                </Fragment>
+              )
+            })}
           </View>
         </>
       )}

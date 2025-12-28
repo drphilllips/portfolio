@@ -2,7 +2,7 @@ import Page from "../components/Page"
 import { ServicesPageContent } from "../content/pages/services.content"
 import type { PageType } from "../content/schemas/page.schema"
 
-export default function ProjectsPage() {
+export default function ServicesPage() {
   const { title, sectIcon, heroSection, ctas, sections }: PageType = ServicesPageContent
 
   return (

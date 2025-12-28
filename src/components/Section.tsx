@@ -20,7 +20,7 @@ export default function Section({
     <section
       id={id}
       className={`
-        ${lastSection && PAGE_LAST_SECTION_MIN_HEIGHT}
+        ${lastSection && title && PAGE_LAST_SECTION_MIN_HEIGHT}
         ${sectionColors.bg} flex flex-col w-full items-start gap-4
       `}
     >

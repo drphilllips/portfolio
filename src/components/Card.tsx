@@ -52,6 +52,7 @@ export default function Card({
         <Link
           label={link.label}
           title={link.title}
+          subtitle={link.subtitle}
           internalLink={link.internalLink}
           externalLink={link.externalLink}
           sectionHash={link.sectionHash}
