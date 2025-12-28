@@ -1,4 +1,4 @@
-import type { SitePage } from "./pages"
+import type { SitePage } from "../content/schemas/site-page.schema"
 
 export const COLOR_IDS = [
   "ashbl",
@@ -18,6 +18,7 @@ export type PaletteItem = {
   color: ColorId
   page: SitePage
   name: string
+  emoji: string
   // palette dot styling
   bg: string
   text: string

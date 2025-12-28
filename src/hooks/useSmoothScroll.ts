@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { END_OF_PAGE_PX, START_OF_PAGE_PX } from "../constants/pageSections"
+import { END_OF_PAGE_PX, START_OF_PAGE_PX } from "../constants/page"
 import { useResponsiveDesign } from "../contexts/useResponsiveDesign"
 
 type EasingFn = (t: number) => number
@@ -62,6 +62,11 @@ export function useSmoothScroll(href?: string) {
     []
   )
 
+  // Instantly set scroll position (no animation)
+  const setScrollY = useCallback((targetY: number) => {
+    window.scrollTo(0, targetY)
+  }, [])
+
   // Smooth scroll to a specific section
   const scrollToSection = () => {
     // only navigate if we have a href provided
@@ -97,7 +102,13 @@ export function useSmoothScroll(href?: string) {
     navigate({ hash }, { replace: true })
   }
 
-  return { smoothScrollTo, scrollToSection, atTopOfPage, atEndOfPage }
+  return {
+    smoothScrollTo,
+    setScrollY,
+    scrollToSection,
+    atTopOfPage,
+    atEndOfPage,
+  }
 }
 
 // ----------

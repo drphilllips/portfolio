@@ -1,6 +1,7 @@
-import Page from "../components/Page"
-import { ProjectsPageContent } from "../content/pages/projects.content"
-import type { PageType } from "../content/schemas/page.schema"
+import Page from "../../components/Page"
+import { ProjectsPageContent } from "../../content/pages/projects/projects.content"
+import type { PageType } from "../../content/schemas/page.schema"
+
 
 export default function ProjectsPage() {
   const { title, sectIcon, heroSection, ctas, sections }: PageType = ProjectsPageContent

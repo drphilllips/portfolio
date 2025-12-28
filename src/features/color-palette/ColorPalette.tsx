@@ -13,6 +13,7 @@ import type { PaletteDotBorderRadius, PaletteDotColors } from "./types/paletteAn
 import useRouteTransition from "../../hooks/useRouteTransition"
 import { BASE_SLIDER, BASE_SPRING } from "./constants/colorPalette"
 import BodyPortal from "../../components/basic/BodyPortal"
+import View from "../../components/basic/View"
 
 /**
  * ColorPalette
@@ -154,6 +155,7 @@ function PaletteRing({
     paletteRingDotBorderRadii,
     paletteRingDotColors,
     paletteRingScaleAnimate,
+    paletteRingDotEmojiOpacityAnimations,
   } = usePaletteRingAnimationDriver(items, isBoardOpen)
 
   return (
@@ -171,6 +173,7 @@ function PaletteRing({
           itemIndex={i}
           isBoardOpen={isBoardOpen}
           animate={paletteRingDotAnimations[i]}
+          emojiOpacityAnimate={paletteRingDotEmojiOpacityAnimations[i]}
           transition={paletteRingDotTransitions[i]}
           onClick={onSelectPaletteColor}
         />
@@ -186,6 +189,7 @@ function PaletteDot({
   itemIndex,
   isBoardOpen,
   animate,
+  emojiOpacityAnimate,
   transition,
   onClick,
 }: {
@@ -195,6 +199,7 @@ function PaletteDot({
   itemIndex: number
   isBoardOpen: boolean
   animate: TargetAndTransition
+  emojiOpacityAnimate: TargetAndTransition
   transition: Transition
   onClick: (item: PaletteItem, itemIndex: number) => void
 }) {
@@ -237,16 +242,26 @@ function PaletteDot({
         onClick(item, itemIndex)
       }}
       renderChildren={() => (
-        <Text
-          as="span"
-          className={`
-            ${colors.text}
-            m-0 leading-none font-semibold font-mono text-[12px]
-            transition-colors duration-300
-          `}
-        >
-          {item.name}
-        </Text>
+        <View className="flex flex-col gap-1">
+          <motion.div animate={emojiOpacityAnimate} transition={transition}>
+            <Text
+              as="span"
+              className="text-center leading-none font-semibold font-mono text-2xl"
+            >
+              {item.emoji}
+            </Text>
+          </motion.div>
+          <Text
+            as="span"
+            className={`
+              ${colors.text}
+              m-0 leading-none font-semibold font-mono text-[12px]
+              transition-colors duration-300
+            `}
+          >
+            {item.name}
+          </Text>
+        </View>
       )}
     />
   )

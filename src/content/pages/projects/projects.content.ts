@@ -1,8 +1,9 @@
-import { PageSchema, type PageType } from "../schemas/page.schema";
+import { PAGE_EMOJIS, PAGE_NAMES } from "../../../constants/page";
+import { PageSchema, type PageType } from "../../schemas/page.schema";
 
 export const ProjectsPageContent: PageType = PageSchema.parse({
-  title: "Projects",
-  sectIcon: "⚡",
+  title: PAGE_NAMES["projects"],
+  sectIcon: PAGE_EMOJIS["projects"],
   heroSection: {
     id: "hero",
     title: "My favorite selection of...",
@@ -46,9 +47,11 @@ export const ProjectsPageContent: PageType = PageSchema.parse({
             "This portfolio is built to be easy to navigate and fast to maintain. I use a schema-first content layer so each page is consistent, type-safe, and easy to evolve over time.",
           links: [
             {
-              internalLink: "/",
-              subtitle: "dylan-phillips.vercel.app",
-              title: "Dylan Phillips Web Portfolio",
+              internalLink: {
+                page: "projects/portfolio/how-its-made",
+              },
+              subtitle: "portfolio/how-its-made",
+              title: "How It's Made",
             },
           ],
           cards: [

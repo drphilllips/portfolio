@@ -1,8 +1,9 @@
+import { PAGE_EMOJIS, PAGE_NAMES } from "../../constants/page";
 import { PageSchema, type PageType } from "../schemas/page.schema";
 
 export const ExperiencePageContent: PageType = PageSchema.parse({
-  title: "Experience",
-  sectIcon: "@",
+  title: PAGE_NAMES["experience"],
+  sectIcon: PAGE_EMOJIS["experience"],
   heroSection: {
     id: "hero",
     title: "My recent ventures...",
@@ -50,7 +51,10 @@ export const ExperiencePageContent: PageType = PageSchema.parse({
           tags: ["React Native", "Django", "REST APIs", "CI/CD"],
           links: [
             {
-              internalLink: "/projects#monkey-wrench",
+              internalLink: {
+                page: "projects",
+                sectionHash: "#monkey-wrench",
+              },
               subtitle: "#monkey-wrench",
               title: "MonkeyWrench Auto Shop App",
             },

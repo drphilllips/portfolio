@@ -3,7 +3,7 @@ import Text from "./basic/Text";
 import type { ContentType } from "../content/schemas/content.schema";
 import View from "./basic/View";
 import { useColorPalette } from "../contexts/useColorPalette";
-import { PAGE_LAST_SECTION_MIN_HEIGHT } from "../constants/pageSections";
+import { PAGE_LAST_SECTION_MIN_HEIGHT } from "../constants/page";
 import Content from "./Content";
 
 export default function Section({
@@ -20,12 +20,12 @@ export default function Section({
     <section
       id={id}
       className={`
-        ${lastSection && PAGE_LAST_SECTION_MIN_HEIGHT}
+        ${lastSection && title && PAGE_LAST_SECTION_MIN_HEIGHT}
         ${sectionColors.bg} flex flex-col w-full items-start gap-4
       `}
     >
       {title && (
-        <Text className={`${sectionColors.h1} text-3xl`}>
+        <Text className={`${sectionColors.h1} text-3xl text-start`}>
           {title}
         </Text>
       )}
