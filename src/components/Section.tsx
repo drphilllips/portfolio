@@ -25,7 +25,7 @@ export default function Section({
       `}
     >
       {title && (
-        <Text className={`${sectionColors.h1} text-3xl`}>
+        <Text className={`${sectionColors.h1} text-3xl text-start`}>
           {title}
         </Text>
       )}
