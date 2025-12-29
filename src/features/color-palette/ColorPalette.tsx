@@ -13,7 +13,7 @@ import type { PaletteDotBorderRadius, PaletteDotColors } from "./types/paletteAn
 import useRouteTransition from "../../hooks/useRouteTransition"
 import { BASE_SLIDER, BASE_SPRING } from "./constants/colorPalette"
 import BodyPortal from "../../components/basic/BodyPortal"
-import View from "../../components/basic/View"
+import { useResponsiveDesign } from "../../contexts/useResponsiveDesign"
 
 /**
  * ColorPalette
@@ -155,7 +155,7 @@ function PaletteRing({
     paletteRingDotBorderRadii,
     paletteRingDotColors,
     paletteRingScaleAnimate,
-    paletteRingDotEmojiOpacityAnimations,
+    paletteRingDotTextOpacityAnimations,
   } = usePaletteRingAnimationDriver(items, isBoardOpen)
 
   return (
@@ -173,7 +173,7 @@ function PaletteRing({
           itemIndex={i}
           isBoardOpen={isBoardOpen}
           animate={paletteRingDotAnimations[i]}
-          emojiOpacityAnimate={paletteRingDotEmojiOpacityAnimations[i]}
+          textOpacityAnimate={paletteRingDotTextOpacityAnimations[i]}
           transition={paletteRingDotTransitions[i]}
           onClick={onSelectPaletteColor}
         />
@@ -189,7 +189,7 @@ function PaletteDot({
   itemIndex,
   isBoardOpen,
   animate,
-  emojiOpacityAnimate,
+  textOpacityAnimate,
   transition,
   onClick,
 }: {
@@ -199,11 +199,12 @@ function PaletteDot({
   itemIndex: number
   isBoardOpen: boolean
   animate: TargetAndTransition
-  emojiOpacityAnimate: TargetAndTransition
+  textOpacityAnimate: TargetAndTransition
   transition: Transition
   onClick: (item: PaletteItem, itemIndex: number) => void
 }) {
   const { dotSizeOpenScaled } = useViewportScaledSizing()
+  const { onMobileSideways } = useResponsiveDesign()
 
   return (
     <Button
@@ -242,26 +243,32 @@ function PaletteDot({
         onClick(item, itemIndex)
       }}
       renderChildren={() => (
-        <View className="flex flex-col gap-1">
-          <motion.div animate={emojiOpacityAnimate} transition={transition}>
-            <Text
-              as="span"
-              className="text-center leading-none font-semibold font-mono text-2xl"
-            >
-              {item.emoji}
-            </Text>
-          </motion.div>
+        <motion.div
+          className="flex flex-col gap-1"
+          animate={textOpacityAnimate}
+          transition={transition}
+        >
+          <Text
+            as="span"
+            className={`
+              text-center leading-none font-semibold font-mono
+              ${onMobileSideways ? "" : "text-2xl"}
+            `}
+          >
+            {item.emoji}
+          </Text>
           <Text
             as="span"
             className={`
               ${colors.text}
-              m-0 leading-none font-semibold font-mono text-[12px]
+              ${onMobileSideways ? "text-[10px]" : "text-[12px]"}
+              m-0 leading-none font-semibold font-mono
               transition-colors duration-300
             `}
           >
             {item.name}
           </Text>
-        </View>
+        </motion.div>
       )}
     />
   )
