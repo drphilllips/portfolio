@@ -86,7 +86,7 @@ export default function usePaletteRingAnimationDriver(
   ), [items, atTopOfPage])
 
   // palette dot emoji opacity (0 if closed, 1 if open)
-  const paletteRingDotEmojiOpacityAnimations: TargetAndTransition[] = useMemo(() => (
+  const paletteRingDotTextOpacityAnimations: TargetAndTransition[] = useMemo(() => (
     items.map((_, i) => (
       isBoardOpen && i !== 0 ? { opacity: 1 } : { opacity: 0 }
     ))
@@ -99,7 +99,7 @@ export default function usePaletteRingAnimationDriver(
     paletteRingDotColors,
     paletteRingDotBorderRadii,
     paletteRingScaleAnimate,
-    paletteRingDotEmojiOpacityAnimations,
+    paletteRingDotTextOpacityAnimations,
   }
 }
 
