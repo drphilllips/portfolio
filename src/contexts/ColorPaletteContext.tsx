@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 import { createContext, useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useLocation } from "react-router-dom"
 import type { ComponentColors } from "../types/colorPalette"
@@ -105,9 +106,7 @@ export function ColorPaletteProvider({ children }: { children: React.ReactNode }
   useEffect(() => {
     const sitePage = pathname.split("/")[1] as SitePage
     const palette = PAGE_COMPONENT_COLORS[sitePage]
-    setTimeout(() => (
-      requestPaletteChange(palette)
-    ),0)
+    requestPaletteChange(palette)
   }, [pathname, requestPaletteChange])
 
   return <ColorPaletteContext.Provider value={value}>{children}</ColorPaletteContext.Provider>

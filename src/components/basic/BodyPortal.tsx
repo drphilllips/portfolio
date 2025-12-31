@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 import { createPortal } from "react-dom"
 import { useEffect, useState } from "react"
 
@@ -5,7 +6,7 @@ export default function BodyPortal({ children }: { children: React.ReactNode }) 
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    setTimeout(() => setMounted(true),0)
+    setMounted(true)
   }, [])
 
   if (!mounted) return null

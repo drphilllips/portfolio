@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 import { useReducedMotion } from "motion/react"
 import { useEffect, useRef, useState } from "react"
 import { useLocation, useOutlet } from "react-router-dom"
@@ -53,7 +54,6 @@ export default function useRouteTransition() {
     return () => {
       clearTimers()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // ----------

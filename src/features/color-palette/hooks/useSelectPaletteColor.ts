@@ -56,7 +56,7 @@ export default function useSelectPaletteColor() {
     const pathItem = paletteItems.find(item => item.page === sitePage)
     const pathItemIndex = pathItem ? paletteItems.indexOf(pathItem) : null
     if (pathItem && pathItemIndex !== 0) {
-      setTimeout(() => reorderPaletteItems(setPaletteItems, pathItem),0)
+      reorderPaletteItems(setPaletteItems, pathItem)
     }
   }, [pathname, paletteItems, setPaletteItems])
 

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 import { useEffect, useState } from "react"
 import { useLocation } from "react-router-dom"
 
@@ -7,7 +8,7 @@ export default function useSyncHoverState(b: boolean) {
   const { pathname } = useLocation()
 
   useEffect(() => {
-    setTimeout(() => setIsHovering(false),0)
+    setIsHovering(false)
   }, [pathname])
 
   return { isHovering, setIsHovering }
