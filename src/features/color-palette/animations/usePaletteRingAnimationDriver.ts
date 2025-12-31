@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import type { LinkColors, PageColors, PaletteItem } from "../../../types/colorPalette";
 import { BASE_RING_RADIUS, BASE_SLIDER, BASE_SPRING, INNER_ARC_END_ANGLE, INNER_ARC_INDICES, INNER_ARC_START_ANGLE, OUTER_ARC_END_ANGLE, OUTER_ARC_INDICES, OUTER_ARC_START_ANGLE, PALETTE_RING_ARROW_SHRINK_SCALE } from "../constants/colorPalette";
 import type { PaletteDotBorderRadius, PaletteDotColors, PalettePosition } from "../types/paletteAnimation";
-import useViewportScaledSizing from "./useViewportScaledSizing";
+import useViewportScaledSizing from "../hooks/useViewportScaledSizing";
 import { useReducedMotion, type TargetAndTransition, type Transition } from "motion/react";
 import { useSmoothScroll } from "../../../hooks/useSmoothScroll";
 import { useColorPalette } from "../../../contexts/useColorPalette";
@@ -13,28 +13,35 @@ export default function usePaletteRingAnimationDriver(
   items: PaletteItem[],
   isBoardOpen: boolean,
 ) {
+  const { atTopOfPage } = useSmoothScroll()
+  const shouldReduceMotion = useReducedMotion()
+  const { linkColors, pageColors } = useColorPalette()
   const {
     arcInnerRadiusScaled,
     arcOuterRadiusScaled,
     speckScale,
   } = useViewportScaledSizing()
-  const { atTopOfPage } = useSmoothScroll()
-  const shouldReduceMotion = useReducedMotion()
-  const { linkColors, pageColors } = useColorPalette()
 
-  // palette ring scaling
+
+  // ----------
+  // Scaling
+  // --------
+
   const paletteRingScaleAnimate = useMemo(() => (
     atTopOfPage
       ? { scale: 1 }
       : { scale: PALETTE_RING_ARROW_SHRINK_SCALE }
   ), [atTopOfPage])
 
-  // dot scaling
-  const dotScale = useMemo(() => (
+  const paletteDotScale = useMemo(() => (
     isBoardOpen ? 1 : speckScale
   ), [isBoardOpen, speckScale])
 
-  // ring dot transitions (delayed based on level)
+
+  // ----------
+  // Transitions
+  // --------
+
   const paletteRingDotTransitions: Transition[] = useMemo(() => (
     items.map((_, i) => (
       shouldReduceMotion
@@ -47,8 +54,9 @@ export default function usePaletteRingAnimationDriver(
     ))
   ), [items, isBoardOpen, shouldReduceMotion, atTopOfPage])
 
+
   // ----------
-  // Dot arc <-> ring positioning
+  // Positioning
   // --------
   const closedRingTargets: PalettePosition[] = useMemo(() => (
     items.map((_, i) => getRingTarget(i, items.length))
@@ -64,6 +72,11 @@ export default function usePaletteRingAnimationDriver(
     items.map((_, i) => getArrowTarget(i))
   ), [items])
 
+
+  // ----------
+  // Animations
+  // --------
+
   // dot position animations
   const paletteRingDotAnimations: TargetAndTransition[] = useMemo(() => {
     return items.map((_, i) => {
@@ -71,19 +84,32 @@ export default function usePaletteRingAnimationDriver(
         atTopOfPage
           ? isBoardOpen ? openArcTargets[i] : closedRingTargets[i]
           : scrollToTopArrowTargets[i]
-      return { ...target, scale: dotScale }
+      return { ...target, scale: paletteDotScale }
     })
-  }, [items, closedRingTargets, openArcTargets, scrollToTopArrowTargets, isBoardOpen, dotScale, atTopOfPage])
+  }, [items, closedRingTargets, openArcTargets, scrollToTopArrowTargets, isBoardOpen, paletteDotScale, atTopOfPage])
+
+
+  // ----------
+  // Colors
+  // --------
 
   // dot colors (white if forming scroll-to-top arrow)
   const paletteRingDotColors: PaletteDotColors[] = useMemo(() => (
     items.map((item, i) => getRingDotColor(item, i, linkColors, pageColors, atTopOfPage, isBoardOpen))
   ), [items, atTopOfPage, isBoardOpen, linkColors, pageColors])
 
+  // ----------
+  // Rounding
+  // --------
+
   // dot rounding (to form solid arrow w/ rounded ends)
   const paletteRingDotBorderRadii: PaletteDotBorderRadius[] = useMemo(() => (
     items.map((_, i) => getRingDotBorderRadius(i, atTopOfPage))
   ), [items, atTopOfPage])
+
+  // ----------
+  // Opacity
+  // --------
 
   // palette dot emoji opacity (0 if closed, 1 if open)
   const paletteRingDotTextOpacityAnimations: TargetAndTransition[] = useMemo(() => (
@@ -93,7 +119,7 @@ export default function usePaletteRingAnimationDriver(
   ), [items, isBoardOpen])
 
   return {
-    dotScale,
+    dotScale: paletteDotScale,
     paletteRingDotAnimations,
     paletteRingDotTransitions,
     paletteRingDotColors,

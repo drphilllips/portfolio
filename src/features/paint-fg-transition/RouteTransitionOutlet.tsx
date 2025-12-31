@@ -16,8 +16,8 @@ import useRouteTransition from "../../hooks/useRouteTransition"
 export default function RouteTransitionOutlet() {
 
   const {
-    phase,
-    setPhase,
+    routeTransitionPhase,
+    setRouteTransitionPhase,
     appearIdRef,
     renderKey,
     transitionIdRef,
@@ -31,7 +31,7 @@ export default function RouteTransitionOutlet() {
   // - Hide immediately on first paint,
   // - Then delay + fade in.
   // --------
-  if (phase === "appearing") {
+  if (routeTransitionPhase === "appearing") {
     const appearId = appearIdRef.current
 
     return (
@@ -51,7 +51,7 @@ export default function RouteTransitionOutlet() {
           // which invalidates this completion handler.
           if (appearId == null) return
           if (transitionIdRef.current !== appearId) return
-          setPhase("idle")
+          setRouteTransitionPhase("idle")
         }}
       >
         {renderedOutlet}
@@ -62,7 +62,7 @@ export default function RouteTransitionOutlet() {
   // ----------
   // Once paint-fg-anim completes, fade in new route
   // --------
-  if (phase === "fadingIn") {
+  if (routeTransitionPhase === "fadingIn") {
     return (
       <motion.div
         key={renderKey}

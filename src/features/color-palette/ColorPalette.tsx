@@ -1,12 +1,10 @@
-import { useState } from "react"
 import { motion, type TargetAndTransition, type Transition } from "motion/react"
-import { PALETTE_ITEMS } from "../../styles/colorPalette"
 import Text from "../../components/basic/Text"
 import Button from "../../components/basic/Button"
 import type { PaletteItem } from "../../types/colorPalette"
 import useViewportScaledSizing from "./hooks/useViewportScaledSizing"
-import usePaletteBoardAnimationDriver from "./hooks/usePaletteBoardAnimationDriver"
-import usePaletteRingAnimationDriver from "./hooks/usePaletteRingAnimationDriver"
+import usePaletteBoardAnimationDriver from "./animations/usePaletteBoardAnimationDriver"
+import usePaletteRingAnimationDriver from "./animations/usePaletteRingAnimationDriver"
 import useSelectPaletteColor from "./hooks/useSelectPaletteColor"
 import { useSmoothScroll } from "../../hooks/useSmoothScroll"
 import type { PaletteDotBorderRadius, PaletteDotColors } from "./types/paletteAnimation"
@@ -14,6 +12,7 @@ import useRouteTransition from "../../hooks/useRouteTransition"
 import { BASE_SLIDER, BASE_SPRING } from "./constants/colorPalette"
 import BodyPortal from "../../components/basic/BodyPortal"
 import { useResponsiveDesign } from "../../contexts/useResponsiveDesign"
+import useScrollLocking from "../../hooks/useScrollLocking"
 
 /**
  * ColorPalette
@@ -53,22 +52,16 @@ import { useResponsiveDesign } from "../../contexts/useResponsiveDesign"
  * - This component is intended to be mounted once at the application level.
  */
 export default function ColorPalette() {
-  const [items, setItems] = useState<PaletteItem[]>(PALETTE_ITEMS)
-  const [isOpen, setIsOpen] = useState(false)
-
+  const { atTopOfPage } = useSmoothScroll()
+  const { routeTransitionPhase } = useRouteTransition()
   const {
-      boardCenterShift,
-      boardOpenSizeScaled,
-  } = useViewportScaledSizing()
-
-  const {
-    isCooldown,
+    paletteItems,
+    isPaletteOpen,
+    setIsPaletteOpen,
+    isPaletteCooldown,
     handleSelectPaletteColor,
     handleBoardClick,
-  } = useSelectPaletteColor(
-    items, setItems, isOpen, setIsOpen,
-  )
-
+  } = useSelectPaletteColor()
   const {
     boardColors,
     animateBoard,
@@ -76,12 +69,9 @@ export default function ColorPalette() {
     boardScaleAnimate,
     boardOffClickAnimate,
     boardOffClickColor,
-  } = usePaletteBoardAnimationDriver(
-    boardCenterShift, boardOpenSizeScaled, isOpen, isCooldown,
-  )
+  } = usePaletteBoardAnimationDriver(isPaletteOpen, isPaletteCooldown)
 
-  const { atTopOfPage } = useSmoothScroll()
-  const { phase: routeTransitionPhase } = useRouteTransition()
+  useScrollLocking(isPaletteOpen)
 
   return (
     <BodyPortal>
@@ -90,8 +80,8 @@ export default function ColorPalette() {
           fixed inset-0 z-9997
           ${boardOffClickColor} transition-colors
         `}
-        style={{ pointerEvents: isOpen ? "auto" : "none" }}
-        onClick={() => setIsOpen(false)}
+        style={{ pointerEvents: isPaletteOpen ? "auto" : "none" }}
+        onClick={() => setIsPaletteOpen(false)}
         animate={boardOffClickAnimate}
         transition={BASE_SLIDER}
       />
@@ -103,19 +93,19 @@ export default function ColorPalette() {
       >
         {/* Board (always mounted) */}
         <Button
-          aria-label={isOpen ? "Close color palette" : "Open color palette"}
+          aria-label={isPaletteOpen ? "Close color palette" : "Open color palette"}
           className={`
             relative rounded-full border-2 ${boardColors.border}
             ${boardColors.bg} shadow-md
             transition-colors backdrop-blur-sm
             flex items-center justify-center origin-bottom-right
-            ${!(isOpen || isCooldown) && "cursor-pointer"}
+            ${!(isPaletteOpen || isPaletteCooldown) && "cursor-pointer"}
           `}
           style={{
             transitionProperty: "background-color, border-color",
             transitionDuration:
               atTopOfPage
-                ? isOpen
+                ? isPaletteOpen
                   ? "400ms, 400ms"
                   : routeTransitionPhase === "pausing"
                     ? "0ms, 1800ms"
@@ -123,14 +113,14 @@ export default function ColorPalette() {
                 : "300ms, 300ms",
             transitionTimingFunction: "var(--default-transition-timing-function), var(--default-transition-timing-function)",
           }}
-          disableMotion={isOpen}
+          disableMotion={isPaletteOpen}
           onClick={(e) => handleBoardClick(e as React.MouseEvent<HTMLDivElement, MouseEvent>)}
           animate={animateBoard}
           transition={boardTransition} // Single dot layer (dots always exist exactly once)
           renderChildren={() => (
             <PaletteRing
-              items={items}
-              isBoardOpen={isOpen}
+              items={paletteItems}
+              isBoardOpen={isPaletteOpen}
               onSelectPaletteColor={handleSelectPaletteColor}
             />
           )}

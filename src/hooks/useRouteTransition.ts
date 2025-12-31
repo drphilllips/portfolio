@@ -24,7 +24,7 @@ export default function useRouteTransition() {
   // What is currently on screen (decoupled from router location)
   const [renderKey, setRenderKey] = useState(routeKey)
   const [renderedOutlet, setRenderedOutlet] = useState<React.ReactNode>(outlet)
-  const [phase, setPhase] = useState<RouteTransitionPhase>(
+  const [routeTransitionPhase, setRouteTransitionPhase] = useState<RouteTransitionPhase>(
     prefersReducedMotion ? "idle" : "appearing"
   )
 
@@ -72,13 +72,13 @@ export default function useRouteTransition() {
       if (prefersReducedMotion || (holdOldPageMs === 0 && fadeInNewPageMs === 0)) {
         // Reduced-motion: show immediately, no delays.
         appearIdRef.current = null
-        setPhase("idle")
+        setRouteTransitionPhase("idle")
       } else {
         // First-mount appear animation: first paint is hidden (opacity 0) and
         // the pause is implemented via transition.delay.
         transitionIdRef.current += 1
         appearIdRef.current = transitionIdRef.current
-        setPhase("appearing")
+        setRouteTransitionPhase("appearing")
       }
 
       return
@@ -104,7 +104,7 @@ export default function useRouteTransition() {
       // (Do not change renderKey / do not swap outlets.)
       pendingRef.current = { key: routeKey, outlet }
       clearTimers()
-      setPhase("idle")
+      setRouteTransitionPhase("idle")
       return
     }
 
@@ -124,12 +124,12 @@ export default function useRouteTransition() {
       // Reduced-motion: swap immediately, no delays.
       setRenderKey(pendingRef.current.key)
       setRenderedOutlet(pendingRef.current.outlet)
-      setPhase("idle")
+      setRouteTransitionPhase("idle")
       return
     }
 
     // Phase 1: pause while keeping the old page fully visible.
-    setPhase("pausing")
+    setRouteTransitionPhase("pausing")
 
     pauseTimerRef.current = window.setTimeout(() => {
       if (transitionIdRef.current !== id) return
@@ -137,16 +137,16 @@ export default function useRouteTransition() {
       // Phase 2: swap in the new page, then fade it in.
       setRenderKey(pendingRef.current.key)
       setRenderedOutlet(pendingRef.current.outlet)
-      setPhase("fadingIn")
+      setRouteTransitionPhase("fadingIn")
 
       fadeDoneTimerRef.current = window.setTimeout(() => {
         if (transitionIdRef.current !== id) return
-        setPhase("idle")
+        setRouteTransitionPhase("idle")
       }, fadeInNewPageMs)
     }, holdOldPageMs)
   }, [prefersReducedMotion, routeKey, location.hash, outlet, holdOldPageMs, fadeInNewPageMs])
 
-  return { phase, setPhase, appearIdRef, renderKey, transitionIdRef, renderedOutlet, holdOldPageMs, fadeInNewPageMs }
+  return { routeTransitionPhase, setRouteTransitionPhase, appearIdRef, renderKey, transitionIdRef, renderedOutlet, holdOldPageMs, fadeInNewPageMs }
 }
 
 function clearTimer(ref: React.RefObject<number | null>) {

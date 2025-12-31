@@ -6,21 +6,20 @@ import { SELECT_PALETTE_COLOR_COOL_DOWN_MS } from "../constants/colorPalette"
 import { useSmoothScroll } from "../../../hooks/useSmoothScroll"
 import useLayeredClick from "../../../hooks/useLayeredClick"
 import type { SitePage } from "../../../content/schemas/site-page.schema"
+import { PALETTE_ITEMS } from "../../../styles/colorPalette"
 
 
-export default function useSelectPaletteColor(
-  items: PaletteItem[],
-  setItems: Dispatch<SetStateAction<PaletteItem[]>>,
-  isOpen: boolean,
-  setIsOpen: (_: boolean) => void,
-) {
+export default function useSelectPaletteColor() {
   const { requestPaletteChange } = useColorPalette()
   const navigate = useNavigate()
   const { pathname } = useLocation()
   const { smoothScrollTo, atTopOfPage } = useSmoothScroll()
   const { clickThrough } = useLayeredClick()
 
-  const [isCooldown, setIsCooldown] = useState(false)
+  const [paletteItems, setPaletteItems] = useState<PaletteItem[]>(PALETTE_ITEMS)
+  const [isPaletteOpen, setIsPaletteOpen] = useState(false)
+
+  const [isPaletteCooldown, setIsPaletteCooldown] = useState(false)
   const cooldownTimerRef = useRef<number | null>(null)
 
   // handle board click
@@ -28,14 +27,14 @@ export default function useSelectPaletteColor(
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
     if (atTopOfPage) {
-      if (isCooldown && !isOpen) return
-      if (isOpen && !isCooldown) {
+      if (isPaletteCooldown && !isPaletteOpen) return
+      if (isPaletteOpen && !isPaletteCooldown) {
         clickThrough(e as React.MouseEvent)
       }
-      if (!isOpen) {
-        setIsOpen(true)
-        setIsCooldown(true)
-        setTimeout(() => setIsCooldown(false), 500)
+      if (!isPaletteOpen) {
+        setIsPaletteOpen(true)
+        setIsPaletteCooldown(true)
+        setTimeout(() => setIsPaletteCooldown(false), 500)
       }
     } else {
       smoothScrollTo(0)
@@ -54,49 +53,49 @@ export default function useSelectPaletteColor(
 
   useEffect(() => {
     const sitePage = pathname.split("/")[1] as SitePage
-    const pathItem = items.find(item => item.page === sitePage)
-    const pathItemIndex = pathItem ? items.indexOf(pathItem) : null
+    const pathItem = paletteItems.find(item => item.page === sitePage)
+    const pathItemIndex = pathItem ? paletteItems.indexOf(pathItem) : null
     if (pathItem && pathItemIndex !== 0) {
-      setTimeout(() => reorderPalette(setItems, pathItem),0)
+      setTimeout(() => reorderPaletteItems(setPaletteItems, pathItem),0)
     }
-  }, [pathname, items, setItems])
+  }, [pathname, paletteItems, setPaletteItems])
 
   function handleSelectPaletteColor(item: PaletteItem, itemIndex: number) {
-    if (!isOpen) return
-    if (isCooldown) return
+    if (!isPaletteOpen) return
+    if (isPaletteCooldown) return
     if (itemIndex !== 0) {
-      reorderPalette(setItems, item)
+      reorderPaletteItems(setPaletteItems, item)
       requestPaletteChange(item.componentColors)
-      startCooldown(cooldownTimerRef, setIsCooldown, SELECT_PALETTE_COLOR_COOL_DOWN_MS)
+      startPaletteCooldown(cooldownTimerRef, setIsPaletteCooldown, SELECT_PALETTE_COLOR_COOL_DOWN_MS)
       navigate(`/${item.page}`)
     }
-    setIsOpen(false)
+    setIsPaletteOpen(false)
   }
 
-  return { isCooldown, handleSelectPaletteColor, handleBoardClick }
+  return { paletteItems, isPaletteOpen, setIsPaletteOpen, isPaletteCooldown, handleSelectPaletteColor, handleBoardClick }
 }
 
-function startCooldown (
+function startPaletteCooldown (
   cooldownTimerRef: React.RefObject<number | null>,
-  setIsCooldown: (_: boolean) => void,
+  setIsPaletteCooldown: (_: boolean) => void,
   ms: number,
 ) {
-  setIsCooldown(true)
+  setIsPaletteCooldown(true)
   if (cooldownTimerRef.current !== null) {
     window.clearTimeout(cooldownTimerRef.current)
   }
   cooldownTimerRef.current = window.setTimeout(() => {
     cooldownTimerRef.current = null
-    setIsCooldown(false)
+    setIsPaletteCooldown(false)
   }, ms)
 }
 
-function reorderPalette(
-  setItems: Dispatch<SetStateAction<PaletteItem[]>>,
-  firstItem: PaletteItem
+function reorderPaletteItems(
+  setPaletteItems: Dispatch<SetStateAction<PaletteItem[]>>,
+  firstPaletteItem: PaletteItem
 ) {
-  setItems(prev => {
-    const restOfItems = prev.filter(item => item.color !== firstItem.color)
-    return [firstItem, ...restOfItems]
+  setPaletteItems(prev => {
+    const restOfItems = prev.filter(item => item.color !== firstPaletteItem.color)
+    return [firstPaletteItem, ...restOfItems]
   })
 }

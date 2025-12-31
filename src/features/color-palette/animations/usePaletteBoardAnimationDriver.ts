@@ -1,57 +1,42 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { BASE_SPRING, BOARD_CLOSED_SIZE, PALETTE_BOARD_SHRINK_SCALE } from "../constants/colorPalette";
 import { useReducedMotion } from "motion/react";
 import { useSmoothScroll } from "../../../hooks/useSmoothScroll";
 import { useColorPalette } from "../../../contexts/useColorPalette";
 import type { PaletteBoardColors } from "../types/paletteAnimation";
+import useViewportScaledSizing from "../hooks/useViewportScaledSizing";
 
 
 export default function usePaletteBoardAnimationDriver(
-  boardCenterShift: number,
-  boardOpenSizeScaled: number,
-  isOpen: boolean,
-  isCooldown: boolean,
+  isPaletteOpen: boolean,
+  isPaletteCooldown: boolean,
 ) {
   const shouldReduceMotion = useReducedMotion()
   const { atTopOfPage } = useSmoothScroll()
   const { linkColors, offClickColors, pageColors } = useColorPalette()
-
-  // ----------
-  // While board is open, lock scrolling
-  // --------
-  useEffect(() => {
-    if (isOpen) {
-      document.documentElement.style.overflow = "hidden";
-      document.body.style.overflow = "hidden";
-    } else {
-      document.documentElement.style.overflow = "visible";
-      document.body.style.overflow = "visible";
-    }
-  }, [isOpen])
+  const { boardCenterShift, boardOpenSizeScaled } = useViewportScaledSizing()
 
   // ----------
   // Animation goodies
   // --------
   // define board transition style (base spring)
-  const boardDelay = shouldReduceMotion
-    ? 0
-    : isOpen
-      ? 0
-      : 0.04
-  const boardTransition = shouldReduceMotion ? { duration: 0 } : {...BASE_SPRING, delay: boardDelay }
+  const boardTransition =
+    shouldReduceMotion
+      ? { duration: 0 }
+      : {...BASE_SPRING, delay: isPaletteOpen ? 0 : 0.04 }
 
   // drive board animation
   const animateBoard = useMemo(() => ({
-    width: isOpen ? boardOpenSizeScaled : BOARD_CLOSED_SIZE,
-    height: isOpen ? boardOpenSizeScaled : BOARD_CLOSED_SIZE,
-    x: isOpen ? boardCenterShift : 0,
-    y: isOpen ? boardCenterShift : 0,
-  }), [isOpen, boardOpenSizeScaled, boardCenterShift])
+    width: isPaletteOpen ? boardOpenSizeScaled : BOARD_CLOSED_SIZE,
+    height: isPaletteOpen ? boardOpenSizeScaled : BOARD_CLOSED_SIZE,
+    x: isPaletteOpen ? boardCenterShift : 0,
+    y: isPaletteOpen ? boardCenterShift : 0,
+  }), [isPaletteOpen, boardOpenSizeScaled, boardCenterShift])
 
   // off-click view animate opacity
   const boardOffClickAnimate = useMemo(() => (
-    isOpen ? { opacity: 1 } : { opacity: 0 }
-  ), [isOpen])
+    isPaletteOpen ? { opacity: 1 } : { opacity: 0 }
+  ), [isPaletteOpen])
 
   // off-click view background color (page-color/20)
   const boardOffClickColor = useMemo(() => (
@@ -62,7 +47,7 @@ export default function usePaletteBoardAnimationDriver(
   const boardColors: PaletteBoardColors = useMemo(() => {
     const bg =
       atTopOfPage
-        ? isOpen || isCooldown
+        ? isPaletteOpen || isPaletteCooldown
           ? "bg-secondary/10"
           : pageColors.bg
         : linkColors.bg
@@ -73,7 +58,7 @@ export default function usePaletteBoardAnimationDriver(
         : linkColors.border
 
     return { bg, border }
-  }, [atTopOfPage, linkColors, pageColors, isOpen, isCooldown])
+  }, [atTopOfPage, linkColors, pageColors, isPaletteOpen, isPaletteCooldown])
 
   // board scaling
   const boardScaleAnimate = useMemo(() => (
